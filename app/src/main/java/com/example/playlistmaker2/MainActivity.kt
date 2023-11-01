@@ -1,5 +1,6 @@
 package com.example.playlistmaker2
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,13 +8,14 @@ import android.view.View
 import android.widget.Button
 
 class MainActivity : AppCompatActivity() {
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val buttonSearch = findViewById<Button>(R.id.button_search)
-        val buttonMediaLibrary = findViewById<Button>(R.id.button_media_library)
-        val buttonSetting = findViewById<Button>(R.id.button_settings)
+        val buttonSearch = findViewById<Button>(R.id.btSearch)
+        val buttonMediaLibrary = findViewById<Button>(R.id.btMediaLibrary)
+        val buttonSetting = findViewById<Button>(R.id.btSettings)
 
         val buttonClickListener = object : View.OnClickListener {
             override fun onClick(v: View?) {

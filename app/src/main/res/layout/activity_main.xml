@@ -7,6 +7,22 @@
     android:background="@color/background_basic">
 
 
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="@dimen/size_304dp"
+        android:layout_height="@dimen/min_height"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="@dimen/padding_24dp"
+        android:layout_marginStart="@dimen/padding_4dp"
+        android:layout_marginTop="@dimen/padding_4dp"
+        android:paddingStart="@dimen/padding_12dp"
+        android:text="@string/playlist_maker"
+        android:textColor="@color/title"
+        android:textSize="@dimen/text_size">
+
+    </TextView>
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -14,28 +30,18 @@
         android:paddingStart="@dimen/left_indentation"
         android:paddingEnd="@dimen/right_indentation"
         android:paddingTop="@dimen/up_indentation"
-        android:paddingBottom="@dimen/down_indentation"
-        >
+        android:paddingBottom="@dimen/down_indentation">
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="top"
-            android:text="@string/playlist_maker"
-            android:textColor="@color/title"
-            android:textSize="@dimen/text_size">
-
-        </TextView>
 
         <Button
-            android:id="@+id/button_search"
+            android:id="@+id/btSearch"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:foreground="?attr/selectableItemBackgroundBorderless"
             android:backgroundTint="@color/backgroundTint_button"
             android:text="@string/button_search"
+            android:textAllCaps="false"
             android:textColor="@color/text_button"
             android:textSize="@dimen/text_size"
             app:cornerRadius="@dimen/corner_radius"
@@ -48,13 +54,14 @@
         </Button>
 
         <Button
-            android:id="@+id/button_media_library"
+            android:id="@+id/btMediaLibrary"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:foreground="?attr/selectableItemBackgroundBorderless"
             android:backgroundTint="@color/backgroundTint_button"
             android:text="@string/button_mediateka"
+            android:textAllCaps="false"
             android:textColor="@color/text_button"
             android:textSize="@dimen/text_size"
             app:cornerRadius="@dimen/corner_radius"
@@ -67,13 +74,14 @@
         </Button>
 
         <Button
-            android:id="@+id/button_settings"
+            android:id="@+id/btSettings"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:foreground="?attr/selectableItemBackgroundBorderless"
             android:backgroundTint="@color/backgroundTint_button"
             android:text="@string/button_settings"
+            android:textAllCaps="false"
             android:textColor="@color/text_button"
             android:textSize="@dimen/text_size"
             app:cornerRadius="@dimen/corner_radius"
@@ -86,7 +94,6 @@
         </Button>
 
     </LinearLayout>
-
 
 </LinearLayout>
 
