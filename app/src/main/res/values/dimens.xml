@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="text_size">26sp</dimen>
+    <dimen name="text_size">22sp</dimen>
     <dimen name="icon_size">24sp</dimen>
     <dimen name="corner_radius">16dp</dimen>
     <dimen name="icon_indentation">8dp</dimen>

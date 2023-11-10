@@ -1,99 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/background_settings">
+    style="@style/styleLinearLayout">
+
+
+    <Button
+        android:id="@+id/btBack"
+        style="@style/btStyleSettings"
+        android:text="@string/button_settings"
+        android:textSize="@dimen/text_size"
+        app:icon="@drawable/back"/>
+
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/size_48dp"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/btBack"
-            android:layout_width="@dimen/size_48dp"
-            android:layout_height="@dimen/size_48dp"
-            android:layout_marginStart="@dimen/padding_4dp"
-            android:layout_marginTop="@dimen/padding_4dp"
-            android:padding="@dimen/padding_12dp"
-            android:backgroundTint="@color/background_settings"
-            app:icon="@drawable/back"
-            app:iconTint="@color/icon" />
-
-        <TextView
-            android:id="@+id/tvSettingsMenu"
-            android:layout_width="@dimen/size_304dp"
-            android:layout_height="@dimen/size_48dp"
-            android:layout_marginTop="@dimen/padding_4dp"
-            android:paddingStart="@dimen/padding_12dp"
-            android:text="@string/button_settings"
-            android:textColor="@color/text_button"
-            android:textSize="@dimen/text_size">
-
-        </TextView>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
+        style="@style/styleLinearLayout"
         android:paddingStart="@dimen/left_indentation"
-        android:paddingEnd="@dimen/right_indentation"
         android:paddingTop="@dimen/up_indentation"
+        android:paddingEnd="@dimen/right_indentation"
         android:paddingBottom="@dimen/down_indentation">
 
         <Switch
             android:id="@+id/themeSwitch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/tvStyleSettings"
             android:layout_marginTop="28dp"
-            android:minHeight="@dimen/min_height"
-            android:text="@string/dark_theme"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_menu_settings">
-        </Switch>
+            android:text="@string/dark_theme"/>
 
         <TextView
             android:id="@+id/tvShareSettings"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="@dimen/min_height"
-            android:text="@string/share_app"
-            android:textSize="@dimen/text_menu_settings"
-            android:gravity="center_vertical"
-            android:textColor="@color/black"
-            android:drawableEnd="@drawable/share">
-
-        </TextView>
+            style="@style/tvStyleSettings"
+            android:drawableEnd="@drawable/share"
+            android:text="@string/share_app"></TextView>
 
         <TextView
             android:id="@+id/tvWriteToSupport"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="@dimen/min_height"
-            android:text="@string/write_to_support"
-            android:textSize="@dimen/text_menu_settings"
-            android:gravity="center_vertical"
-            android:textColor="@color/black"
-            android:drawableEnd="@drawable/write_to_support">
-
-        </TextView>
+            style="@style/tvStyleSettings"
+            android:drawableEnd="@drawable/write_to_support"
+            android:text="@string/write_to_support"></TextView>
 
         <TextView
             android:id="@+id/tvAgreement"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="@dimen/min_height"
-            android:text="@string/agreement"
-            android:textSize="@dimen/text_menu_settings"
-            android:gravity="center_vertical"
-            android:textColor="@color/black"
-            android:drawableEnd="@drawable/agreement">
-
-        </TextView>
+            style="@style/tvStyleSettings"
+            android:drawableEnd="@drawable/agreement"
+            android:text="@string/agreement"></TextView>
 
     </LinearLayout>
 
