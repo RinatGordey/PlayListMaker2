@@ -1,32 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="styleButtom"> //стиль кнопок для главного меню //темная тема
-    <item name="android:layout_width">match_parent</item>
-    <item name="android:layout_height">0dp</item>
-    <item name="android:layout_weight" >1</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight" >1</item>
         <item name="android:backgroundTint">@color/backgroundTint_button</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">@dimen/text_size</item>
-        <item name="cornerRadius">@dimen/corner_radius</item>
+        <item name="android:textSize">@dimen/size22sp</item>
+        <item name="cornerRadius">@dimen/size16dp</item>
         <item name="iconGravity">textStart</item>
-        <item name="iconPadding">@dimen/icon_indentation</item>
-        <item name="iconSize">@dimen/icon_size</item>
+        <item name="iconPadding">@dimen/size8dp</item>
+        <item name="iconSize">@dimen/size24sp</item>
         <item name="iconTint">@color/icon</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textFontWeight">500</item>
     </style>
+
     <style name="styleLinearLayout">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:orientation">vertical</item>
         <item name="android:backgroundTint">@color/black</item>
     </style>
-    <style name="tvStyleSettings">
+
+    <style name="tv_style_settings">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:minHeight">@dimen/min_height</item>
-        <item name="android:textSize">@dimen/text_menu_settings</item>
+        <item name="android:minHeight">@dimen/size48dp</item>
+        <item name="android:textSize">@dimen/size16sp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textColor">@color/white</item>
         <item name="iconTint">@color/icon_gray</item>
@@ -35,19 +37,83 @@
         <item name="android:textFontWeight">500</item>
     </style>
 
-    <style name="btStyleSettings" parent="Widget.AppCompat.Button">
-        <item name="android:textColor">@color/title</item>
-        <item name="backgroundTint">@color/backgroundMain</item>
-        <item name="drawableTint">@color/icon_gray</item>
-        <item name="android:minHeight">@dimen/min_height</item>
-        <item name="android:layout_height">@dimen/size_48dp</item>
+    <style name="panel_header">
+        <item name="android:layout_width">351dp</item>
+        <item name="android:layout_height">@dimen/size48dp</item>
+        <item name="android:layout_marginLeft">@dimen/size4dp</item>
+        <item name="android:layout_marginTop">@dimen/size4dp</item>
+        <item name="android:layout_marginBottom">@dimen/size4dp</item>
+        <item name="backgroundTint">@color/black</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="ic_back">
+        <item name="android:layout_width">@dimen/size48dp</item>
+        <item name="android:layout_height">@dimen/size48dp</item>
+        <item name="android:scaleType">centerInside</item>
+        <item name="android:padding">@dimen/size12dp</item>
+        <item name="android:src">@drawable/back</item>
         <item name="iconTint">@color/white</item>
-        <item name="android:fontFamily">@font/ys_display_medium</item>
-        <item name="android:paddingStart">@dimen/padding_12dp</item>
-        <item name="android:layout_width">208dp</item>
-        <item name="android:layout_marginStart">@dimen/padding_4dp</item>
-        <item name="android:layout_marginTop">4dp</item>
-        <item name="android:stateListAnimator">@null</item>
-        <item name="android:textAllCaps">false</item>
+        <item name="android:tint">@color/white</item>
+        <item name="android:backgroundTint">@color/black_background</item>
+    </style>
+
+    <style name="tv_panel_header">
+        <item name="android:layout_width">@dimen/size208dp</item>
+        <item name="android:layout_height">@dimen/size48dp</item>
+        <item name="android:paddingLeft">@dimen/size12dp</item>
+        <item name="android:layout_marginTop">@dimen/size10dp</item>
+        <item name="android:layout_marginBottom">@dimen/size10dp</item>
+        <item name="android:textSize">@dimen/size22sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="fontFamily">@font/ys_display_medium</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="search">
+        <item name="cornerRadius">8dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">@dimen/size8dp</item>
+        <item name="iconSize">@dimen/size16dp</item>
+        <item name="iconTint">@color/white</item>
+    </style>
+
+    <style name="frameLayout_for_search_string">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/size52dp</item>
+        <item name="android:paddingLeft">@dimen/size16dp</item>
+        <item name="android:paddingTop">@dimen/size8dp</item>
+        <item name="android:paddingRight">@dimen/size16dp</item>
+        <item name="android:paddingBottom">@dimen/size8dp</item>
+    </style>
+
+    <style name="edit_text_search">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/size36dp</item>
+        <item name="android:layout_marginBottom">@dimen/size18dp</item>
+        <item name="android:background">@drawable/rounded_corners</item>
+        <item name="android:drawableStart">@drawable/icon_search16dp</item>
+        <item name="drawableTint">@color/black</item>
+        <item name="android:drawablePadding">@dimen/size8dp</item>
+        <item name="android:hint">@string/button_search</item>
+        <item name="android:inputType">text</item>
+        <item name="android:maxLines">@integer/material_motion_duration_medium_1</item>
+        <item name="android:paddingStart">@dimen/size12dp</item>
+        <item name="android:paddingTop">@dimen/size8.5dp</item>
+        <item name="android:paddingEnd">@dimen/size16dp</item>
+        <item name="android:paddingBottom">@dimen/size8.5dp</item>
+        <item name="android:textSize">@dimen/size16sp</item>
+        <item name="fontFamily">@font/ys_display_regular</item>
+        <item name="android:textColorHint">@color/black</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="im_bt_clear_search">
+        <item name="android:layout_width">@dimen/size40dp</item>
+        <item name="android:layout_height">@dimen/size36dp</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:tint">@color/black</item>
     </style>
 </resources>

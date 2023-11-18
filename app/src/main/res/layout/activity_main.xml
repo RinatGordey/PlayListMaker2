@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
     style="@style/styleLinearLayout"
     android:background="@color/backgroundMain"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -7,31 +10,36 @@
 
     <TextView
         android:id="@+id/tvTitle"
-        android:layout_width="@dimen/size_304dp"
-        android:layout_height="@dimen/min_height"
+        android:layout_width="@dimen/size304dp"
+        android:layout_height="@dimen/size48dp"
         android:gravity="center_vertical"
-        android:layout_marginBottom="@dimen/padding_24dp"
-        android:layout_marginStart="@dimen/padding_4dp"
-        android:layout_marginTop="@dimen/padding_4dp"
-        android:paddingStart="@dimen/padding_12dp"
+        android:layout_marginBottom="@dimen/size24dp"
+        android:layout_marginStart="@dimen/size4dp"
+        android:layout_marginTop="@dimen/size4dp"
+        android:paddingStart="@dimen/size12dp"
         android:text="@string/playlist_maker"
         android:textColor="@color/title"
-        android:textSize="@dimen/text_size"
-        android:fontFamily="@font/ys_display_medium"
-        >
+        android:textSize="@dimen/size22sp"
+        android:fontFamily="@font/ys_display_medium">
     </TextView>
 
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
         style="@style/styleLinearLayout"
-        android:paddingStart="@dimen/left_indentation"
-        android:paddingEnd="@dimen/right_indentation"
-        android:paddingTop="@dimen/up_indentation"
-        android:paddingBottom="@dimen/down_indentation">
+        android:paddingStart="@dimen/size16dp"
+        android:paddingEnd="@dimen/size16dp"
+        android:paddingTop="@dimen/size14dp"
+        android:paddingBottom="@dimen/size14dp">
 
 
         <Button
             android:id="@+id/btSearch"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:text="@string/button_search"
             app:icon="@drawable/icon_search"
             style="@style/styleButtom">
@@ -39,17 +47,21 @@
 
         <Button
             android:id="@+id/btMediaLibrary"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:text="@string/button_mediateka"
             app:icon="@drawable/icon_media_library"
-            app:iconTint="@color/icon"
             style="@style/styleButtom">
         </Button>
 
         <Button
             android:id="@+id/btSettings"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:text="@string/button_settings"
             app:icon="@drawable/icon_settings"
-            app:iconTint="@color/icon"
             style="@style/styleButtom">
         </Button>
 

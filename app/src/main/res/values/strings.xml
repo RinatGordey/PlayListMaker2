@@ -4,8 +4,11 @@
     <string name="button_search">Поиск</string>
     <string name="button_mediateka">Медиатека</string>
     <string name="button_settings">Настройки</string>
+    <string name="button_clear">Очистить поиск</string>
     <string name="agreement">Пользовательское соглашение</string>
     <string name="write_to_support">Написать в поддержку</string>
     <string name="dark_theme">Темная тема</string>
     <string name="share_app">Поделиться приложением</string>
+    <string name="push_agreement">"https://yandex.ru/legal/practicum_offer/"</string>
+
 </resources>

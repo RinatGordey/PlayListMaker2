@@ -1,27 +1,42 @@
 package com.example.playlistmaker2
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
-import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
-import android.widget.Button
+import android.widget.ImageButton
 import android.widget.Switch
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.SwitchCompat
 
 class SettingsActivity : AppCompatActivity() {
-    @SuppressLint("MissingInflatedId")
+
+    private val PREFS_NAME = "Prefs"
+
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        val nightModeEnabled = sharedPreferences.getBoolean("nightMode", false)
+
+        if (nightModeEnabled) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
         setContentView(R.layout.activity_settings)
 
-        val backButton = findViewById<Button>(R.id.btBack)
+        val backButton = findViewById<ImageButton>(R.id.btBackSet) // кнопка назад в MainActivity
         backButton.setOnClickListener {
             val backIntent = Intent(this, MainActivity::class.java)
+            backIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             startActivity(backIntent)
         }
+
         val helpText = findViewById<TextView>(R.id.tvWriteToSupport)
         helpText.setOnClickListener {
             val intent = Intent(Intent.ACTION_SEND)
@@ -38,28 +53,24 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         val switchDarkMode: Switch = findViewById(R.id.themeSwitch)
-        switchDarkMode.setOnCheckedChangeListener{ _, isChecked ->
-            if (isChecked) {
-                setNightMode(true)
-            } else {
-                setNightMode(false)
-            }
+        switchDarkMode.isChecked = nightModeEnabled
+        switchDarkMode.setOnCheckedChangeListener { _, isChecked ->
+            setNightMode(isChecked)
         }
     }
     private fun setNightMode(enabled: Boolean) {
-        val nightModeFlags = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-        when (nightModeFlags) {
-            Configuration.UI_MODE_NIGHT_YES -> if (!enabled) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                recreateActivity()
-            }
-            Configuration.UI_MODE_NIGHT_NO -> if (enabled) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                recreateActivity()
-            }
+        val darkMode = if (enabled) {
+            AppCompatDelegate.MODE_NIGHT_YES
+        } else {
+            AppCompatDelegate.MODE_NIGHT_NO
         }
-    }
-    private fun recreateActivity() {
-        recreate()
+        AppCompatDelegate.setDefaultNightMode(darkMode)
+
+        val sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putBoolean("nightMode", enabled)
+        editor.apply()
+
+        recreate() // Пересоздаем активность, чтобы изменения вступили в силу
     }
 }

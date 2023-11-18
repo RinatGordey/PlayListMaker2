@@ -1,18 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:backgroundTint="@color/backgroundMain"
     tools:context=".SearchActivity">
 
-    <TextView
-        android:id="@+id/tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Поиск"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="@dimen/size351dp"
+        android:layout_height="@dimen/size48dp"
+        android:layout_marginLeft="@dimen/size4dp"
+        android:layout_marginTop="@dimen/size4dp"
+        android:layout_marginBottom="@dimen/size4dp"
+        style="@style/panel_header">
+
+        <ImageButton
+            android:id="@+id/btBackSearch"
+            android:layout_width="@dimen/size48dp"
+            android:layout_height="@dimen/size48dp"
+            style="@style/ic_back"/>
+
+        <TextView
+            android:layout_width="@dimen/size208dp"
+            android:layout_height="@dimen/size48dp"
+            android:layout_marginTop="@dimen/size10dp"
+            android:layout_marginBottom="@dimen/size10dp"
+            style="@style/tv_panel_header"
+            android:text="@string/button_search"/>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size52dp"
+        style="@style/frameLayout_for_search_string">
+
+        <EditText
+            android:id="@+id/searchEditText"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size36dp"
+            android:layout_marginBottom="@dimen/size18dp"
+            style="@style/edit_text_search"/>
+
+        <ImageButton
+            android:id="@+id/btClear"
+            android:layout_width="@dimen/size40dp"
+            android:layout_height="@dimen/size36dp"
+            android:layout_gravity="end|center_vertical"
+            style="@style/im_bt_clear_search"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/button_clear"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:visibility="gone" />
+
+    </FrameLayout>
+
+</LinearLayout>
