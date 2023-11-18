@@ -37,7 +37,7 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(backIntent)
         }
 
-        val helpText = findViewById<TextView>(R.id.tvWriteToSupport)
+        val helpText = findViewById<TextView>(R.id.tvWriteToSupport) // в техподдержку
         helpText.setOnClickListener {
             val intent = Intent(Intent.ACTION_SEND)
             intent.data = Uri.parse("mailto:rinatgordey@yandex.ru")
@@ -46,13 +46,13 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        val agreement = findViewById<TextView>(R.id.tvAgreement)
+        val agreement = findViewById<TextView>(R.id.tvAgreement) //соглашение
         agreement.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://yandex.ru/legal/practicum_offer/"))
             startActivity(intent)
         }
 
-        val switchDarkMode: Switch = findViewById(R.id.themeSwitch)
+        val switchDarkMode: Switch = findViewById(R.id.themeSwitch) // переключалка темы
         switchDarkMode.isChecked = nightModeEnabled
         switchDarkMode.setOnCheckedChangeListener { _, isChecked ->
             setNightMode(isChecked)

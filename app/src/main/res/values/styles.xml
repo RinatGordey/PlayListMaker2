@@ -12,6 +12,7 @@
         <item name="iconTint">@color/icon</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textFontWeight">500</item>
+        <item name="elevation">@dimen/size0dp</item>
     </style>
 
     <style name="tv_style_settings"> // стиль для TextView экрана настройки
@@ -37,6 +38,7 @@
         <item name="android:padding">@dimen/size12dp</item>
         <item name="android:src">@drawable/back</item>
         <item name="iconTint">@color/icon</item>
+        <item name="elevation">@dimen/size0dp</item>
 
     </style>
 

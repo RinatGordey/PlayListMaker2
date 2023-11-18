@@ -22,5 +22,6 @@
     <dimen name="size40dp">40dp</dimen>
     <dimen name="size52dp">52dp</dimen>
     <dimen name="size351dp">351dp</dimen>
+    <dimen name="size0dp">0dp</dimen>
 
 </resources>
