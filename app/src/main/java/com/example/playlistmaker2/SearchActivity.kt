@@ -10,6 +10,7 @@ import android.content.Context
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageButton
+
 class SearchActivity : AppCompatActivity() {
 
     private lateinit var searchEditText: EditText
@@ -29,6 +30,11 @@ class SearchActivity : AppCompatActivity() {
 
         searchEditText = findViewById(R.id.searchEditText)
         val clearButton = findViewById<ImageButton>(R.id.btClear)
+
+        // Восстановить значение из SharedPreferences, если оно было сохранено
+        val sharedPreferences = getSharedPreferences("SearchActivity", Context.MODE_PRIVATE)
+        searchText = sharedPreferences.getString("searchText", "") ?: ""
+        searchEditText.setText(searchText)
 
         if (savedInstanceState != null) {
             searchText = savedInstanceState.getString("searchText", "")
@@ -53,14 +59,31 @@ class SearchActivity : AppCompatActivity() {
             val hideKeyboard =
                 getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             hideKeyboard.hideSoftInputFromWindow(searchEditText.windowToken, 0)
+
+            // Очистить значение из SharedPreferences
+            val editor = sharedPreferences.edit()
+            editor.putString("searchText", "")
+            editor.apply()
         }
     }
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putString("searchText", searchText)
         super.onSaveInstanceState(outState)
     }
+
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         searchText = savedInstanceState.getString("searchText", "")
+        searchEditText.setText(searchText)
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        // Сохранить значение введенного текста в SharedPreferences
+        val sharedPreferences = getSharedPreferences("SearchActivity", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString("searchText", searchText)
+        editor.apply()
     }
 }
