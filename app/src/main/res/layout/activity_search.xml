@@ -45,14 +45,14 @@
 
         <ImageButton
             android:id="@+id/btClear"
+            style="@style/im_bt_clear_search"
             android:layout_width="@dimen/size40dp"
             android:layout_height="@dimen/size36dp"
             android:layout_gravity="end|center_vertical"
-            style="@style/im_bt_clear_search"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/button_clear"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"
-            android:visibility="gone" />
+            android:src="@drawable/bt_clear_search"
+            android:visibility="visible" />
 
     </FrameLayout>
 
