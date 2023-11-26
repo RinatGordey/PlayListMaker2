@@ -6,22 +6,23 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.Switch
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.widget.SwitchCompat
 
 class SettingsActivity : AppCompatActivity() {
-
-    private val PREFS_NAME = "Prefs"
-
+    companion object {
+        const val PREFS_NAME = "Prefs"
+        const val NIGHT_MODE = "nightMode"
+        const val TEXT_PLAIN = "text/plain"
+    }
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        val nightModeEnabled = sharedPreferences.getBoolean("nightMode", false)
+        val nightModeEnabled = sharedPreferences.getBoolean(NIGHT_MODE, false)
 
         if (nightModeEnabled) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
@@ -37,25 +38,38 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(backIntent)
         }
 
-        val helpText = findViewById<TextView>(R.id.tvWriteToSupport) // в техподдержку
-        helpText.setOnClickListener {
-            val intent = Intent(Intent.ACTION_SEND)
-            intent.data = Uri.parse("mailto:rinatgordey@yandex.ru")
-            intent.putExtra(Intent.EXTRA_SUBJECT,"Сообщение разработчикам и разработчицам приложения Playlist Maker")
-            intent.putExtra(Intent.EXTRA_TEXT,"Спасибо разработчикам и разработчицам за крутое приложение!")
+        val helpButton = findViewById<ImageView>(R.id.icSupport) // кнопка в техподдержку
+        helpButton.setOnClickListener {
+            val intent = Intent(Intent.ACTION_SENDTO)
+            intent.apply {
+                type = TEXT_PLAIN
+                data = Uri.parse(getString(R.string.mail_from_me))
+                putExtra(Intent.EXTRA_SUBJECT,getString(R.string.mail_title))
+                putExtra(Intent.EXTRA_TEXT,getString(R.string.mail_text))
+            }
             startActivity(intent)
         }
 
-        val agreement = findViewById<TextView>(R.id.tvAgreement) //соглашение
-        agreement.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://yandex.ru/legal/practicum_offer/"))
+        val agreementButton = findViewById<ImageView>(R.id.icAgreement) // кнопка соглашение
+        agreementButton.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.push_agreement)))
             startActivity(intent)
         }
 
-        val switchDarkMode: Switch = findViewById(R.id.themeSwitch) // переключалка темы
+        val switchDarkMode: Switch = findViewById(R.id.icSwitch) // кнопка переключалка темы
         switchDarkMode.isChecked = nightModeEnabled
         switchDarkMode.setOnCheckedChangeListener { _, isChecked ->
             setNightMode(isChecked)
+        }
+        val shareButton = findViewById<ImageView>(R.id.icShare) // кнопка делиться приложением
+        shareButton.setOnClickListener {
+            val shareIntent = Intent()
+            shareIntent.apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, R.string.link_to_share)
+                type = TEXT_PLAIN
+                startActivity(Intent.createChooser(shareIntent, getString(R.string.share_using)))
+            }
         }
     }
     private fun setNightMode(enabled: Boolean) {
@@ -68,7 +82,7 @@ class SettingsActivity : AppCompatActivity() {
 
         val sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
-        editor.putBoolean("nightMode", enabled)
+        editor.putBoolean(NIGHT_MODE, enabled)
         editor.apply()
 
         recreate() // Пересоздаем активность, чтобы изменения вступили в силу

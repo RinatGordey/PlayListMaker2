@@ -23,5 +23,9 @@
     <dimen name="size52dp">52dp</dimen>
     <dimen name="size351dp">351dp</dimen>
     <dimen name="size0dp">0dp</dimen>
+    <dimen name="size61dp">61dp</dimen>
+    <dimen name="size326dp">326dp</dimen>
+    <dimen name="size19dp">19dp</dimen>
+    <dimen name="size350dp">350dp</dimen>
 
 </resources>

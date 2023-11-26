@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="styleButtom"> //стиль кнопок для главного меню // светлая тема
+    <style name="styleButtom" parent="Widget.MaterialComponents.Button.UnelevatedButton"> //стиль кнопок для главного меню // светлая тема
         <item name="android:backgroundTint">@color/backgroundTint_button</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textColor">@color/black</item>
@@ -45,6 +45,8 @@
     <style name="tv_panel_header">
         <item name="android:paddingLeft">@dimen/size12dp</item>
         <item name="android:textSize">@dimen/size22sp</item>
+        <item name="android:paddingTop">@dimen/size10dp</item>
+        <item name="android:paddingBottom">@dimen/size12dp</item>
         <item name="android:textColor">@color/icon</item>
         <item name="fontFamily">@font/ys_display_medium</item>
         <item name="android:gravity">center_vertical</item>
@@ -81,7 +83,7 @@
         <item name="android:paddingBottom">@dimen/size8.5dp</item>
         <item name="android:textSize">@dimen/size16sp</item>
         <item name="fontFamily">@font/ys_display_regular</item>
-        <item name="android:textColorHint">#AEAFB4</item>
+        <item name="android:textColorHint">@color/icon_gray</item>
         <item name="android:paddingLeft">@dimen/size12dp</item>
     </style>
 
