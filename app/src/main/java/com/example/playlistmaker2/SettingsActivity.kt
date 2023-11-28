@@ -66,7 +66,7 @@ class SettingsActivity : AppCompatActivity() {
             val shareIntent = Intent()
             shareIntent.apply {
                 action = Intent.ACTION_SEND
-                putExtra(Intent.EXTRA_TEXT, R.string.link_to_share)
+                putExtra(Intent.EXTRA_TEXT, getString(R.string.link_to_share))
                 type = TEXT_PLAIN
                 startActivity(Intent.createChooser(shareIntent, getString(R.string.share_using)))
             }
