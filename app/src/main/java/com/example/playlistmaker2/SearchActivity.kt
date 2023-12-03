@@ -10,7 +10,9 @@ import android.content.Context
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageButton
-import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker2.databinding.ActivitySearchBinding
 
 class SearchActivity : AppCompatActivity() {
     companion object{
@@ -19,11 +21,15 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private lateinit var searchEditText: EditText
+    private lateinit var trackRecyclerView: RecyclerView
+    private lateinit var trackAdapter: TrackAdapter
     private var searchText: String = ""
+    private val listTracks = mutableListOf<Track>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
+        val binding = ActivitySearchBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val backButton = findViewById<ImageButton>(R.id.btBackSearch)
         backButton.setOnClickListener {
@@ -32,8 +38,14 @@ class SearchActivity : AppCompatActivity() {
             setResult(Activity.RESULT_OK, returnIntent)
             finish() // Закрываем эту активити при нажатии "назад"
         }
+        trackAdapter = TrackAdapter()
+
+        recyclerViewTrack()
+
+        listTracks.addAll(arrayTrackList)
 
         searchEditText = findViewById(R.id.searchEditText)
+
         val clearButton = findViewById<ImageButton>(R.id.btClear)
 
         // Восстановить значение из SharedPreferences, если оно было сохранено
@@ -52,8 +64,8 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 clearButton.visibility = if (s.isNotEmpty()) View.VISIBLE else View.GONE
                 searchText = s.toString()
-            }
 
+            }
             override fun afterTextChanged(s: Editable) {}
         })
 
@@ -90,5 +102,15 @@ class SearchActivity : AppCompatActivity() {
         val editor = sharedPreferences.edit()
         editor.putString(SEARCH_TEXT, searchText)
         editor.apply()
+    }
+    private fun recyclerViewTrack() {
+        trackRecyclerView = findViewById(R.id.recyclerView)
+        val layoutManager = LinearLayoutManager(this)
+        trackRecyclerView.layoutManager = layoutManager
+
+        trackAdapter.setTrackList(trackList)
+
+        trackRecyclerView.adapter = trackAdapter
+
     }
 }

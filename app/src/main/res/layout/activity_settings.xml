@@ -136,7 +136,7 @@
                 android:layout_height="@dimen/size24dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="@dimen/size8dp"
-                android:src="@drawable/agreement"
+                android:src="@drawable/ic_right_arrow"
                 app:tint="@color/ic_settings_activity">
             </ImageView>
         </LinearLayout>

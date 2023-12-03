@@ -54,4 +54,11 @@
 
     </FrameLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size0dp"
+        android:layout_marginTop="@dimen/size16dp"
+        android:layout_weight="1"/>
+
 </LinearLayout>

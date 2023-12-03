@@ -91,4 +91,22 @@
         <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
         <item name="android:tint">@color/search_icon_editText</item>
     </style>
-    </resources>
+
+    <style name="nameSong">
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">@dimen/size16sp</item>
+        <item name="android:textColor">@color/icon_gray</item>
+    </style>
+
+    <style name="nameGroup">
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">@dimen/size11sp</item>
+        <item name="android:textColor">@color/icon_gray</item>
+    </style>
+</resources>
