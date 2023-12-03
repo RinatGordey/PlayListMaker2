@@ -20,5 +20,6 @@
     <color name="background_search_field">#E6E8EB</color>
     <color name="ic_settings_activity">#AEAFB4</color>
     <color name="ic_switch_dark">#AEAFB4</color>
+    <color name="black_000000">#000000</color>
 
 </resources>

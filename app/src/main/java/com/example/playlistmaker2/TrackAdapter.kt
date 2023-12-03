@@ -18,7 +18,7 @@ class TrackAdapter(
         viewType: Int
     ): TrackViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.track_list_item, parent, false)
-        return TrackViewHolder(view)
+        return TrackViewHolder(view, parent.context)
     }
 
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
@@ -29,5 +29,5 @@ class TrackAdapter(
     override fun getItemCount(): Int{
         return trackList.size
     }
-    }
+}
 

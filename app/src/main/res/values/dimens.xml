@@ -34,7 +34,7 @@
     <dimen name="size64dp">64dp</dimen>
     <dimen name="size54dp">54dp</dimen>
     <dimen name="size15dp">15dp</dimen>
-    <dimen name="radius_2dp">2dp</dimen>
+    <dimen name="corner_radius_2dp">2dp</dimen>
 
 
 </resources>
