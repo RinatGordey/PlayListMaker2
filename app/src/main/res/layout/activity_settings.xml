@@ -8,7 +8,7 @@
     tools:context=".SettingsActivity">
 
     <LinearLayout
-        android:layout_width="@dimen/size351dp"
+        android:layout_width="@dimen/size352dp"
         android:layout_height="@dimen/size48dp"
         android:layout_marginLeft="@dimen/size4dp"
         android:layout_marginTop="@dimen/size4dp"
@@ -43,14 +43,14 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/size61dp"
+            android:layout_height="@dimen/size60dp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/tvSwitch"
                 style="@style/tv_style_settings"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/size19dp"
+                android:layout_height="@dimen/size20dp"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:text="@string/dark_theme"></TextView>
@@ -67,13 +67,13 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/size61dp"
+            android:layout_height="@dimen/size60dp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/tvShareSettings"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/size19dp"
+                android:layout_height="@dimen/size20dp"
                 style="@style/tv_style_settings"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
@@ -93,13 +93,13 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/size61dp"
+            android:layout_height="@dimen/size60dp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/tvWriteToSupport"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/size19dp"
+                android:layout_height="@dimen/size20dp"
                 style="@style/tv_style_settings"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
@@ -118,13 +118,13 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/size61dp"
+            android:layout_height="@dimen/size60dp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/tvAgreement"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/size19dp"
+                android:layout_height="@dimen/size20dp"
                 style="@style/tv_style_settings"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"

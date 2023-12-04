@@ -8,7 +8,7 @@
     tools:context=".SearchActivity">
 
     <LinearLayout
-        android:layout_width="@dimen/size351dp"
+        android:layout_width="@dimen/size352dp"
         android:layout_height="@dimen/size48dp"
         android:layout_marginLeft="@dimen/size4dp"
         android:layout_marginTop="@dimen/size4dp"
@@ -35,7 +35,7 @@
         style="@style/frameLayout_for_search_string">
 
         <EditText
-            android:id="@+id/searchEditText"
+            android:id="@+id/edSearch"
             android:layout_width="match_parent"
             android:layout_height="@dimen/size36dp"
             android:layout_marginBottom="@dimen/size18dp"
@@ -55,10 +55,9 @@
     </FrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/rvTrack"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/size0dp"
-        android:layout_marginTop="@dimen/size16dp"
-        android:layout_weight="1"/>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size16dp" />
 
 </LinearLayout>

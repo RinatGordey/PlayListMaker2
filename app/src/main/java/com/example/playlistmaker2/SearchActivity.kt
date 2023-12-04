@@ -44,7 +44,7 @@ class SearchActivity : AppCompatActivity() {
 
         listTracks.addAll(arrayTrackList)
 
-        searchEditText = findViewById(R.id.searchEditText)
+        searchEditText = findViewById(R.id.edSearch)
 
         val clearButton = findViewById<ImageButton>(R.id.btClear)
 
@@ -104,11 +104,11 @@ class SearchActivity : AppCompatActivity() {
         editor.apply()
     }
     private fun recyclerViewTrack() {
-        trackRecyclerView = findViewById(R.id.recyclerView)
+        trackRecyclerView = findViewById(R.id.rvTrack)
         val layoutManager = LinearLayoutManager(this)
         trackRecyclerView.layoutManager = layoutManager
 
-        trackAdapter.setTrackList(trackList)
+        trackAdapter.setTrackList(arrayTrackList)
 
         trackRecyclerView.adapter = trackAdapter
 

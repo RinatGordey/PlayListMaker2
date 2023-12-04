@@ -1,7 +1,6 @@
 package com.example.playlistmaker2
 
 import android.content.Context
-import android.util.TypedValue
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -36,7 +35,7 @@ class TrackViewHolder(itemView: View, private val context: Context) : RecyclerVi
         Glide.with(itemView)
             .load(track.artworkUrl100)
             .apply(requestOption)
-            .placeholder(R.drawable.figushka)
+            .placeholder(R.drawable.ic_stub)
             .into(artworkUrl100View)
     }
 }
