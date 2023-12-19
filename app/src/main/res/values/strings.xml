@@ -15,5 +15,9 @@
     <string name="mail_text">"Спасибо разработчикам и разработчицам за крутое приложение!"</string>
     <string name="link_to_share">"https://practicum.yandex.ru/"</string>
     <string name="share_using">"Поделиться приложением с помощью:"</string>
+    <string name="refresh">"Обновить"</string>
+    <string name="error_tracks">"Ничего не нашлось"</string>
+    <string name="something_went_wrong">"что-то пошло не так"</string>
+    <string name="error_to_link">"Проблемы со связью\n\nЗагрузка не удалась. Проверьте\nподключение к интернету"</string>
 
 </resources>
