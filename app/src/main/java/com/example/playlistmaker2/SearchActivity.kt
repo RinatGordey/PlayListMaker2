@@ -6,9 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
@@ -19,6 +16,8 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmake2.ItunesService
@@ -36,12 +35,11 @@ class SearchActivity : AppCompatActivity() {
     companion object {
         const val SEARCH_ACTIVITY = "SearchActivity"
         const val SEARCH_TEXT = "searchText"
+        const val URL_API = "https://itunes.apple.com"
     }
 
-    private val urlApi = "https://itunes.apple.com"
-
     private val retrofit = Retrofit.Builder()
-        .baseUrl(urlApi)
+        .baseUrl(URL_API)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
@@ -110,27 +108,24 @@ class SearchActivity : AppCompatActivity() {
             val editor = sharedPreferences.edit()
             editor.putString(SEARCH_TEXT, "")
             editor.apply()
-            btClear.visibility = View.GONE
-            rvTrack.visibility = View.GONE
-            tvPlaceholder.visibility = View.GONE
-            ivPlaceholder.visibility = View.GONE
-            btRefresh.visibility = View.GONE
+            btClear.isVisible = false
+            rvTrack.isVisible = false
+            tvPlaceholder.isVisible = false
+            ivPlaceholder.isVisible = false
+            btRefresh.isVisible = false
         }
 
-        val textWatcher = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                btClear.visibility = if (s.isNotEmpty()) View.VISIBLE else View.GONE
-                searchText = s.toString()
-
+        edSearch.addTextChangedListener(
+            onTextChanged = { charSequence, _, _, _ ->
+                if (charSequence != null) {
+                    btClear.isVisible = charSequence.isNotEmpty()  // Показываем кнопку очистки, если есть текст
+                }
+                searchText = charSequence.toString()  // Обновляем значение searchText
             }
-            override fun afterTextChanged(s: Editable) {}
-        }
-        edSearch.addTextChangedListener(textWatcher)
+        )
 
         edSearch.setOnClickListener {
-            edSearch.text.clear()
+            edSearch.text.clear() // Очищаем текст при нажатии на поле ввода
 
         }
         btRefresh.setOnClickListener {
@@ -168,11 +163,11 @@ class SearchActivity : AppCompatActivity() {
                     if (bodyResponse?.isNotEmpty() == true) {
                         trackList.addAll(bodyResponse)
                         adapter.notifyDataSetChanged()
-                        rvTrack.visibility = View.VISIBLE
+                        rvTrack.isVisible = true
                     }
                     val nightModeFlags = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
                     if (trackList.isEmpty()) {
-                        ivPlaceholder.visibility = View.VISIBLE
+                        ivPlaceholder.isVisible = true
                         ivPlaceholder.setImageResource(
                             if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
                                 R.drawable.ic_error_faund_track_night
@@ -184,10 +179,10 @@ class SearchActivity : AppCompatActivity() {
                     } else {
                         showMessage("", "")
                     }
-                    btRefresh.visibility = View.GONE
+                    btRefresh.isVisible = false
                 } else {
                     lastSearchQuery = query
-                    ivPlaceholder.visibility = View.VISIBLE
+                    ivPlaceholder.isVisible = true
                     showMessage(
                         getString(R.string.error_to_link),
                         response.code().toString()
@@ -197,7 +192,7 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
                 lastSearchQuery = query
-                ivPlaceholder.visibility = View.VISIBLE
+                ivPlaceholder.isVisible = true
                 ivPlaceholder.setImageResource(
                     if (isNightModeEnabled()) {
                         R.drawable.ic_error_to_link_night
@@ -206,7 +201,7 @@ class SearchActivity : AppCompatActivity() {
                     }
                 )
                 showMessage(getString(R.string.error_to_link), t.message.toString())
-                btRefresh.visibility = View.VISIBLE
+                btRefresh.isVisible = true
             }
 
             private fun isNightModeEnabled(): Boolean {
@@ -221,14 +216,14 @@ class SearchActivity : AppCompatActivity() {
         if (text.isNotEmpty()) {
             trackList.clear()
             adapter.notifyDataSetChanged()
-            tvPlaceholder.visibility = View.VISIBLE
+            tvPlaceholder.isVisible = true
             tvPlaceholder.text = text
             if (additionalMessage.isNotEmpty()) {
                 Toast.makeText(applicationContext, additionalMessage, Toast.LENGTH_LONG)
                     .show()
             }
         } else {
-            tvPlaceholder.visibility = View.GONE
+            tvPlaceholder.isVisible = false
         }
     }
 
