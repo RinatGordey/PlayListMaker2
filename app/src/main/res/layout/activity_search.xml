@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:backgroundTint="@color/backgroundMain"
     tools:context=".SearchActivity">
@@ -39,7 +40,9 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/size36dp"
             android:layout_marginBottom="@dimen/size18dp"
-            style="@style/edit_text_search"/>
+            style="@style/edit_text_search"
+            android:imeOptions="actionDone"
+            android:singleLine="true"/>
 
         <ImageButton
             android:id="@+id/btClear"
@@ -58,6 +61,42 @@
         android:id="@+id/rvTrack"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/size16dp" />
+        android:layout_marginTop="@dimen/size16dp"
+        tools:listitem="@layout/track_list_item"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/placeholderView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/size102dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/ivPlaceholder"
+            style="@style/ivPlaceholder"
+            android:layout_width="@dimen/size120dp"
+            android:layout_height="@dimen/size120dp"
+            app:srcCompat="@drawable/ic_error_faund_track" />
+
+        <TextView
+            android:id="@+id/tvPlaceholder"
+            style="@style/tvPlaceHolder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size16dp"
+            android:text="@string/error_tracks" />
+
+        <Button
+
+            android:id="@+id/btRefresh"
+            style="@style/btRefresh"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/size36dp"
+            android:layout_marginTop="@dimen/size24dp"
+            android:text="@string/refresh" />
+
+    </LinearLayout>
 
 </LinearLayout>
