@@ -6,10 +6,14 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -17,7 +21,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmake2.ItunesService
@@ -27,41 +30,48 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-
-
 class SearchActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivitySearchBinding
 
     companion object {
         const val SEARCH_ACTIVITY = "SearchActivity"
         const val SEARCH_TEXT = "searchText"
         const val URL_API = "https://itunes.apple.com"
+        const val HISTORY_KEY = "key_for_history"
+        const val PREFS = "prefs"
     }
 
+    private val urlApi = "https://itunes.apple.com"
+
     private val retrofit = Retrofit.Builder()
+        .baseUrl(urlApi)
         .baseUrl(URL_API)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    private val iTunseService = retrofit.create(ItunesService::class.java)
+    private val iTunesService = retrofit.create(ItunesService::class.java)
 
-    private val trackList = mutableListOf<Track>()
+    private val trackList = ArrayList<Track>()
 
-
+    private var recentTracks = ArrayList<Track>()
+    private val recentAdapter = TrackAdapter(recentTracks)
+    private val adapter = TrackAdapter(trackList)
     private lateinit var edSearch: EditText
     private lateinit var placeholderView: LinearLayout
-    private lateinit var adapter: TrackAdapter
+
     private lateinit var btClear: ImageButton
     private lateinit var rvTrack: RecyclerView
     private lateinit var btBackSearch: ImageView
     private lateinit var ivPlaceholder: ImageView
     private lateinit var tvPlaceholder: TextView
     private lateinit var btRefresh: Button
+    private lateinit var historySearch: FrameLayout
+    private lateinit var rvTrackHistory: RecyclerView
+    private lateinit var btClearHistory: Button
     private var lastSearchQuery: String? = null
 
     private var searchText: String = ""
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,8 +86,24 @@ class SearchActivity : AppCompatActivity() {
         ivPlaceholder = binding.ivPlaceholder
         tvPlaceholder = binding.tvPlaceholder
         btRefresh = binding.btRefresh
+        historySearch = binding.historySearch
+        rvTrackHistory = binding.rvTrackHistory
+        btClearHistory = binding.btClearHistory
         startRvTrack()
+        startRvTrackHistory()
 
+        val sharedPref = getSharedPreferences(PREFS, MODE_PRIVATE)
+
+        edSearch.setOnFocusChangeListener { _, hasFocus ->
+            val tracks = SearchHistory().read(sharedPref)
+            recentTracks.clear()
+            for (track in tracks)
+                recentTracks.add(track)
+            recentAdapter.notifyDataSetChanged()
+            historySearch.visibility = if(hasFocus && edSearch.text.isEmpty() && recentTracks.size != 0) View.VISIBLE else View.GONE
+        }
+
+        historySearch.isVisible = false
 
         btBackSearch.setOnClickListener {
             val returnIntent = Intent()
@@ -108,6 +134,7 @@ class SearchActivity : AppCompatActivity() {
             val editor = sharedPreferences.edit()
             editor.putString(SEARCH_TEXT, "")
             editor.apply()
+            recentAdapter.notifyDataSetChanged()
             btClear.isVisible = false
             rvTrack.isVisible = false
             tvPlaceholder.isVisible = false
@@ -115,19 +142,66 @@ class SearchActivity : AppCompatActivity() {
             btRefresh.isVisible = false
         }
 
-        edSearch.addTextChangedListener(
-            onTextChanged = { charSequence, _, _, _ ->
-                if (charSequence != null) {
-                    btClear.isVisible = charSequence.isNotEmpty()  // Показываем кнопку очистки, если есть текст
-                }
-                searchText = charSequence.toString()  // Обновляем значение searchText
-            }
-        )
-
-        edSearch.setOnClickListener {
-            edSearch.text.clear() // Очищаем текст при нажатии на поле ввода
-
+        adapter.itemClickListener = { _, track ->
+            val recentSongs : ArrayList<Track> = SearchHistory().read(sharedPref)
+            addTrack(track,recentSongs)
+            SearchHistory().write(sharedPref,recentSongs)
         }
+
+        sharedPref.registerOnSharedPreferenceChangeListener { _, key ->
+            if (key == HISTORY_KEY) {
+                val tracks = SearchHistory().read(sharedPref)
+                recentTracks.clear()
+                for (track in tracks)
+                    recentTracks.add(track)
+                recentAdapter.notifyDataSetChanged()
+            }
+        }
+
+        btClearHistory.setOnClickListener {
+            val recentSongs: ArrayList<Track> = SearchHistory().read(sharedPref)
+            val editor = sharedPref.edit()
+            editor.clear()
+            editor.apply()
+            recentSongs.clear()
+            recentAdapter.notifyDataSetChanged()
+            historySearch.isVisible = false
+        }
+
+        val simpleTextWatcher = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                btClear.visibility = View.GONE
+                historySearch.visibility = if(edSearch.hasFocus()
+                    && s?.isEmpty() == true && recentTracks.size != 0) View.VISIBLE else View.GONE
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                btClear.visibility = clearButtonVisibility(s)
+                rvTrack.visibility = if(s?.isEmpty() == true) View.GONE else View.VISIBLE
+                historySearch.visibility = if(edSearch.hasFocus()
+                    && s?.isEmpty() == true && recentTracks.size != 0) View.VISIBLE else View.GONE
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        }
+
+        edSearch.addTextChangedListener(simpleTextWatcher)
+
+//        edSearch.addTextChangedListener(
+//            onTextChanged = { charSequence, _, _, _ ->
+//                if (charSequence != null) {
+//                    btClear.isVisible = charSequence.isNotEmpty()  // Показываем кнопку очистки, если есть текст
+//                    historySearch.visibility = if (edSearch.hasFocus()
+//                        && charSequence?.isEmpty() == true && recentTracks.size !=0) View.VISIBLE else View.GONE
+//                }
+//                searchText = charSequence.toString()  // Обновляем значение searchText
+//            }
+//        )
+
+//        edSearch.setOnClickListener {
+//            edSearch.text.clear() // Очищаем текст при нажатии на поле ввода
+//        }
+
         btRefresh.setOnClickListener {
             val query = lastSearchQuery
             if (query != null) {
@@ -151,10 +225,23 @@ class SearchActivity : AppCompatActivity() {
             finish()
         }
     }
-
+    private fun addTrack(track: Track, place : ArrayList<Track>){
+        if (place.size == 10)
+            place.removeAt(9)
+        if (place.contains(track))
+            place.remove(track)
+        place.add(0, track)
+    }
+    private fun clearButtonVisibility(s: CharSequence?): Int {
+        return if (s.isNullOrEmpty()) {
+            View.GONE
+        } else {
+            View.VISIBLE
+        }
+    }
     private fun startSearch(query: String) {
         // отправляем запрос в itunes
-        iTunseService.search(query).enqueue(object : Callback<TrackResponse> {
+        iTunesService.search(query).enqueue(object : Callback<TrackResponse> {
             @SuppressLint("NotifyDataSetChanged")
             override fun onResponse(call: Call<TrackResponse>, response: Response<TrackResponse>) {
                 val bodyResponse = response.body()?.results
@@ -210,7 +297,6 @@ class SearchActivity : AppCompatActivity() {
             }
         })
     }
-
     private fun showMessage(text: String, additionalMessage: String) {
 
         if (text.isNotEmpty()) {
@@ -219,34 +305,31 @@ class SearchActivity : AppCompatActivity() {
             tvPlaceholder.isVisible = true
             tvPlaceholder.text = text
             if (additionalMessage.isNotEmpty()) {
-                Toast.makeText(applicationContext, additionalMessage, Toast.LENGTH_LONG)
-                    .show()
+                Toast.makeText(applicationContext, additionalMessage, Toast.LENGTH_LONG).show()
             }
         } else {
             tvPlaceholder.isVisible = false
         }
     }
-
     private fun startRvTrack() {
-        adapter = TrackAdapter(trackList)
-        rvTrack.layoutManager = LinearLayoutManager(this)
         rvTrack.adapter = adapter
+        rvTrack.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
     }
-
+    private fun startRvTrackHistory() {
+        rvTrackHistory.adapter = recentAdapter
+        rvTrackHistory.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+    }
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(SEARCH_TEXT, edSearch.text.toString())
     }
-
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         searchText = savedInstanceState.getString(SEARCH_TEXT, "")
         edSearch.setText(searchText)
     }
-
     override fun onPause() {
         super.onPause()
-
         // Сохранить значение введенного текста в SharedPreferences
         val sharedPreferences = getSharedPreferences(SEARCH_ACTIVITY, Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
