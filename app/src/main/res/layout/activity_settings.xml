@@ -40,7 +40,6 @@
         android:paddingEnd="@dimen/size12dp"
         android:paddingBottom="@dimen/size14dp">
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/size60dp"
@@ -53,7 +52,7 @@
                 android:layout_height="@dimen/size20dp"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:text="@string/dark_theme"></TextView>
+                android:text="@string/dark_theme" />
 
             <Switch
                 android:id="@+id/icSwitch"
@@ -77,7 +76,7 @@
                 style="@style/tv_style_settings"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:text="@string/share_app"></TextView>
+                android:text="@string/share_app" />
 
             <ImageView
                 android:id="@+id/icShare"
@@ -86,10 +85,8 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="@dimen/size8dp"
                 android:src="@drawable/share"
-                app:tint="@color/ic_settings_activity">
-            </ImageView>
+                app:tint="@color/ic_settings_activity" />
         </LinearLayout>
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -103,7 +100,7 @@
                 style="@style/tv_style_settings"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:text="@string/write_to_support"></TextView>
+                android:text="@string/write_to_support" />
 
             <ImageView
                 android:id="@+id/icSupport"
@@ -128,7 +125,7 @@
                 style="@style/tv_style_settings"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:text="@string/agreement"></TextView>
+                android:text="@string/agreement" />
 
             <ImageView
                 android:id="@+id/icAgreement"
@@ -137,8 +134,8 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="@dimen/size8dp"
                 android:src="@drawable/ic_right_arrow"
-                app:tint="@color/ic_settings_activity">
-            </ImageView>
+                app:tint="@color/ic_settings_activity" />
+
         </LinearLayout>
 
     </LinearLayout>
