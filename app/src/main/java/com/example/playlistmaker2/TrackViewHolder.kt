@@ -17,14 +17,13 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val trackTimeView: TextView = itemView.findViewById(R.id.trackTime)
     private val artworkUrl100View: ImageView = itemView.findViewById(R.id.imAlbumsCover)
     private val trackId: TextView = itemView.findViewById(R.id.trackId)
+    private val dateFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault()) }
 
     fun bind(track: Track) {
         trackId.text = track.trackId.toString()
-        trackNameView.text = track.trackName ?: "Unknown Track"
-        artistNameView.text = track.artistName ?: "Unknown Artist"
-        trackTimeView.text = SimpleDateFormat("mm:ss", Locale // перевод продолжительности треков в формат 00м:00с
-            .getDefault())
-            .format(track.trackTime.toLong())
+        trackNameView.text = track.trackName
+        artistNameView.text = track.artistName
+        trackTimeView.text = dateFormat.format(track.trackTime.toLong()) // перевод продолжительности треков в формат 00м:00с
 
         Glide.with(itemView)
             .load(track.artworkUrl100)

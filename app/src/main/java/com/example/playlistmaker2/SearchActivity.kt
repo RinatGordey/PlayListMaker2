@@ -40,6 +40,8 @@ class SearchActivity : AppCompatActivity() {
         const val URL_API = "https://itunes.apple.com"
         const val HISTORY_KEY = "key_for_history"
         const val PREFS = "prefs"
+        const val NUMBER_TEN = 10
+        const val NUMBER_NINE = 9
     }
 
     private val urlApi = "https://itunes.apple.com"
@@ -54,9 +56,10 @@ class SearchActivity : AppCompatActivity() {
 
     private val trackList = ArrayList<Track>()
 
-    private var recentTracks = ArrayList<Track>()
+    private val recentTracks = ArrayList<Track>()
     private val recentAdapter = TrackAdapter(recentTracks)
     private val adapter = TrackAdapter(trackList)
+    private val searchHistory by lazy { SearchHistory() }
     private lateinit var edSearch: EditText
     private lateinit var placeholderView: LinearLayout
 
@@ -95,12 +98,12 @@ class SearchActivity : AppCompatActivity() {
         val sharedPref = getSharedPreferences(PREFS, MODE_PRIVATE)
 
         edSearch.setOnFocusChangeListener { _, hasFocus ->
-            val tracks = SearchHistory().read(sharedPref)
+            val tracks = searchHistory.read(sharedPref)
             recentTracks.clear()
             for (track in tracks)
                 recentTracks.add(track)
             recentAdapter.notifyDataSetChanged()
-            historySearch.visibility = if(hasFocus && edSearch.text.isEmpty() && recentTracks.size != 0) View.VISIBLE else View.GONE
+            historySearch.isVisible = hasFocus && edSearch.text.isEmpty() && recentTracks.size != 0
         }
 
         historySearch.isVisible = false
@@ -187,21 +190,6 @@ class SearchActivity : AppCompatActivity() {
 
         edSearch.addTextChangedListener(simpleTextWatcher)
 
-//        edSearch.addTextChangedListener(
-//            onTextChanged = { charSequence, _, _, _ ->
-//                if (charSequence != null) {
-//                    btClear.isVisible = charSequence.isNotEmpty()  // Показываем кнопку очистки, если есть текст
-//                    historySearch.visibility = if (edSearch.hasFocus()
-//                        && charSequence?.isEmpty() == true && recentTracks.size !=0) View.VISIBLE else View.GONE
-//                }
-//                searchText = charSequence.toString()  // Обновляем значение searchText
-//            }
-//        )
-
-//        edSearch.setOnClickListener {
-//            edSearch.text.clear() // Очищаем текст при нажатии на поле ввода
-//        }
-
         btRefresh.setOnClickListener {
             val query = lastSearchQuery
             if (query != null) {
@@ -226,8 +214,8 @@ class SearchActivity : AppCompatActivity() {
         }
     }
     private fun addTrack(track: Track, place : ArrayList<Track>){
-        if (place.size == 10)
-            place.removeAt(9)
+        if (place.size == NUMBER_TEN)
+            place.removeAt(NUMBER_NINE)
         if (place.contains(track))
             place.remove(track)
         place.add(0, track)

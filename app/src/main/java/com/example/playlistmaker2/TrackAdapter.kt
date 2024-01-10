@@ -4,9 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 class TrackAdapter(
-    private var trackList: ArrayList<Track>) : RecyclerView.Adapter<TrackViewHolder>() {
+    private val trackList: ArrayList<Track>, var itemClickListener: ((Int, Track) -> Unit)? = null) : RecyclerView.Adapter<TrackViewHolder>() {
 
-    var itemClickListener: ((Int, Track) -> Unit)? = null
+
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
