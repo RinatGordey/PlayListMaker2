@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@+id/trackLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/size60dp">
+
+    <ImageView
+        android:id="@+id/imAlbumsCover"
+        android:layout_width="@dimen/size44dp"
+        android:layout_height="@dimen/size44dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="@dimen/size12dp"
+        android:layout_marginTop="@dimen/size8dp"
+        android:layout_marginBottom="@dimen/size8dp" />
+
+    <TextView
+        android:id="@+id/trackId"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="invisible"
+        android:text=""/>
+
+    <LinearLayout
+        android:id="@+id/trackDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/size32dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="@dimen/size8dp"
+        android:layout_marginTop="@dimen/size14dp"
+        android:layout_marginEnd="@dimen/size8dp"
+        android:layout_marginBottom="@dimen/size16dp"
+        android:layout_toStartOf="@+id/trackArrow"
+        android:layout_toEndOf="@+id/imAlbumsCover"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/trackName"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size20dp"
+            android:layout_weight="1"
+            style="@style/nameSong"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/size12dp">
+
+            <TextView
+                android:id="@+id/artistName"
+                android:layout_width="@dimen/size0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                style="@style/nameGroup" />
+
+            <ImageView
+                android:id="@+id/viewDot"
+                android:layout_width="@dimen/size12dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_dot"
+                style="@style/nameGroup"/>
+
+
+            <TextView
+                android:id="@+id/trackTime"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                style="@style/nameGroup" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/trackArrow"
+        android:layout_width="@dimen/size24dp"
+        android:layout_height="@dimen/size24dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="@dimen/size18dp"
+        android:layout_marginEnd="@dimen/size12dp"
+        android:layout_marginBottom="@dimen/size20dp"
+        android:src="@drawable/ic_right_arrow" />
+
+</RelativeLayout>

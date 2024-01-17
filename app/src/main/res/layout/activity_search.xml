@@ -1,18 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:backgroundTint="@color/backgroundMain"
     tools:context=".SearchActivity">
 
-    <TextView
-        android:id="@+id/tv"
+    <LinearLayout
+        android:layout_width="@dimen/size352dp"
+        android:layout_height="@dimen/size48dp"
+        android:layout_marginLeft="@dimen/size4dp"
+        android:layout_marginTop="@dimen/size4dp"
+        android:layout_marginBottom="@dimen/size4dp"
+        style="@style/panel_header">
+
+        <ImageButton
+            android:id="@+id/btBackSearch"
+            android:layout_width="@dimen/size48dp"
+            android:layout_height="@dimen/size48dp"
+            style="@style/ic_back" />
+
+        <TextView
+            android:layout_width="@dimen/size208dp"
+            android:layout_height="@dimen/size48dp"
+            style="@style/tv_panel_header"
+            android:text="@string/button_search" />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size52dp"
+        style="@style/frameLayout_for_search_string">
+
+        <EditText
+            android:id="@+id/edSearch"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size36dp"
+            android:layout_marginBottom="@dimen/size18dp"
+            style="@style/edit_text_search"
+            android:imeOptions="actionDone"
+            android:singleLine="true" />
+
+        <ImageButton
+            android:id="@+id/btClear"
+            style="@style/im_bt_clear_search"
+            android:layout_width="@dimen/size40dp"
+            android:layout_height="@dimen/size36dp"
+            android:layout_gravity="end|center_vertical"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/button_clear"
+            android:src="@drawable/bt_clear_search"
+            android:visibility="gone" />
+
+    </FrameLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvTrack"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size16dp"
+        android:layout_weight="3"
+        android:orientation="vertical"
+        tools:listitem="@layout/track_list_item"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/placeholderView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Поиск"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/size102dp"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <ImageView
+            android:id="@+id/ivPlaceholder"
+            style="@style/ivPlaceholder"
+            android:layout_width="@dimen/size120dp"
+            android:layout_height="@dimen/size120dp"
+            app:srcCompat="@drawable/ic_error_faund_track"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tvPlaceholder"
+            style="@style/tvPlaceHolder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size16dp"
+            android:text="@string/error_tracks"
+            android:visibility="gone" />
+
+        <Button
+
+            android:id="@+id/btRefresh"
+            style="@style/btRefresh"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/size36dp"
+            android:layout_marginTop="@dimen/size24dp"
+            android:text="@string/refresh"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/historySearch"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/size24dp"
+        android:visibility="gone" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/tvYouSearch"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size52dp"
+                android:text="@string/you_search" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvTrackHistory"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size0dp"
+                android:layout_marginTop="@dimen/size8dp"
+                android:layout_weight="1"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/track_list_item" />
+
+            <Button
+                android:id="@+id/btClearHistory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/btClearHistory"
+                android:layout_marginTop="@dimen/size24dp"
+                android:text="@string/clear_history"
+                android:visibility="visible" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</LinearLayout>
