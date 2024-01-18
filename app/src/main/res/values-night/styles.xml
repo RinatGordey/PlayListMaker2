@@ -172,4 +172,5 @@
         <item name="android:paddingRight">@dimen/size16dp</item>
         <item name="android:paddingTop">@dimen/size18dp</item>
     </style>
+
 </resources>
