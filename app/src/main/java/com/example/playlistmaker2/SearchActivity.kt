@@ -6,6 +6,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -25,6 +27,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmake2.ItunesService
 import com.example.playlistmaker2.databinding.ActivitySearchBinding
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -42,6 +45,7 @@ class SearchActivity : AppCompatActivity() {
         const val PREFS = "prefs"
         const val NUMBER_TEN = 10
         const val NUMBER_NINE = 9
+        const val NUMBER_ZERO = 0
     }
 
     private val urlApi = "https://itunes.apple.com"
@@ -145,10 +149,32 @@ class SearchActivity : AppCompatActivity() {
             btRefresh.isVisible = false
         }
 
+        fun clickOnTrack(track: Track) {
+            val recentSongs: ArrayList<Track> = SearchHistory().read(sharedPref)
+            addTrack(track, recentSongs)
+            SearchHistory().write(sharedPref, recentSongs)
+
+            val intent = Intent(this, PlayerDisplayActivity::class.java)
+
+            val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+            if (vibrator.hasVibrator()) {
+                // Создаем паттерн для вибрации
+                val pattern = VibrationEffect.createWaveform(longArrayOf(0, 100), -1) // 100 миллисекунд
+                // Запускаем вибрацию
+                vibrator.vibrate(pattern)
+            }
+
+            val trackJson = Gson().toJson(track)
+            intent.putExtra("LAST_TRACK", trackJson)
+            startActivity(intent)
+        }
+
         adapter.itemClickListener = { _, track ->
-            val recentSongs : ArrayList<Track> = SearchHistory().read(sharedPref)
-            addTrack(track,recentSongs)
-            SearchHistory().write(sharedPref,recentSongs)
+            clickOnTrack(track)
+        }
+
+        recentAdapter.itemClickListener = {_, track ->
+            clickOnTrack(track)
         }
 
         sharedPref.registerOnSharedPreferenceChangeListener { _, key ->
@@ -218,7 +244,7 @@ class SearchActivity : AppCompatActivity() {
             place.removeAt(NUMBER_NINE)
         if (place.contains(track))
             place.remove(track)
-        place.add(0, track)
+        place.add(NUMBER_ZERO, track)
     }
     private fun clearButtonVisibility(s: CharSequence?): Int {
         return if (s.isNullOrEmpty()) {

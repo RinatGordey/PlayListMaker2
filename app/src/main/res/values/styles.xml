@@ -151,4 +151,61 @@
         <item name="android:paddingStart">@dimen/size14dp</item>
         <item name="android:paddingEnd">@dimen/size14dp</item>
     </style>
+
+    <style name="btPlay">
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:clickable">true</item>
+        <item name="android:foregroundGravity">center</item>
+        <item name="android:background">@drawable/round_bt</item>
+        <item name="backgroundTint">@color/white</item>
+        <item name="fabCustomSize">@dimen/size84dp</item>
+        <item name="android:contentDescription">Play track</item>
+        <item name="maxImageSize">@dimen/size84dp</item>
+        <item name="elevation">@dimen/size0dp</item>
+    </style>
+
+    <style name="tvNameTrack">
+        <item name="android:textColor">@color/icon</item>
+        <item name="android:textSize">@dimen/size22sp</item>
+        <item name="fontFamily">@font/ys_display_medium</item>
+        <item name="fontWeight">@dimen/size400</item>
+        <item name="android:lineSpacingExtra">@dimen/size0dp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="tvNameGroup" parent="tvNameTrack">
+        <item name="android:textSize">@dimen/size14sp</item>
+    </style>
+
+    <style name="tvDescriptionTrackLeft" parent="tvNameTrack">
+        <item name="android:textSize">@dimen/size13sp</item>
+        <item name="fontFamily">@font/ys_display_regular</item>
+        <item name="android:textColor">@color/icon_gray</item>
+    </style>
+
+    <style name="tvDescriptionTrackRight" parent="tvDescriptionTrackLeft">
+        <item name="android:textColor">@color/icon</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:gravity">right</item>
+    </style>
+
+    <style name="tvTimeUnderPlay" parent="tvNameGroup">
+        <item name="fontWeight">@dimen/size500</item>
+    </style>
+
+    <style name="btAddToAlbum">
+        <item name="android:clickable">true</item>
+        <item name="fabCustomSize">50dp</item>
+        <item name="maxImageSize">50dp</item>
+        <item name="android:foregroundGravity">center</item>
+        <item name="android:backgroundTint">@color/icon_gray</item>
+        <item name="backgroundTint">@color/white</item>
+        <item name="tint">@color/white</item>
+        <item name="android:contentDescription">Add track to album</item>
+    </style>
+
+    <style name="btLikeTrack" parent="btAddToAlbum">
+    </style>
 </resources>

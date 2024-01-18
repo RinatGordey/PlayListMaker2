@@ -22,5 +22,11 @@
     <string name="you_search">"Вы искали"</string>
     <string name="clear_history">"Очистить историю"</string>
     <string name="enter_search_query">"введите поисковый запрос"</string>
+    <string name="time_under_play_button">time</string>
+    <string name="duration">длительность</string>
+    <string name="album">альбом</string>
+    <string name="year">год</string>
+    <string name="genre">жанр</string>
+    <string name="country">страна</string>
 
 </resources>
