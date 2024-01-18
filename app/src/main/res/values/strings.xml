@@ -4,8 +4,23 @@
     <string name="button_search">Поиск</string>
     <string name="button_mediateka">Медиатека</string>
     <string name="button_settings">Настройки</string>
+    <string name="button_clear">Очистить поиск</string>
     <string name="agreement">Пользовательское соглашение</string>
     <string name="write_to_support">Написать в поддержку</string>
     <string name="dark_theme">Темная тема</string>
     <string name="share_app">Поделиться приложением</string>
+    <string name="push_agreement">"https://yandex.ru/legal/practicum_offer/"</string>
+    <string name="mail_from_me">"mailto:rinatgordey@yandex.ru"</string>
+    <string name="mail_title">"Сообщение разработчикам и разработчицам приложения Playlist Maker"</string>
+    <string name="mail_text">"Спасибо разработчикам и разработчицам за крутое приложение!"</string>
+    <string name="link_to_share">"https://practicum.yandex.ru/"</string>
+    <string name="share_using">"Поделиться приложением с помощью:"</string>
+    <string name="refresh">"Обновить"</string>
+    <string name="error_tracks">"Ничего не нашлось"</string>
+    <string name="something_went_wrong">"что-то пошло не так"</string>
+    <string name="error_to_link">"Проблемы со связью\n\nЗагрузка не удалась. Проверьте\nподключение к интернету"</string>
+    <string name="you_search">"Вы искали"</string>
+    <string name="clear_history">"Очистить историю"</string>
+    <string name="enter_search_query">"введите поисковый запрос"</string>
+
 </resources>

@@ -1,38 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@color/background_settings">
+    tools:context=".SettingsActivity">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/size_48dp"
-        android:orientation="horizontal">
+        android:layout_width="@dimen/size352dp"
+        android:layout_height="@dimen/size48dp"
+        android:layout_marginLeft="@dimen/size4dp"
+        android:layout_marginTop="@dimen/size4dp"
+        android:layout_marginBottom="@dimen/size4dp"
+        style="@style/panel_header">
 
-        <Button
-            android:id="@+id/btBack"
-            android:layout_width="@dimen/size_48dp"
-            android:layout_height="@dimen/size_48dp"
-            android:layout_marginStart="@dimen/padding_4dp"
-            android:layout_marginTop="@dimen/padding_4dp"
-            android:padding="@dimen/padding_12dp"
-            android:backgroundTint="@color/background_settings"
-            app:icon="@drawable/back"
-            app:iconTint="@color/icon" />
+        <ImageButton
+            android:id="@+id/btBackSet"
+            android:layout_width="@dimen/size48dp"
+            android:layout_height="@dimen/size48dp"
+            style="@style/ic_back"/>
 
         <TextView
-            android:id="@+id/tvSettingsMenu"
-            android:layout_width="@dimen/size_304dp"
-            android:layout_height="@dimen/size_48dp"
-            android:layout_marginTop="@dimen/padding_4dp"
-            android:paddingStart="@dimen/padding_12dp"
-            android:text="@string/button_settings"
-            android:textColor="@color/text_button"
-            android:textSize="@dimen/text_size">
-
-        </TextView>
+            android:layout_width="@dimen/size208dp"
+            android:layout_height="@dimen/size48dp"
+            android:layout_marginTop="@dimen/size10dp"
+            android:layout_marginBottom="@dimen/size10dp"
+            style="@style/tv_panel_header"
+            android:text="@string/button_settings"/>
 
     </LinearLayout>
 
@@ -40,60 +35,108 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingStart="@dimen/left_indentation"
-        android:paddingEnd="@dimen/right_indentation"
-        android:paddingTop="@dimen/up_indentation"
-        android:paddingBottom="@dimen/down_indentation">
+        android:paddingStart="@dimen/size16dp"
+        android:paddingTop="@dimen/size14dp"
+        android:paddingEnd="@dimen/size12dp"
+        android:paddingBottom="@dimen/size14dp">
 
-        <Switch
-            android:id="@+id/themeSwitch"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:minHeight="@dimen/min_height"
-            android:text="@string/dark_theme"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_menu_settings">
-        </Switch>
+            android:layout_height="@dimen/size60dp"
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tvShareSettings"
+            <TextView
+                android:id="@+id/tvSwitch"
+                style="@style/tv_style_settings"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size20dp"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="@string/dark_theme" />
+
+            <Switch
+                android:id="@+id/icSwitch"
+                android:layout_width="@dimen/size56dp"
+                android:layout_height="@dimen/size40dp"
+                android:layout_gravity="center_vertical"
+                android:thumbTint="@color/ic_switch_dark" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="@dimen/min_height"
-            android:text="@string/share_app"
-            android:textSize="@dimen/text_menu_settings"
-            android:gravity="center_vertical"
-            android:textColor="@color/black"
-            android:drawableEnd="@drawable/share">
+            android:layout_height="@dimen/size60dp"
+            android:orientation="horizontal">
 
-        </TextView>
+            <TextView
+                android:id="@+id/tvShareSettings"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size20dp"
+                style="@style/tv_style_settings"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="@string/share_app" />
 
-        <TextView
-            android:id="@+id/tvWriteToSupport"
+            <ImageView
+                android:id="@+id/icShare"
+                android:layout_width="@dimen/size24dp"
+                android:layout_height="@dimen/size24dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/size8dp"
+                android:src="@drawable/share"
+                app:tint="@color/ic_settings_activity" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="@dimen/min_height"
-            android:text="@string/write_to_support"
-            android:textSize="@dimen/text_menu_settings"
-            android:gravity="center_vertical"
-            android:textColor="@color/black"
-            android:drawableEnd="@drawable/write_to_support">
+            android:layout_height="@dimen/size60dp"
+            android:orientation="horizontal">
 
-        </TextView>
+            <TextView
+                android:id="@+id/tvWriteToSupport"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size20dp"
+                style="@style/tv_style_settings"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="@string/write_to_support" />
 
-        <TextView
-            android:id="@+id/tvAgreement"
+            <ImageView
+                android:id="@+id/icSupport"
+                android:layout_width="@dimen/size24dp"
+                android:layout_height="@dimen/size24dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/size8dp"
+                android:src="@drawable/write_to_support"
+                app:tint="@color/ic_settings_activity">
+            </ImageView>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="@dimen/min_height"
-            android:text="@string/agreement"
-            android:textSize="@dimen/text_menu_settings"
-            android:gravity="center_vertical"
-            android:textColor="@color/black"
-            android:drawableEnd="@drawable/agreement">
+            android:layout_height="@dimen/size60dp"
+            android:orientation="horizontal">
 
-        </TextView>
+            <TextView
+                android:id="@+id/tvAgreement"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size20dp"
+                style="@style/tv_style_settings"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="@string/agreement" />
+
+            <ImageView
+                android:id="@+id/icAgreement"
+                android:layout_width="@dimen/size24dp"
+                android:layout_height="@dimen/size24dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/size8dp"
+                android:src="@drawable/ic_right_arrow"
+                app:tint="@color/ic_settings_activity" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
