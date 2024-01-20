@@ -97,7 +97,7 @@
         android:layout_height="wrap_content"
         style="@style/tvDescriptionTrackRight"
         android:layout_marginBottom="@dimen/size20dp"
-        tools:text="великобритания"
+        tools:text="Великобритания"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/rightBorderForDownTv" />
 
@@ -147,7 +147,7 @@
         android:layout_height="wrap_content"
         style="@style/tvDescriptionTrackRight"
         android:layout_marginBottom="8dp"
-        tools:text="rock"
+        tools:text="Rock"
         app:layout_constraintBottom_toTopOf="@+id/country_value"
         app:layout_constraintEnd_toStartOf="@+id/rightBorderForDownTv" />
 
