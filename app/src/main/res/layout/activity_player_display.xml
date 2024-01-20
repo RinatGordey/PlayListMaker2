@@ -46,9 +46,23 @@
         android:layout_height="wrap_content"/>
 
     <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/leftBorderForDownTv"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/size16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/rightBorder"
         android:orientation="vertical"
         app:layout_constraintGuide_end="@dimen/size24dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/rightBorderForDownTv"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/size16dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
@@ -75,7 +89,7 @@
         android:layout_marginBottom="@dimen/size20dp"
         android:text="@string/country"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/leftBorder" />
+        app:layout_constraintStart_toStartOf="@+id/leftBorderForDownTv" />
 
     <TextView
         android:id="@+id/country_value"
@@ -85,7 +99,7 @@
         android:layout_marginBottom="@dimen/size20dp"
         tools:text="великобритания"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/rightBorder" />
+        app:layout_constraintEnd_toStartOf="@+id/rightBorderForDownTv" />
 
     <TextView
         android:id="@+id/genre"
@@ -95,7 +109,7 @@
         android:layout_marginBottom="@dimen/size8dp"
         android:text="@string/genre"
         app:layout_constraintBottom_toTopOf="@+id/country"
-        app:layout_constraintStart_toStartOf="@+id/leftBorder" />
+        app:layout_constraintStart_toStartOf="@+id/leftBorderForDownTv" />
 
     <TextView
         android:id="@+id/year"
@@ -105,7 +119,7 @@
         android:layout_marginBottom="8dp"
         android:text="@string/year"
         app:layout_constraintBottom_toTopOf="@+id/genre"
-        app:layout_constraintStart_toStartOf="@+id/leftBorder" />
+        app:layout_constraintStart_toStartOf="@+id/leftBorderForDownTv" />
 
     <TextView
         android:id="@+id/album"
@@ -115,7 +129,7 @@
         android:layout_marginBottom="8dp"
         android:text="@string/album"
         app:layout_constraintBottom_toTopOf="@+id/year"
-        app:layout_constraintStart_toStartOf="@+id/leftBorder" />
+        app:layout_constraintStart_toStartOf="@+id/leftBorderForDownTv" />
 
     <TextView
         android:id="@+id/duration"
@@ -125,7 +139,7 @@
         android:layout_marginBottom="8dp"
         android:text="@string/duration"
         app:layout_constraintBottom_toTopOf="@+id/album"
-        app:layout_constraintStart_toStartOf="@+id/leftBorder" />
+        app:layout_constraintStart_toStartOf="@+id/leftBorderForDownTv" />
 
     <TextView
         android:id="@+id/genre_value"
@@ -135,7 +149,7 @@
         android:layout_marginBottom="8dp"
         tools:text="rock"
         app:layout_constraintBottom_toTopOf="@+id/country_value"
-        app:layout_constraintEnd_toStartOf="@+id/rightBorder" />
+        app:layout_constraintEnd_toStartOf="@+id/rightBorderForDownTv" />
 
     <TextView
         android:id="@+id/year_value"
@@ -145,7 +159,7 @@
         android:layout_marginBottom="8dp"
         tools:text="1965"
         app:layout_constraintBottom_toTopOf="@+id/genre_value"
-        app:layout_constraintEnd_toStartOf="@+id/rightBorder" />
+        app:layout_constraintEnd_toStartOf="@+id/rightBorderForDownTv" />
 
     <TextView
         android:id="@+id/album_value"
@@ -155,7 +169,7 @@
         android:layout_marginBottom="8dp"
         tools:text="Yesterday (Remastered 2009)"
         app:layout_constraintBottom_toTopOf="@+id/year_value"
-        app:layout_constraintEnd_toStartOf="@+id/rightBorder"
+        app:layout_constraintEnd_toStartOf="@+id/rightBorderForDownTv"
         app:layout_constraintStart_toEndOf="@id/album"/>
 
     <TextView
@@ -166,7 +180,7 @@
         android:layout_marginBottom="8dp"
         tools:text="5:35"
         app:layout_constraintBottom_toTopOf="@+id/album_value"
-        app:layout_constraintEnd_toStartOf="@+id/rightBorder" />
+        app:layout_constraintEnd_toStartOf="@+id/rightBorderForDownTv" />
 
     <TextView
         android:id="@+id/name_of_track"

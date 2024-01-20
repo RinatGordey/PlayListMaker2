@@ -1,7 +1,9 @@
 package com.example.playlistmaker2
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.TypedValue
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -64,7 +66,7 @@ class PlayerDisplayActivity : AppCompatActivity() {
         Glide.with(trackPicture)
             .load(lastTrack?.artworkUrl100?.replaceAfterLast('/',"512x512bb.jpg"))
             .placeholder(R.drawable.ic_stub)
-            .transform(RoundedCorners(30))
+            .transform(RoundedCorners(ConversionDpToPx.dpToPx(8F, trackPicture.context)))
             .into(trackPicture)
     }
 }
