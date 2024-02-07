@@ -57,15 +57,15 @@
 
     </FrameLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvTrack"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/size16dp"
-        android:layout_weight="3"
-        android:orientation="vertical"
-        tools:listitem="@layout/track_list_item"
-        android:visibility="gone" />
+    <ProgressBar
+    android:id="@+id/progressBarr"
+    android:layout_width="@dimen/size44dp"
+    android:layout_height="@dimen/size44dp"
+    android:layout_gravity="center"
+    android:indeterminateTint="@color/backgroundMain"
+    android:layout_marginTop="@dimen/size144dp"
+    android:visibility="gone"/>
+
 
     <LinearLayout
         android:id="@+id/placeholderView"
@@ -82,7 +82,7 @@
             android:layout_width="@dimen/size120dp"
             android:layout_height="@dimen/size120dp"
             app:srcCompat="@drawable/ic_error_faund_track"
-            android:visibility="gone" />
+            android:visibility="visible"/>
 
         <TextView
             android:id="@+id/tvPlaceholder"
@@ -91,7 +91,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/size16dp"
             android:text="@string/error_tracks"
-            android:visibility="gone" />
+            android:visibility="visible"/>
 
         <Button
 
@@ -100,10 +100,19 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/size36dp"
             android:layout_marginTop="@dimen/size24dp"
-            android:text="@string/refresh"
-            android:visibility="gone" />
+            android:text="@string/refresh" />
 
     </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvTrack"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size16dp"
+        android:layout_weight="3"
+        android:orientation="vertical"
+        tools:listitem="@layout/track_list_item"
+        android:visibility="gone" />
 
     <FrameLayout
         android:id="@+id/historySearch"
