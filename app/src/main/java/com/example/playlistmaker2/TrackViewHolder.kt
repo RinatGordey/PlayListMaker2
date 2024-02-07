@@ -29,12 +29,7 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             .load(track.artworkUrl100)
             .fitCenter().dontAnimate()
             .placeholder(R.drawable.ic_stub)
-            .transform(RoundedCorners(dpToPx(8F, itemView.context)))
+            .transform(RoundedCorners(ConversionDpToPx.dpToPx(8F, itemView.context)))
             .into(artworkUrl100View)
-    }
-    private fun dpToPx(dp: Float, context: Context): Int {
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP
-            ,dp
-            ,context.resources.displayMetrics).toInt()
     }
 }
