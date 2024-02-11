@@ -30,8 +30,8 @@ class PlayerDisplayActivity : AppCompatActivity() {
     }
 
     private var playerState = STATE_DEFAULT
-    private var mediaPlayer = MediaPlayer()
-    private var handler = Handler(Looper.getMainLooper())
+    private var mediaPlayer: MediaPlayer? = null
+    private var handler: Handler? = null
 
     private lateinit var arrowBack: ImageButton
     private lateinit var trackPicture: ImageView
@@ -44,6 +44,7 @@ class PlayerDisplayActivity : AppCompatActivity() {
     private lateinit var country: TextView
     private lateinit var play: FloatingActionButton
     private lateinit var time: TextView
+    private val dateFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault()) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,6 +66,8 @@ class PlayerDisplayActivity : AppCompatActivity() {
         country = binding.countryValue
         play = binding.playButton
         time = binding.time
+        mediaPlayer = MediaPlayer()
+        handler  = Handler(Looper.getMainLooper())
 
         val lastTrack: Track = Gson()
             .fromJson(intent?.getStringExtra("LAST_TRACK"), Track::class.java)
@@ -79,7 +82,11 @@ class PlayerDisplayActivity : AppCompatActivity() {
         timeOfTrack.text = time
         album.isVisible = lastTrack.collectionName != null
         album.text = lastTrack.collectionName
-        year.text = lastTrack.releaseDate.substring(0, 4)
+        if (lastTrack.releaseDate.length >= 4) {
+            year.text = lastTrack.releaseDate.substring(0, 4)
+        } else {
+            year.isVisible = false
+        }
         genre.text = lastTrack.primaryGenreName
         country.text = lastTrack.country
 
@@ -91,7 +98,7 @@ class PlayerDisplayActivity : AppCompatActivity() {
 
         val url = lastTrack.previewUrl
 
-        mediaPlayer.setDataSource(url)
+        mediaPlayer?.setDataSource(url)
         preparePlayer()
 
         play.setOnClickListener {
@@ -109,7 +116,7 @@ class PlayerDisplayActivity : AppCompatActivity() {
         return object : Runnable {
             override fun run() {
                 if (playerState == STATE_PLAYING) {
-                    binding.time.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition)
+                    binding.time.text = dateFormat.format(mediaPlayer?.currentPosition)
                     handler?.postDelayed(this, REFRESH_MILLIS)
                 }
             }
@@ -117,26 +124,26 @@ class PlayerDisplayActivity : AppCompatActivity() {
     }
 
     private fun preparePlayer() {
-        mediaPlayer.prepareAsync()
-        mediaPlayer.setOnPreparedListener {
+        mediaPlayer?.prepareAsync()
+        mediaPlayer?.setOnPreparedListener {
             play.isEnabled = true
             playerState = STATE_PREPARED
         }
-        mediaPlayer.setOnCompletionListener {
+        mediaPlayer?.setOnCompletionListener {
             play.setImageResource(R.drawable.ic_play_bt)
             playerState = STATE_PREPARED
         }
     }
 
     private fun startPlayer() {
-        mediaPlayer.start()
+        mediaPlayer?.start()
         play.setImageResource(R.drawable.ic_bt_pause)
         playerState = STATE_PLAYING
         startTimer()
     }
 
     private fun pausePlayer() {
-        mediaPlayer.pause()
+        mediaPlayer?.pause()
         play.setImageResource(R.drawable.ic_play_bt)
         playerState = STATE_PAUSED
     }
@@ -148,7 +155,7 @@ class PlayerDisplayActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        mediaPlayer.release()
+        mediaPlayer?.release()
     }
 
     private fun playbackControl() {

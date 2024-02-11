@@ -7,8 +7,6 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.os.VibrationEffect
-import android.os.Vibrator
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -34,6 +32,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+
 class SearchActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySearchBinding
@@ -160,15 +159,6 @@ class SearchActivity : AppCompatActivity() {
                 SearchHistory().write(sharedPref, recentSongs)
 
                 val intent = Intent(this, PlayerDisplayActivity::class.java)
-
-                val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-                if (vibrator.hasVibrator()) {
-                    // Создаем паттерн для вибрации
-                    val pattern =
-                        VibrationEffect.createWaveform(longArrayOf(0, 100), -1) // 100 миллисекунд
-                    // Запускаем вибрацию
-                    vibrator.vibrate(pattern)
-                }
 
                 val trackJson = Gson().toJson(track)
                 intent.putExtra("LAST_TRACK", trackJson)
