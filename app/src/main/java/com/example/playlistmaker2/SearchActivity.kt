@@ -24,7 +24,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.playlistmake2.ItunesService
 import com.example.playlistmaker2.databinding.ActivitySearchBinding
 import com.google.gson.Gson
 import retrofit2.Call
@@ -55,10 +54,7 @@ class SearchActivity : AppCompatActivity() {
     private val searchRunnable = Runnable { startSearch(binding.edSearch.text.toString()) }
     private val clickRunnable = Runnable { isClickAllowed = true }
 
-    private val urlApi = "https://itunes.apple.com"
-
     private val retrofit = Retrofit.Builder()
-        .baseUrl(urlApi)
         .baseUrl(URL_API)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
