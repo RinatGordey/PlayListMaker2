@@ -1,4 +1,4 @@
-package com.example.playlistmaker2
+package com.example.playlistmaker2.search.ui
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -24,7 +24,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker2.R
+import com.example.playlistmaker2.SearchHistory
+import com.example.playlistmaker2.Track
+import com.example.playlistmaker2.TrackAdapter
+import com.example.playlistmaker2.TrackResponse
 import com.example.playlistmaker2.databinding.ActivitySearchBinding
+import com.example.playlistmaker2.player.ui.PlayerDisplayActivity
+import com.example.playlistmaker2.search.data.network.ItunesService
 import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
