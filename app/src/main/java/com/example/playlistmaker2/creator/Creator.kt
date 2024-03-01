@@ -1,15 +1,14 @@
 package com.example.playlistmaker2.creator
 
-import com.example.playlistmaker2.player.data.dto.Player
-import com.example.playlistmaker2.player.domain.TrackInteractor
-import com.example.playlistmaker2.player.presentation.TrackPresenter
+import com.example.playlistmaker2.player.data.PlayerRepositoryImpl
+import com.example.playlistmaker2.player.domain.api.PlayerRepository
+import com.example.playlistmaker2.player.domain.impl.PlayerInteractorImpl
 
 object Creator {
-    private fun getPlayer(url:String): Player {
-        return Player(url)
+    private fun providePlayerRepository(): PlayerRepository {
+        return PlayerRepositoryImpl()
     }
-
-    fun providePresenter(url:String): TrackPresenter {
-        return TrackPresenter(interactor = TrackInteractor(getPlayer(url)))
+    fun providePlayerInteractor(): PlayerInteractorImpl {
+        return PlayerInteractorImpl(providePlayerRepository())
     }
 }

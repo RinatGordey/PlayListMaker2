@@ -3,103 +3,128 @@ package com.example.playlistmaker2.player.ui
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import com.example.playlistmaker2.Track
+import com.example.playlistmaker2.R
 import com.example.playlistmaker2.creator.Creator
 import com.example.playlistmaker2.databinding.ActivityPlayerDisplayBinding
-import com.example.playlistmaker2.glide.GlideCreator
-import com.example.playlistmaker2.player.presentation.TrackPresenter
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.example.playlistmaker2.glide.loadTrackPicture
+import com.example.playlistmaker2.player.domain.models.State
+import com.example.playlistmaker2.player.presentation.mapper.TrackMapper
+import com.example.playlistmaker2.player.presentation.model.TrackInfo
+import com.example.playlistmaker2.search.domain.models.Track
 import com.google.gson.Gson
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 class PlayerDisplayActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityPlayerDisplayBinding
-    private lateinit var presenter: TrackPresenter
+    companion object{
+        private const val REFRESH_MILLIS = 500L
+        private const val START_TIMER = "00:00"
+    }
 
-    private val glide = GlideCreator()
+    private val playerInteractor = Creator.providePlayerInteractor()
+
     private var handler: Handler? = null
-
-    private var arrowBack: ImageButton? = null
-    private var trackPicture: ImageView? = null
-    private var nameOfTrack: TextView? = null
-    private var authorOfTrack: TextView? = null
-    private var timeOfTrack : TextView? = null
-    private var album : TextView? = null
-    private var year : TextView? = null
-    private var genre : TextView? = null
-    private var country : TextView? = null
-    private var play: FloatingActionButton? = null
-    private var time: TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPlayerDisplayBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        arrowBack()
+        arrowBack(binding)
 
-        setView()
-
-        val lastTrack: Track = Gson()
-            .fromJson(intent?.getStringExtra("LAST_TRACK"), Track::class.java)
+        val trackMapper = TrackMapper()
+        val lastTrack = trackMapper.map(Gson()
+            .fromJson(intent?.getStringExtra("LAST_TRACK"), Track::class.java))
 
         handler = Handler(Looper.getMainLooper())
 
-        setInfo(lastTrack)
-
-        play?.setOnClickListener {
-            presenter.onPlayClicked(play!!, time!!)
-        }
+        setInfo(binding, lastTrack)
 
         val url: String = lastTrack.previewUrl
-        presenter = Creator.providePresenter(url)
-        play?.let { presenter.preparePlayer(it) }
+        playerInteractor.createPlayer(url)
+        binding.playButton.isEnabled = true
+        binding.playButton.setImageResource(R.drawable.ic_play_bt)
+        binding.time.text = START_TIMER
+
+        binding.playButton.setOnClickListener {
+            playbackControl()
+        }
     }
-    private fun arrowBack() {
-        arrowBack = binding.btBackArrow
-        arrowBack?.setOnClickListener {
+
+    private fun arrowBack(binding: ActivityPlayerDisplayBinding) {
+        binding.btBackArrow.setOnClickListener {
             finish()
         }
     }
-    private fun setView() {
-        trackPicture = binding.trackPicture
-        nameOfTrack = binding.nameOfTrack
-        authorOfTrack = binding.authorOfTrack
-        timeOfTrack = binding.durationValue
-        album = binding.albumValue
-        year = binding.yearValue
-        genre = binding.genreValue
-        country = binding.countryValue
-        play = binding.playButton
-        time = binding.time
-        arrowBack = binding.btBackArrow
-    }
-    private fun setInfo(lastTrack: Track) {
-        nameOfTrack?.text = lastTrack.trackName
-        authorOfTrack?.text = lastTrack.artistName
-        val time = SimpleDateFormat("mm:ss", Locale.getDefault())
-            .format(lastTrack.trackTime.toLong())
-        timeOfTrack?.text = time
-        album?.isVisible = true
-        album?.text = lastTrack.collectionName
-        if (lastTrack.releaseDate.length >= 4) {
-            year?.text = lastTrack.releaseDate.substring(0, 4)
-        } else {
-            year?.isVisible = false
+
+    private fun setInfo(binding: ActivityPlayerDisplayBinding, lastTrack: TrackInfo) {
+        with(binding) {
+            nameOfTrack.text = lastTrack.trackName
+            authorOfTrack.text = lastTrack.artistName
+            durationValue.text = lastTrack.trackTime
+            yearValue.text = lastTrack.releaseDate
+            genreValue.text = lastTrack.primaryGenreName
+            countryValue.text = lastTrack.country
+            if (lastTrack.collectionName.isNullOrEmpty()) {
+                album.isVisible = false
+            } else {
+                album.isVisible = true
+                album.text = lastTrack.collectionName
+            }
+            val artworkUrl = lastTrack.artworkUrl100
+            trackPicture.loadTrackPicture(artworkUrl)
         }
-        genre?.text = lastTrack.primaryGenreName
-        country?.text = lastTrack.country
-        trackPicture?.let { glide.setTrackPicture(it, lastTrack) }
+    }
+
+    private fun playbackControl() {
+        when (playerInteractor.getState()) {
+            State.PLAYING -> {
+                playerInteractor.pause()
+                binding.playButton.setImageResource(R.drawable.ic_play_bt)
+            }
+
+            State.END -> {
+                binding.time.text = START_TIMER
+                statePlaying()
+            }
+
+            State.PREPARED, State.PAUSED, State.DEFAULT -> {
+                statePlaying()
+            }
+        }
+    }
+
+    private fun statePlaying() {
+        playerInteractor.play()
+        binding.playButton.setImageResource(R.drawable.ic_bt_pause)
+        handler?.post(createUpdateTimerTask())
+    }
+    private fun createUpdateTimerTask(): Runnable {
+        return object : Runnable {
+            override fun run() {
+                val state: State = playerInteractor.getState()
+                if (state == State.PLAYING) {
+                    binding.time.text = playerInteractor.getCurrentPosition()
+                    handler?.postDelayed(this, REFRESH_MILLIS)
+                } else {
+                    handler?.removeCallbacks(this)
+                    if (state == State.END) {
+                        binding.playButton.setImageResource(R.drawable.ic_play_bt)
+                        binding.time.text = START_TIMER
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        playerInteractor.pause()
+        binding.playButton.setImageResource(R.drawable.ic_play_bt)
     }
     override fun onDestroy() {
         super.onDestroy()
-        presenter.delete()
+        playerInteractor.release()
     }
 }

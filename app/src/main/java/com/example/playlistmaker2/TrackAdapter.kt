@@ -3,6 +3,7 @@ package com.example.playlistmaker2
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker2.search.domain.models.Track
 
 class TrackAdapter(
     private val trackList: ArrayList<Track>, var itemClickListener: ((Int, Track) -> Unit)? = null) : RecyclerView.Adapter<TrackViewHolder>() {
