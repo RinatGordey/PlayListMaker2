@@ -30,7 +30,7 @@ import com.example.playlistmaker2.search.domain.models.Track
 import com.example.playlistmaker2.TrackAdapter
 import com.example.playlistmaker2.TrackResponse
 import com.example.playlistmaker2.databinding.ActivitySearchBinding
-import com.example.playlistmaker2.player.ui.PlayerDisplayActivity
+import com.example.playlistmaker2.player.ui.activity.PlayerDisplayActivity
 import com.example.playlistmaker2.search.data.network.ItunesService
 import com.google.gson.Gson
 import retrofit2.Call

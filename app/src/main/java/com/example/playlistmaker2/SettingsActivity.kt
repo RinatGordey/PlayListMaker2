@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import com.example.playlistmaker2.main.MainActivity
 
 class SettingsActivity : AppCompatActivity() {
     companion object {

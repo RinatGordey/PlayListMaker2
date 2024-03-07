@@ -1,6 +1,5 @@
 package com.example.playlistmaker2.player.presentation.mapper
 
-
 import com.example.playlistmaker2.player.presentation.model.TrackInfo
 import com.example.playlistmaker2.search.domain.models.Track
 import java.text.SimpleDateFormat
@@ -19,7 +18,7 @@ class TrackMapper {
             releaseDate = track.releaseDate.substring(0, 4),
             primaryGenreName = track.primaryGenreName,
             country = track.country,
-            previewUrl = track.previewUrl
+            previewUrl = track.previewUrl,
         )
     }
 }
