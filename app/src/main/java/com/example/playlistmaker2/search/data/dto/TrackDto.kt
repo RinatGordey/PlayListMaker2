@@ -1,8 +1,8 @@
-package com.example.playlistmaker2
+package com.example.playlistmaker2.search.data.dto
 
 import com.google.gson.annotations.SerializedName
 
-data class Track (
+data class TrackDto(
     val trackId: Int, // Идентификатор треков с сервера iTunes
     val trackName: String, // Название композиции
     val artistName: String, // Имя исполнителя
