@@ -6,11 +6,11 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmaker2.R
 import com.example.playlistmaker2.databinding.ActivityPlayerDisplayBinding
-import com.example.playlistmaker2.glide.loadTrackPicture
-import com.example.playlistmaker2.player.presentation.mapper.TrackMapper
-import com.example.playlistmaker2.player.presentation.model.TrackInfo
-import com.example.playlistmaker2.player.ui.viewmodel.PlayerDisplayViewModel
-import com.example.playlistmaker2.search.domain.models.Track
+import com.example.playlistmaker2.player.ui.mapper.TrackMapper
+import com.example.playlistmaker2.player.ui.model.TrackInfo
+import com.example.playlistmaker2.player.ui.view_model.PlayerDisplayViewModel
+import com.example.playlistmaker2.search.domain.model.Track
+import com.example.playlistmaker2.util.loadTrackPicture
 import com.google.gson.Gson
 
 class PlayerDisplayActivity : AppCompatActivity() {
@@ -40,7 +40,7 @@ class PlayerDisplayActivity : AppCompatActivity() {
 
         setInfo(binding, lastTrack)
 
-        viewModel.getPlayingLiveData().observe(this) {playbackState ->
+        viewModel.getPlayingLiveData().observe(this) { playbackState ->
             if(playbackState.playes) {
                 binding.playButton.setImageResource(R.drawable.ic_bt_pause)
             } else {
@@ -68,7 +68,7 @@ class PlayerDisplayActivity : AppCompatActivity() {
             yearValue.text = lastTrack.releaseDate
             genreValue.text = lastTrack.primaryGenreName
             countryValue.text = lastTrack.country
-            if (lastTrack.collectionName.isEmpty()) {
+            if (lastTrack.collectionName?.isEmpty() == true) {
                 album.isVisible = false
             } else {
                 album.isVisible = true
@@ -85,6 +85,6 @@ class PlayerDisplayActivity : AppCompatActivity() {
     }
     override fun onDestroy() {
         super.onDestroy()
-       viewModel.onDestroy()
+        viewModel.onDestroy()
     }
 }

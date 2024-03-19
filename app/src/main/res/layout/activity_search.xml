@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:backgroundTint="@color/backgroundMain"
-    tools:context=".search.ui.SearchActivity">
+    tools:context=".search.ui.activity.SearchActivity">
 
     <LinearLayout
         android:layout_width="@dimen/size352dp"
@@ -77,15 +77,31 @@
         android:visibility="gone" >
 
         <ImageView
-            android:id="@+id/ivPlaceholder"
+            android:id="@+id/ivPlaceholderNoInternet"
             style="@style/ivPlaceholder"
             android:layout_width="@dimen/size120dp"
             android:layout_height="@dimen/size120dp"
-            app:srcCompat="@drawable/ic_error_faund_track"
+            app:srcCompat="@drawable/ic_error_to_link"
+            android:visibility="visible"/>
+
+        <ImageView
+            android:id="@+id/ivPlaceholderNothingFound"
+            style="@style/ivPlaceholder"
+            android:layout_width="@dimen/size120dp"
+            android:layout_height="@dimen/size120dp"
+            app:srcCompat="@drawable/ic_error_found_track"
             android:visibility="visible"/>
 
         <TextView
-            android:id="@+id/tvPlaceholder"
+            android:id="@+id/tvPlaceholderNoInternet"
+            style="@style/tvPlaceHolder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size16dp"
+            android:text="@string/error_to_link" />
+
+        <TextView
+            android:id="@+id/tvPlaceholderNothingFound"
             style="@style/tvPlaceHolder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -127,6 +143,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tvYouSearch"
                 style="@style/tvYouSearch"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/size52dp"
