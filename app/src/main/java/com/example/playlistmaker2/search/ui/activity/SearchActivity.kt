@@ -7,6 +7,7 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
@@ -20,7 +21,6 @@ import com.example.playlistmaker2.player.ui.activity.PlayerDisplayActivity
 import com.example.playlistmaker2.search.domain.model.Track
 import com.example.playlistmaker2.search.ui.models.TrackSearchState
 import com.example.playlistmaker2.search.ui.view_model.TrackSearchViewModel
-
 
 class SearchActivity : AppCompatActivity(), TrackAdapter.TrackClickListener {
 
@@ -44,6 +44,8 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.TrackClickListener {
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.progressBar.isVisible = false
+
         viewModel = ViewModelProvider(
             this,
             TrackSearchViewModel.getViewModelFactory()
@@ -54,9 +56,6 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.TrackClickListener {
         }
 
         binding.rvTrack.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-
-        binding.rvTrackHistory.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
 
@@ -118,8 +117,8 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.TrackClickListener {
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        val searchEditText = findViewById<EditText>(R.id.edSearch)
         super.onRestoreInstanceState(savedInstanceState)
+        val searchEditText = findViewById<EditText>(R.id.edSearch)
         searchEditTextValue = savedInstanceState.getString(SEARCH_EDITTEXT, "")
         searchEditText.setText(searchEditTextValue)
     }
@@ -136,14 +135,11 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.TrackClickListener {
 
     private fun showContent(tracks: MutableList<Track>) {
         binding.apply {
-            ivPlaceholderNothingFound.isVisible = false
-            ivPlaceholderNoInternet.isVisible = false
-            tvPlaceholderNoInternet.isVisible = false
-            btRefresh.isVisible = false
-            progressBarr.isVisible = false
-            tvPlaceholderNothingFound.isVisible = false
+            Log.d("MyLog", "showContent")
+            historySearch.isVisible = true
+            placeholderView.isVisible = false
+            progressBar.isVisible = false
             rvTrack.isVisible = true
-            rvTrackHistory.isVisible = false
             btClearHistory.isVisible = false
             tvYouSearch.isVisible = false
             rvTrack.adapter = adapter
@@ -154,14 +150,15 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.TrackClickListener {
 
     private fun showEmpty(message: String) {
         binding.apply {
+            Log.d("MyLog", "showEmpty")
+            placeholderView.isVisible = true
             ivPlaceholderNothingFound.isVisible = true
             ivPlaceholderNoInternet.isVisible = false
             tvPlaceholderNoInternet.isVisible = false
             btRefresh.isVisible = false
-            progressBarr.isVisible = false
+            progressBar.isVisible = false
             tvPlaceholderNothingFound.isVisible = true
             rvTrack.isVisible = false
-            rvTrackHistory.isVisible = false
             btClearHistory.isVisible = false
             tvYouSearch.isVisible = false
             tvPlaceholderNothingFound.text = message
@@ -170,14 +167,15 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.TrackClickListener {
 
     private fun showError(message: String) {
         binding.apply {
+            Log.d("MyLog", "showError")
+            placeholderView.isVisible = true
             ivPlaceholderNothingFound.isVisible = false
             ivPlaceholderNoInternet.isVisible = true
             tvPlaceholderNoInternet.isVisible = true
             btRefresh.isVisible = true
-            progressBarr.isVisible = false
+            progressBar.isVisible = false
             tvPlaceholderNothingFound.isVisible = false
             rvTrack.isVisible = false
-            rvTrackHistory.isVisible = false
             btClearHistory.isVisible = false
             tvYouSearch.isVisible = false
             tvPlaceholderNoInternet.text = message
@@ -186,14 +184,14 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.TrackClickListener {
 
     private fun showLoading() {
         binding.apply {
+            Log.d("MyLog", "showLoading")
             ivPlaceholderNothingFound.isVisible = false
             ivPlaceholderNoInternet.isVisible = false
             tvPlaceholderNoInternet.isVisible = false
             btRefresh.isVisible = false
-            progressBarr.isVisible = true
+            progressBar.isVisible = true
             tvPlaceholderNothingFound.isVisible = false
             rvTrack.isVisible = false
-            rvTrackHistory.isVisible = false
             btClearHistory.isVisible = false
             tvYouSearch.isVisible = false
         }
@@ -201,22 +199,23 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.TrackClickListener {
 
     private fun showHistory(tracks: MutableList<Track>, isEmpty: Boolean) {
         binding.apply {
+            Log.d("MyLog", "showHistory")
+            placeholderView.isVisible = false
             ivPlaceholderNothingFound.isVisible = false
             ivPlaceholderNoInternet.isVisible = false
             tvPlaceholderNoInternet.isVisible = false
             btRefresh.isVisible = false
-            progressBarr.isVisible = true
+            progressBar.isVisible = false
             tvPlaceholderNothingFound.isVisible = false
-            rvTrack.isVisible = false
-            rvTrackHistory.isVisible = true
+            rvTrack.isVisible = true
             if (tracks.isEmpty()) {
-                binding.btClearHistory.isVisible = false
-                binding.tvYouSearch.isVisible = false
+                btClearHistory.isVisible = false
+                tvYouSearch.isVisible = false
             } else {
-                binding.btClearHistory.isVisible = true
-                binding.tvYouSearch.isVisible = true
+                btClearHistory.isVisible = true
+                tvYouSearch.isVisible = true
             }
-            binding.rvTrackHistory.adapter = adapter
+            rvTrack.adapter = adapter
             adapter.trackList = tracks as ArrayList<Track>
             adapter.notifyDataSetChanged()
         }

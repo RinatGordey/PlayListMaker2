@@ -24,7 +24,7 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         trackId.text = track.trackId.toString()
         trackNameView.text = track.trackName
         artistNameView.text = track.artistName
-        trackTimeView.text = dateFormat.format(track.trackTime.toLong()) // перевод продолжительности треков в формат 00м:00с
+        trackTimeView.text = track.trackTime // перевод продолжительности треков в формат 00м:00с
 
         Glide.with(itemView)
             .load(track.artworkUrl100)

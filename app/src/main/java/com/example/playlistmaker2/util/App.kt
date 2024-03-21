@@ -15,7 +15,7 @@ class App : Application() {
         return SettingsInteractorImpl(getSettingsRepository(context))
     }
 
-    private var darkTheme: Boolean = true
+    var darkTheme: Boolean = true
 
     override fun onCreate() {
         super.onCreate()

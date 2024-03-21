@@ -13,6 +13,7 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.playlistmaker2.R
 import com.example.playlistmaker2.search.domain.api.SearchInteractor
 import com.example.playlistmaker2.search.domain.model.Track
+import com.example.playlistmaker2.search.ui.activity.TrackAdapter
 import com.example.playlistmaker2.search.ui.models.TrackSearchState
 import com.example.playlistmaker2.util.Creator
 
@@ -32,11 +33,12 @@ class TrackSearchViewModel(application: Application) : AndroidViewModel(applicat
     private val historyInteractor = Creator.provideHistoryInteractor(getApplication())
     private val handler = Handler(Looper.getMainLooper())
 
-
     private val stateLiveData = MutableLiveData<TrackSearchState>()
     fun observeState(): LiveData<TrackSearchState> = stateLiveData
 
     private var latestSearchText: String? = null
+
+    lateinit var adapter: TrackAdapter
 
     override fun onCleared() {
         handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
@@ -66,16 +68,13 @@ class TrackSearchViewModel(application: Application) : AndroidViewModel(applicat
 
             searchInteractor.searchTracks(newSearchText, object : SearchInteractor.TracksConsumer {
                 override fun consume(foundTracks: List<Track>?, errorMessage: String?) {
-                    val tracks = mutableListOf<Track>()
-                    if (foundTracks != null) {
-                        tracks.addAll(foundTracks)
-                    }
+                    val tracks = foundTracks?.toMutableList() ?: mutableListOf()
 
                     when {
                         errorMessage == "Internet" -> {
                             renderState(
                                 TrackSearchState.Error(
-                                    getApplication<Application>().getString(R.string.something_went_wrong)
+                                    getApplication<Application>().getString(R.string.error_to_link)
                                 )
                             )
                         }
@@ -107,7 +106,7 @@ class TrackSearchViewModel(application: Application) : AndroidViewModel(applicat
     }
 
     fun historyAddTrack(track: Track) {
-        val newHistoryList = historyInteractor.addTrack(track) as ArrayList<Track>
+        val newHistoryList = historyInteractor.addTrack(track).toMutableList()
         renderState(
             TrackSearchState.HistoryContent(
                 newHistoryList, false

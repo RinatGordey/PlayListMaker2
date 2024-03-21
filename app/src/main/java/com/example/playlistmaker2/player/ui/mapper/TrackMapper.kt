@@ -11,8 +11,7 @@ class TrackMapper {
             trackId = track.trackId,
             trackName = track.trackName,
             artistName = track.artistName,
-            trackTime = SimpleDateFormat("mm:ss", Locale.getDefault())
-                .format(track.trackTime.toLong()),
+            trackTime = track.trackTime,
             artworkUrl100 = track.artworkUrl100.replaceAfterLast('/', "512x512bb.jpg"),
             collectionName = track.collectionName,
             releaseDate = ((track.releaseDate)?:"").substring(0, 4),

@@ -15,8 +15,7 @@ class SettingsActivity : AppCompatActivity() {
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = ViewModelProvider(this, SettingsViewModel.
-        getViewModelFactory())[SettingsViewModel::class.java]
+        viewModel = ViewModelProvider(this, SettingsViewModel.getViewModelFactory())[SettingsViewModel::class.java]
 
         viewModel.getThemeSwitcherLiveData().observe(this) { darkThemeEnabled ->
             binding.icSwitch.isChecked = darkThemeEnabled }

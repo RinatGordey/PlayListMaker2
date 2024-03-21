@@ -11,7 +11,6 @@ import com.example.playlistmaker2.player.ui.model.TrackInfo
 import com.example.playlistmaker2.player.ui.view_model.PlayerDisplayViewModel
 import com.example.playlistmaker2.search.domain.model.Track
 import com.example.playlistmaker2.util.loadTrackPicture
-import com.google.gson.Gson
 
 class PlayerDisplayActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPlayerDisplayBinding
@@ -28,9 +27,8 @@ class PlayerDisplayActivity : AppCompatActivity() {
 
         arrowBack(binding)
 
-        val trackMapper = TrackMapper()
-        val lastTrack = trackMapper.map(Gson()
-            .fromJson(intent?.getStringExtra(LAST_TRACK), Track::class.java))
+        val lastTrack = TrackMapper().map(
+            intent.getSerializableExtra("track") as Track)
 
         viewModel = ViewModelProvider(this,
             PlayerDisplayViewModel.getViewModelFactory(lastTrack))[PlayerDisplayViewModel::class.java]
@@ -69,10 +67,10 @@ class PlayerDisplayActivity : AppCompatActivity() {
             genreValue.text = lastTrack.primaryGenreName
             countryValue.text = lastTrack.country
             if (lastTrack.collectionName?.isEmpty() == true) {
-                album.isVisible = false
+                albumValue.isVisible = false
             } else {
-                album.isVisible = true
-                album.text = lastTrack.collectionName
+                albumValue.isVisible = true
+                albumValue.text = lastTrack.collectionName
             }
             val artworkUrl = lastTrack.artworkUrl100
             trackPicture.loadTrackPicture(artworkUrl)
