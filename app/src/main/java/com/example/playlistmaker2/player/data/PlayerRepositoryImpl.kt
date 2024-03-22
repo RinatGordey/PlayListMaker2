@@ -9,6 +9,7 @@ import java.util.Locale
 class PlayerRepositoryImpl: PlayerRepository {
     private var mediaPlayer = MediaPlayer()
     private var playerState: PlayerState = PlayerState.DEFAULT
+    private val dateFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault()) }
     override fun createPlayer(url: String) {
         mediaPlayer.setDataSource(url)
         mediaPlayer.prepareAsync()
@@ -32,10 +33,7 @@ class PlayerRepositoryImpl: PlayerRepository {
         return playerState
     }
     override fun getCurrentPosition(): String {
-        return SimpleDateFormat(
-            "mm:ss",
-            Locale.getDefault()
-        ).format(mediaPlayer.currentPosition)
+        return dateFormat.format(mediaPlayer.currentPosition)
     }
     override fun release(){
         mediaPlayer.release()

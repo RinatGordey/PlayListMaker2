@@ -6,8 +6,11 @@ import com.example.playlistmaker2.search.domain.api.HistoryRepository
 import com.example.playlistmaker2.search.domain.model.Track
 import com.google.gson.Gson
 
-const val HISTORY_PREFERENCES = "history_preferences"
-const val HISTORY_KEY = "key_for_history"
+private const val HISTORY_PREFERENCES = "history_preferences"
+private const val HISTORY_KEY = "key_for_history"
+private const val NUMBER_TEN = 10
+private const val NUMBER_NINE = 9
+private const val NUMBER_ZERO = 0
 
 class HistoryRepositoryImpl(val context: Context) : HistoryRepository {
     val sharedPrefs = context.getSharedPreferences(HISTORY_PREFERENCES, MODE_PRIVATE)
@@ -24,11 +27,11 @@ class HistoryRepositoryImpl(val context: Context) : HistoryRepository {
         val index = searchHistoryList.indexOfFirst { it.trackId == track.trackId }
         if (index != -1) {
             searchHistoryList.removeAt(index)
-            searchHistoryList.add(0, track)
-        } else if (searchHistoryList.size < 10) {
-            searchHistoryList.add(0, track)
+            searchHistoryList.add(NUMBER_ZERO, track)
+        } else if (searchHistoryList.size < NUMBER_TEN) {
+            searchHistoryList.add(NUMBER_ZERO, track)
         } else {
-            searchHistoryList.removeAt(9)
+            searchHistoryList.removeAt(NUMBER_NINE)
         }
         write(searchHistoryList)
 
@@ -41,7 +44,7 @@ class HistoryRepositoryImpl(val context: Context) : HistoryRepository {
             .apply()
     }
 
-    private fun write(tracks: MutableList<Track>) {
+    private fun write(tracks: List<Track>) {
         val json = Gson().toJson(tracks)
         sharedPrefs.edit()
             .putString(HISTORY_KEY, json)

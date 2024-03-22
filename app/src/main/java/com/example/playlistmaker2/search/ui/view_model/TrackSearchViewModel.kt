@@ -13,7 +13,6 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.playlistmaker2.R
 import com.example.playlistmaker2.search.domain.api.SearchInteractor
 import com.example.playlistmaker2.search.domain.model.Track
-import com.example.playlistmaker2.search.ui.activity.TrackAdapter
 import com.example.playlistmaker2.search.ui.models.TrackSearchState
 import com.example.playlistmaker2.util.Creator
 
@@ -37,8 +36,6 @@ class TrackSearchViewModel(application: Application) : AndroidViewModel(applicat
     fun observeState(): LiveData<TrackSearchState> = stateLiveData
 
     private var latestSearchText: String? = null
-
-    lateinit var adapter: TrackAdapter
 
     override fun onCleared() {
         handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)

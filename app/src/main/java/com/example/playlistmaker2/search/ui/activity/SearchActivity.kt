@@ -7,7 +7,6 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
@@ -129,13 +128,18 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.TrackClickListener {
             is TrackSearchState.Empty -> showEmpty(state.message)
             is TrackSearchState.Error -> showError(state.errorMessage)
             is TrackSearchState.Loading -> showLoading()
-            is TrackSearchState.HistoryContent -> showHistory(state.trackInfo, state.isEmpty)
+            is TrackSearchState.HistoryContent -> {
+                if (searchEditTextValue.isEmpty()) {
+                    showHistory(state.trackInfo, state.isEmpty)
+                } else {
+
+                }
+            }
         }
     }
 
     private fun showContent(tracks: MutableList<Track>) {
         binding.apply {
-            Log.d("MyLog", "showContent")
             historySearch.isVisible = true
             placeholderView.isVisible = false
             progressBar.isVisible = false
@@ -150,7 +154,6 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.TrackClickListener {
 
     private fun showEmpty(message: String) {
         binding.apply {
-            Log.d("MyLog", "showEmpty")
             placeholderView.isVisible = true
             ivPlaceholderNothingFound.isVisible = true
             ivPlaceholderNoInternet.isVisible = false
@@ -167,7 +170,6 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.TrackClickListener {
 
     private fun showError(message: String) {
         binding.apply {
-            Log.d("MyLog", "showError")
             placeholderView.isVisible = true
             ivPlaceholderNothingFound.isVisible = false
             ivPlaceholderNoInternet.isVisible = true
@@ -184,7 +186,6 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.TrackClickListener {
 
     private fun showLoading() {
         binding.apply {
-            Log.d("MyLog", "showLoading")
             ivPlaceholderNothingFound.isVisible = false
             ivPlaceholderNoInternet.isVisible = false
             tvPlaceholderNoInternet.isVisible = false
@@ -199,7 +200,6 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.TrackClickListener {
 
     private fun showHistory(tracks: MutableList<Track>, isEmpty: Boolean) {
         binding.apply {
-            Log.d("MyLog", "showHistory")
             placeholderView.isVisible = false
             ivPlaceholderNothingFound.isVisible = false
             ivPlaceholderNoInternet.isVisible = false

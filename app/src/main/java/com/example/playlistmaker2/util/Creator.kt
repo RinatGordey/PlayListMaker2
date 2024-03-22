@@ -42,6 +42,6 @@ object Creator {
         return ExternalNavigatorImpl(context)
     }
     fun provideSharingInteractor(context: Context): SharingInteractorImpl {
-        return SharingInteractorImpl(getExternalNavigator(context), context)
+        return SharingInteractorImpl(getExternalNavigator(context))
     }
 }

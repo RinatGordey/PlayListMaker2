@@ -16,10 +16,6 @@ class PlayerDisplayActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPlayerDisplayBinding
     private lateinit var viewModel: PlayerDisplayViewModel
 
-    companion object{
-        const val LAST_TRACK = "LAST_TRACK"
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPlayerDisplayBinding.inflate(layoutInflater)

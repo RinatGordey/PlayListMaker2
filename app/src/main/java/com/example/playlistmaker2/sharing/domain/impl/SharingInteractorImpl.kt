@@ -1,14 +1,17 @@
 package com.example.playlistmaker2.sharing.domain.impl
 
-import android.content.Context
-import com.example.playlistmaker2.R
 import com.example.playlistmaker2.sharing.domain.api.ExternalNavigator
 import com.example.playlistmaker2.sharing.domain.api.SharingInteractor
 import com.example.playlistmaker2.sharing.domain.model.EmailData
 
+private const val APP_LINK = "https://practicum.yandex.ru/android-developer/"
+private const val AGREEMENT_LINK = "https://yandex.ru/legal/practicum_offer/"
+private const val SUPPORT_EMAIL = "rinatgordey@yandex.ru"
+private const val MESSAGE_EMAIL = "Сообщение разработчикам и разработчицам приложения Playlist Maker"
+private const val TEXT_EMAIL = "Спасибо разработчикам и разработчицам за крутое приложение!"
+
 class SharingInteractorImpl(
     private val externalNavigator: ExternalNavigator,
-    private val context: Context
 ) : SharingInteractor {
 
     override fun shareApp() {
@@ -16,21 +19,18 @@ class SharingInteractorImpl(
     }
 
     override fun openTerms() {
-        externalNavigator.openLink(getTermsLink())
+        externalNavigator.openLink(getAgreementLink())
     }
 
     override fun openSupport() {
         externalNavigator.openEmail(getSupportEmailData())
     }
 
-    private fun getShareAppLink(): String = context.getString(R.string.android_developer)
+    private fun getShareAppLink(): String =APP_LINK
 
     private fun getSupportEmailData(): EmailData {
-        val mailFromMe = context.getString(R.string.mail_from_me)
-        val mailTitle = context.getString(R.string.mail_title)
-        val mailText = context.getString(R.string.mail_text)
-        return EmailData(mailFromMe, mailTitle, mailText)
+        return EmailData(SUPPORT_EMAIL, MESSAGE_EMAIL,TEXT_EMAIL)
     }
 
-    private fun getTermsLink(): String = context.getString(R.string.push_agreement)
+    private fun getAgreementLink(): String = AGREEMENT_LINK
 }
