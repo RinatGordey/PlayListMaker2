@@ -1,5 +1,6 @@
 package com.example.playlistmaker2.util
 
+import android.app.Application
 import android.content.Context
 import com.example.playlistmaker2.player.data.PlayerRepositoryImpl
 import com.example.playlistmaker2.player.domain.api.PlayerRepository
@@ -38,10 +39,10 @@ object Creator {
         return HistoryInteractorImpl(provideHistoryRepository(context))
     }
 
-    private fun getExternalNavigator(context: Context): ExternalNavigator {
-        return ExternalNavigatorImpl(context)
+    private fun getExternalNavigator(application: Application): ExternalNavigator {
+        return ExternalNavigatorImpl(application)
     }
-    fun provideSharingInteractor(context: Context): SharingInteractorImpl {
-        return SharingInteractorImpl(getExternalNavigator(context))
+    fun provideSharingInteractor(application: Application): SharingInteractorImpl {
+        return SharingInteractorImpl(getExternalNavigator(application))
     }
 }

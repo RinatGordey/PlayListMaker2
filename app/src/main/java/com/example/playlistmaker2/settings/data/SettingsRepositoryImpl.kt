@@ -5,8 +5,8 @@ import android.content.Context.MODE_PRIVATE
 import com.example.playlistmaker2.settings.domain.api.SettingsRepository
 import com.example.playlistmaker2.settings.domain.models.ThemeSettings
 
-const val THEME_PREFERENCES = "Theme_preferences"
-const val KEY_FOR_THEME = "key_for_theme"
+private const val THEME_PREFERENCES = "Theme_preferences"
+private const val KEY_FOR_THEME = "key_for_theme"
 
 class SettingsRepositoryImpl(context: Context): SettingsRepository {
     val sharedPrefs = context.getSharedPreferences(
