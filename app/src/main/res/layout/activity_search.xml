@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:backgroundTint="@color/backgroundMain"
-    tools:context=".search.ui.SearchActivity">
+    tools:context=".search.ui.activity.SearchActivity">
 
     <LinearLayout
         android:layout_width="@dimen/size352dp"
@@ -58,11 +58,11 @@
     </FrameLayout>
 
     <ProgressBar
-    android:id="@+id/progressBarr"
+    android:id="@+id/progressBar"
+        style="@style/progressBar"
     android:layout_width="@dimen/size44dp"
     android:layout_height="@dimen/size44dp"
     android:layout_gravity="center"
-    android:indeterminateTint="@color/backgroundMain"
     android:layout_marginTop="@dimen/size144dp"
     android:visibility="gone"/>
 
@@ -77,20 +77,36 @@
         android:visibility="gone" >
 
         <ImageView
-            android:id="@+id/ivPlaceholder"
-            style="@style/ivPlaceholder"
+            android:id="@+id/ivPlaceholderNoInternet"
+            style="@style/ivPlaceholderNoInternet"
             android:layout_width="@dimen/size120dp"
             android:layout_height="@dimen/size120dp"
-            app:srcCompat="@drawable/ic_error_faund_track"
-            android:visibility="visible"/>
+            android:visibility="gone"/>
+
+        <ImageView
+            android:id="@+id/ivPlaceholderNothingFound"
+            style="@style/ivPlaceholderNothingFound"
+            android:layout_width="@dimen/size120dp"
+            android:layout_height="@dimen/size120dp"
+            android:visibility="gone"/>
 
         <TextView
-            android:id="@+id/tvPlaceholder"
+            android:id="@+id/tvPlaceholderNoInternet"
             style="@style/tvPlaceHolder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/size16dp"
-            android:text="@string/error_tracks" />
+            android:text="@string/error_to_link"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tvPlaceholderNothingFound"
+            style="@style/tvPlaceHolder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size16dp"
+            android:text="@string/error_tracks"
+            android:visibility="gone" />
 
         <Button
 
@@ -102,16 +118,6 @@
             android:text="@string/refresh" />
 
     </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvTrack"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/size16dp"
-        android:layout_weight="3"
-        android:orientation="vertical"
-        tools:listitem="@layout/track_list_item"
-        android:visibility="gone" />
 
     <FrameLayout
         android:id="@+id/historySearch"
@@ -127,19 +133,21 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tvYouSearch"
                 style="@style/tvYouSearch"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/size52dp"
                 android:text="@string/you_search" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvTrackHistory"
+                android:id="@+id/rvTrack"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/size0dp"
                 android:layout_marginTop="@dimen/size8dp"
                 android:layout_weight="1"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/track_list_item" />
+                tools:listitem="@layout/track_list_item"
+                android:visibility="gone"/>
 
             <Button
                 android:id="@+id/btClearHistory"

@@ -172,6 +172,12 @@
         app:layout_constraintEnd_toStartOf="@+id/rightBorderForDownTv"
         app:layout_constraintStart_toEndOf="@id/album"/>
 
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/albumGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="album,album_value" />
+
     <TextView
         android:id="@+id/duration_value"
         android:layout_width="wrap_content"
