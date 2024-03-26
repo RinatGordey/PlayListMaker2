@@ -1,26 +1,31 @@
 package com.example.playlistmaker2.util
 
 import android.app.Application
-import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
-import com.example.playlistmaker2.settings.data.SettingsRepositoryImpl
+import com.example.playlistmaker2.di.dataModule
+import com.example.playlistmaker2.di.interactorModule
+import com.example.playlistmaker2.di.repositoryModule
+import com.example.playlistmaker2.di.viewModelModule
 import com.example.playlistmaker2.settings.domain.api.SettingsRepository
-import com.example.playlistmaker2.settings.domain.impl.SettingsInteractorImpl
+import org.koin.android.ext.android.inject
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 
 class App : Application() {
-    private fun getSettingsRepository(context: Context): SettingsRepository {
-        return SettingsRepositoryImpl(context)
-    }
-    fun provideSettingsInteractor(context: Context): SettingsInteractorImpl {
-        return SettingsInteractorImpl(getSettingsRepository(context))
-    }
 
-    var darkTheme: Boolean = true
+    private var darkTheme: Boolean = true
+
+    private val settingsRepository: SettingsRepository by inject()
 
     override fun onCreate() {
         super.onCreate()
-        darkTheme = provideSettingsInteractor(this).getThemeSettings().darkThemeEnabled
+        startKoin {
+            androidContext(this@App)
+            modules(dataModule, repositoryModule, interactorModule, viewModelModule)
+        }
+        darkTheme = settingsRepository.getThemeSettings().darkThemeEnabled
         switchTheme(darkTheme)
+
     }
 
     fun switchTheme(darkThemeEnabled: Boolean) {
