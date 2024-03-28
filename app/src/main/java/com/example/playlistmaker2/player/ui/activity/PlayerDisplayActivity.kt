@@ -3,7 +3,6 @@ package com.example.playlistmaker2.player.ui.activity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmaker2.R
 import com.example.playlistmaker2.databinding.ActivityPlayerDisplayBinding
 import com.example.playlistmaker2.player.ui.mapper.TrackMapper
@@ -11,10 +10,16 @@ import com.example.playlistmaker2.player.ui.model.TrackInfo
 import com.example.playlistmaker2.player.ui.view_model.PlayerDisplayViewModel
 import com.example.playlistmaker2.search.domain.model.Track
 import com.example.playlistmaker2.util.loadTrackPicture
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class PlayerDisplayActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPlayerDisplayBinding
-    private lateinit var viewModel: PlayerDisplayViewModel
+    private lateinit var lastTrack: TrackInfo
+
+    val viewModel: PlayerDisplayViewModel by viewModel{
+        parametersOf(lastTrack)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,11 +28,8 @@ class PlayerDisplayActivity : AppCompatActivity() {
 
         arrowBack(binding)
 
-        val lastTrack = TrackMapper().map(
+        lastTrack = TrackMapper().map(
             intent.getSerializableExtra("track") as Track)
-
-        viewModel = ViewModelProvider(this,
-            PlayerDisplayViewModel.getViewModelFactory(lastTrack))[PlayerDisplayViewModel::class.java]
 
         viewModel.create()
         binding.playButton.isEnabled = true

@@ -1,25 +1,23 @@
 package com.example.playlistmaker2.search.data
 
-import android.content.Context
-import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import com.example.playlistmaker2.search.domain.api.HistoryRepository
 import com.example.playlistmaker2.search.domain.model.Track
 import com.google.gson.Gson
 
-private const val HISTORY_PREFERENCES = "history_preferences"
 private const val HISTORY_KEY = "key_for_history"
 private const val NUMBER_TEN = 10
 private const val NUMBER_NINE = 9
 private const val NUMBER_ZERO = 0
 
-class HistoryRepositoryImpl(val context: Context) : HistoryRepository {
-    val sharedPrefs = context.getSharedPreferences(HISTORY_PREFERENCES, MODE_PRIVATE)
-
+class HistoryRepositoryImpl(private val sharedPrefs: SharedPreferences,
+    private val gson: Gson,
+    ) : HistoryRepository {
 
     override fun getTracks(): Array<Track> {
         val json = sharedPrefs.getString(HISTORY_KEY, null)
             ?: return emptyArray()
-        return Gson().fromJson(json, Array<Track>::class.java)
+        return gson.fromJson(json, Array<Track>::class.java)
     }
 
     override fun addTrack(track: Track): List<Track> {
@@ -45,7 +43,7 @@ class HistoryRepositoryImpl(val context: Context) : HistoryRepository {
     }
 
     private fun write(tracks: List<Track>) {
-        val json = Gson().toJson(tracks)
+        val json = gson.toJson(tracks)
         sharedPrefs.edit()
             .putString(HISTORY_KEY, json)
             .apply()

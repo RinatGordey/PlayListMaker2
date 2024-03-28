@@ -5,14 +5,10 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.playlistmaker2.player.domain.api.PlayerInteractor
 import com.example.playlistmaker2.player.domain.models.PlayerState
 import com.example.playlistmaker2.player.ui.model.PlaybackState
 import com.example.playlistmaker2.player.ui.model.TrackInfo
-import com.example.playlistmaker2.util.Creator
 
 class PlayerDisplayViewModel(
     private val lastTrack: TrackInfo,
@@ -21,12 +17,6 @@ class PlayerDisplayViewModel(
     companion object {
         private const val REFRESH_MILLIS = 500L
         private const val START_TIMER = "00:00"
-
-        fun getViewModelFactory(lastTrack: TrackInfo): ViewModelProvider.Factory = viewModelFactory {
-                initializer {
-                    PlayerDisplayViewModel(lastTrack, Creator.providePlayerInteractor())
-                }
-        }
     }
 
     private val playingLiveData = MutableLiveData(PlaybackState(false, START_TIMER))

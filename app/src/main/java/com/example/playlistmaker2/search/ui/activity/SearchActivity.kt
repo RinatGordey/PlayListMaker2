@@ -12,7 +12,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlistmaker2.R
 import com.example.playlistmaker2.databinding.ActivitySearchBinding
@@ -20,6 +19,7 @@ import com.example.playlistmaker2.player.ui.activity.PlayerDisplayActivity
 import com.example.playlistmaker2.search.domain.model.Track
 import com.example.playlistmaker2.search.ui.models.TrackSearchState
 import com.example.playlistmaker2.search.ui.view_model.TrackSearchViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity(), TrackAdapter.TrackClickListener {
 
@@ -28,7 +28,7 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.TrackClickListener {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 
-    private lateinit var viewModel: TrackSearchViewModel
+    private val viewModel by viewModel<TrackSearchViewModel>()
     private lateinit var binding: ActivitySearchBinding
 
     private var isClickAllowed = true
@@ -36,7 +36,7 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.TrackClickListener {
     private var searchEditTextValue: String = ""
     private val adapter = TrackAdapter(arrayListOf(), this)
 
-    private lateinit var textWatcher: TextWatcher
+    private var textWatcher: TextWatcher? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,11 +44,6 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.TrackClickListener {
         setContentView(binding.root)
 
         binding.progressBar.isVisible = false
-
-        viewModel = ViewModelProvider(
-            this,
-            TrackSearchViewModel.getViewModelFactory()
-        )[TrackSearchViewModel::class.java]
 
         viewModel.observeState().observe(this) {
             render(it)
