@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/btNewPlaylist"
+        style="@style/btRefresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/size24dp"
+        android:text="@string/new_playlist"
+        android:visibility="visible"/>
+
+    <ImageView
+        android:id="@+id/ivPlaceholderFragment"
+        style="@style/ivPlaceholderNothingFound"
+        android:layout_marginTop="@dimen/size48dp"
+        android:visibility="visible"/>
+
+    <TextView
+        android:id="@+id/tvPlaceholderMessage"
+        style="@style/tvPlaceHolder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/size24dp"
+        android:text="@string/you_havent_created_any_playlists"/>
+
+</LinearLayout>
