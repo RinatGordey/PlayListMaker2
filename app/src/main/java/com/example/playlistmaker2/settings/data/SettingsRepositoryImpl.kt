@@ -10,7 +10,7 @@ class SettingsRepositoryImpl(
     private val sharedPrefs: SharedPreferences,
 ): SettingsRepository {
 
-    private var darkTheme:Boolean = false
+    private var darkTheme: Boolean = false
 
     override fun getThemeSettings(): ThemeSettings {
 
@@ -19,9 +19,11 @@ class SettingsRepositoryImpl(
     }
 
     override fun updateThemeSetting(settings: ThemeSettings) {
-        darkTheme = settings.darkThemeEnabled
-        sharedPrefs.edit()
-            .putBoolean(KEY_FOR_THEME, darkTheme)
-            .apply()
+        val currentTheme = sharedPrefs.getBoolean(KEY_FOR_THEME, darkTheme)
+        if (currentTheme != settings.darkThemeEnabled) {
+            sharedPrefs.edit()
+                .putBoolean(KEY_FOR_THEME, settings.darkThemeEnabled)
+                .apply()
+        }
     }
 }
