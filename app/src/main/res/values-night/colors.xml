@@ -18,4 +18,6 @@
     <color name="ic_settings_activity">#FFFFFFFF</color>
     <color name="ic_switch_dark">#3772E7</color>
     <color name="black_000000">#000000</color>
+    <color name="bottom_nav_background">#1A1B22</color>
+
 </resources>

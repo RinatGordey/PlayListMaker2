@@ -1,27 +1,27 @@
 package com.example.playlistmaker2.search.ui.activity
 
-import android.content.Context
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.playlistmaker2.R
-import com.example.playlistmaker2.databinding.ActivitySearchBinding
+import com.example.playlistmaker2.databinding.FragmentSearchBinding
 import com.example.playlistmaker2.player.ui.activity.PlayerDisplayActivity
 import com.example.playlistmaker2.search.domain.model.Track
 import com.example.playlistmaker2.search.ui.models.TrackSearchState
 import com.example.playlistmaker2.search.ui.view_model.TrackSearchViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SearchActivity : AppCompatActivity(), TrackAdapter.TrackClickListener {
+class SearchFragment : Fragment(), TrackAdapter.TrackClickListener {
 
     private companion object {
         const val SEARCH_EDITTEXT = "SEARCH_EDITTEXT"
@@ -29,7 +29,8 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.TrackClickListener {
     }
 
     private val viewModel by viewModel<TrackSearchViewModel>()
-    private lateinit var binding: ActivitySearchBinding
+    private var _binding: FragmentSearchBinding? = null
+    private val binding get() = _binding!!
 
     private var isClickAllowed = true
     private val handler = Handler(Looper.getMainLooper())
@@ -38,31 +39,33 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.TrackClickListener {
 
     private var textWatcher: TextWatcher? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivitySearchBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         binding.progressBar.isVisible = false
 
-        viewModel.observeState().observe(this) {
+        viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }
 
         binding.rvTrack.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-
-
-        binding.btBackSearch.setOnClickListener {
-            finish()
-        }
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
         binding.btClear.setOnClickListener {
             binding.edSearch.setText("")
             viewModel.getHistory()
             val inputMethodManager =
-                getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-            inputMethodManager?.hideSoftInputFromWindow(binding.edSearch.windowToken, 0)
+                requireContext().getSystemService(Activity.INPUT_METHOD_SERVICE) as? InputMethodManager
+            inputMethodManager?.hideSoftInputFromWindow(view.windowToken, 0)
         }
 
         binding.btClearHistory.setOnClickListener {
@@ -88,6 +91,11 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.TrackClickListener {
         }
     }
 
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
+    }
+
     private fun clickDebounce(): Boolean {
         val current = isClickAllowed
         if (isClickAllowed) {
@@ -108,13 +116,6 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.TrackClickListener {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(SEARCH_EDITTEXT, searchEditTextValue)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        val searchEditText = findViewById<EditText>(R.id.edSearch)
-        searchEditTextValue = savedInstanceState.getString(SEARCH_EDITTEXT, "")
-        searchEditText.setText(searchEditTextValue)
     }
 
     private fun render(state: TrackSearchState) {
@@ -218,7 +219,7 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.TrackClickListener {
 
     override fun onTrackClick(track: Track) {
         if (clickDebounce()) {
-            val playerIntent = Intent(this, PlayerDisplayActivity::class.java)
+            val playerIntent = Intent(requireContext(), PlayerDisplayActivity::class.java)
             playerIntent.putExtra("track", track)
             startActivity(playerIntent)
             viewModel.historyAddTrack(track)

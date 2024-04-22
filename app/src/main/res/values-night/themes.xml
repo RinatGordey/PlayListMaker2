@@ -17,5 +17,6 @@
 
     </style>
 
+    <style name="Theme.PlaylistMaker" parent="Base.Theme.PlaylistMaker" />
 
 </resources>

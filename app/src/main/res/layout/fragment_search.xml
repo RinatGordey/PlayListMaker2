@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:backgroundTint="@color/backgroundMain"
-    tools:context=".search.ui.activity.SearchActivity">
+    tools:context=".search.ui.activity.SearchFragment">
 
     <LinearLayout
         android:layout_width="@dimen/size352dp"
@@ -15,12 +15,6 @@
         android:layout_marginTop="@dimen/size4dp"
         android:layout_marginBottom="@dimen/size4dp"
         style="@style/panel_header">
-
-        <ImageButton
-            android:id="@+id/btBackSearch"
-            android:layout_width="@dimen/size48dp"
-            android:layout_height="@dimen/size48dp"
-            style="@style/ic_back" />
 
         <TextView
             android:layout_width="@dimen/size208dp"
