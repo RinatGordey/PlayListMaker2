@@ -13,12 +13,16 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.playlistmaker2.R
 import com.example.playlistmaker2.databinding.FragmentSearchBinding
 import com.example.playlistmaker2.player.ui.activity.PlayerDisplayActivity
 import com.example.playlistmaker2.search.domain.model.Track
 import com.example.playlistmaker2.search.ui.models.TrackSearchState
 import com.example.playlistmaker2.search.ui.view_model.TrackSearchViewModel
+import com.example.playlistmaker2.util.debounce
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment(), TrackAdapter.TrackClickListener {
@@ -27,6 +31,8 @@ class SearchFragment : Fragment(), TrackAdapter.TrackClickListener {
         const val SEARCH_EDITTEXT = "SEARCH_EDITTEXT"
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
+
+    private lateinit var onTrackClickDebounce: (Track) -> Unit
 
     private val viewModel by viewModel<TrackSearchViewModel>()
     private var _binding: FragmentSearchBinding? = null
@@ -50,6 +56,11 @@ class SearchFragment : Fragment(), TrackAdapter.TrackClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        onTrackClickDebounce = debounce<Track>(CLICK_DEBOUNCE_DELAY,
+            viewLifecycleOwner.lifecycleScope, false) { track ->
+            findNavController().navigate(R.id.action_searchFragment_to_playerDisplayActivity)
+        }
 
         binding.progressBar.isVisible = false
 

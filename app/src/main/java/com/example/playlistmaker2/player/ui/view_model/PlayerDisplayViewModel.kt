@@ -1,14 +1,16 @@
 package com.example.playlistmaker2.player.ui.view_model
 
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker2.player.domain.api.PlayerInteractor
 import com.example.playlistmaker2.player.domain.models.PlayerState
 import com.example.playlistmaker2.player.ui.model.PlaybackState
 import com.example.playlistmaker2.player.ui.model.TrackInfo
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class PlayerDisplayViewModel(
     private val lastTrack: TrackInfo,
@@ -22,7 +24,7 @@ class PlayerDisplayViewModel(
     private val playingLiveData = MutableLiveData(PlaybackState(false, START_TIMER))
     fun getPlayingLiveData(): LiveData<PlaybackState> = playingLiveData
 
-    private val handler = Handler(Looper.getMainLooper())
+    private var playerTimerJob: Job? = null
 
     fun create() {
         playerInteractor.createPlayer(lastTrack.previewUrl)
@@ -42,28 +44,20 @@ class PlayerDisplayViewModel(
     }
     private fun statePlaying() {
         playerInteractor.play()
-        playingLiveData.postValue(PlaybackState(true, playerInteractor.getCurrentPosition()))
-        handler.post(createUpdateTimerTask())
-    }
-    private fun createUpdateTimerTask(): Runnable {
-        return object : Runnable {
-            override fun run() {
-                when (playerInteractor.getState()) {
-                    PlayerState.PLAYING -> {
-                        playingLiveData.postValue(PlaybackState(true, playerInteractor.getCurrentPosition()))
-                        handler.postDelayed(this, REFRESH_MILLIS)
-                    }
-                    PlayerState.END -> {
-                        handler.removeCallbacks(this)
-                        playingLiveData.postValue(PlaybackState(false, START_TIMER))
-                    }
-                    else -> {}
-                }
+        playerTimerJob = viewModelScope.launch {
+            while (playerInteractor.getState() == PlayerState.PLAYING) {
+                playingLiveData.postValue(PlaybackState(true, playerInteractor.getCurrentPosition()))
+                delay(REFRESH_MILLIS)
+            }
+            if (playerInteractor.getState() == PlayerState.END) {
+                playingLiveData.postValue(PlaybackState(false, START_TIMER))
             }
         }
     }
+
     fun onPause() {
         playerInteractor.pause()
+        playerTimerJob?.cancel()
         playingLiveData.postValue(
             PlaybackState(
                 false,
