@@ -3,8 +3,6 @@ package com.example.playlistmaker2.search.ui.activity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -23,6 +21,8 @@ import com.example.playlistmaker2.search.domain.model.Track
 import com.example.playlistmaker2.search.ui.models.TrackSearchState
 import com.example.playlistmaker2.search.ui.view_model.TrackSearchViewModel
 import com.example.playlistmaker2.util.debounce
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment(), TrackAdapter.TrackClickListener {
@@ -39,7 +39,6 @@ class SearchFragment : Fragment(), TrackAdapter.TrackClickListener {
     private val binding get() = _binding!!
 
     private var isClickAllowed = true
-    private val handler = Handler(Looper.getMainLooper())
     private var searchEditTextValue: String = ""
     private val adapter = TrackAdapter(arrayListOf(), this)
 
@@ -57,7 +56,7 @@ class SearchFragment : Fragment(), TrackAdapter.TrackClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        onTrackClickDebounce = debounce<Track>(CLICK_DEBOUNCE_DELAY,
+        onTrackClickDebounce = debounce(CLICK_DEBOUNCE_DELAY,
             viewLifecycleOwner.lifecycleScope, false) { track ->
             findNavController().navigate(R.id.action_searchFragment_to_playerDisplayActivity)
         }
@@ -111,7 +110,10 @@ class SearchFragment : Fragment(), TrackAdapter.TrackClickListener {
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+            viewLifecycleOwner.lifecycleScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY)
+                isClickAllowed = true
+            }
         }
         return current
     }

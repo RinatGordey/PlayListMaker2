@@ -1,17 +1,18 @@
 package com.example.playlistmaker2.search.ui.view_model
 
 import android.app.Application
-import android.os.Handler
-import android.os.Looper
-import android.os.SystemClock
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker2.R
 import com.example.playlistmaker2.search.domain.api.HistoryInteractor
 import com.example.playlistmaker2.search.domain.api.SearchInteractor
 import com.example.playlistmaker2.search.domain.model.Track
 import com.example.playlistmaker2.search.ui.models.TrackSearchState
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class TrackSearchViewModel(
     application: Application,
@@ -20,74 +21,69 @@ class TrackSearchViewModel(
     ) : AndroidViewModel(application) {
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
-        private val SEARCH_REQUEST_TOKEN = Any()
     }
 
-    private val handler = Handler(Looper.getMainLooper())
+    private var searchJob: Job? = null
 
     private val stateLiveData = MutableLiveData<TrackSearchState>()
     fun observeState(): LiveData<TrackSearchState> = stateLiveData
 
     private var latestSearchText: String? = null
 
-    override fun onCleared() {
-        handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
-    }
-
     fun searchDebounce(changedText: String) {
         if (latestSearchText == changedText) {
             return
         }
 
-        this.latestSearchText = changedText
-        handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
+        latestSearchText = changedText
 
-        val searchRunnable = Runnable { searchRequest(changedText) }
-
-        val postTime = SystemClock.uptimeMillis() + SEARCH_DEBOUNCE_DELAY
-        handler.postAtTime(
-            searchRunnable,
-            SEARCH_REQUEST_TOKEN,
-            postTime,
-        )
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
+            delay(SEARCH_DEBOUNCE_DELAY)
+            searchRequest(changedText)
+        }
     }
 
-    fun searchRequest(newSearchText: String) {
-        if (newSearchText.isNotEmpty()) {
+    fun searchRequest(newSearch: String) {
+        if (newSearch.isNotEmpty()) {
             renderState(TrackSearchState.Loading)
 
-            searchInteractor.searchTracks(newSearchText, object : SearchInteractor.TracksConsumer {
-                override fun consume(foundTracks: List<Track>?, errorMessage: String?) {
-                    val tracks = foundTracks?.toMutableList() ?: mutableListOf()
-
-                    when {
-                        errorMessage == "Internet" -> {
-                            renderState(
-                                TrackSearchState.Error(
-                                    getApplication<Application>().getString(R.string.error_to_link)
-                                )
-                            )
-                        }
-
-                        tracks.isEmpty() -> {
-                            renderState(
-                                TrackSearchState.Empty(
-                                    getApplication<Application>().getString(R.string.error_tracks)
-                                )
-                            )
-                        }
-
-                        else -> {
-                            renderState(
-                                TrackSearchState.SearchContent(
-                                    tracks
-                                )
-                            )
-                        }
-                    }
-
+            viewModelScope.launch {
+                searchInteractor.searchTracks(newSearch).collect { pair ->
+                    searchResults(pair.first, pair.second)
                 }
-            })
+            }
+        }
+    }
+
+    private fun searchResults(foundTrack: List<Track>?, errorMessage: String?) {
+        val tracks = mutableListOf<Track>()
+        if (foundTrack != null)
+        tracks.addAll(foundTrack)
+        when {
+            errorMessage == "Internet" -> {
+                renderState(
+                    TrackSearchState.Error(
+                        getApplication<Application>().getString(R.string.error_to_link)
+                    )
+                )
+            }
+
+            tracks.isEmpty() -> {
+                renderState(
+                    TrackSearchState.Empty(
+                        getApplication<Application>().getString(R.string.error_tracks)
+                    )
+                )
+            }
+
+            else -> {
+                renderState(
+                    TrackSearchState.SearchContent(
+                        tracks
+                    )
+                )
+            }
         }
     }
 

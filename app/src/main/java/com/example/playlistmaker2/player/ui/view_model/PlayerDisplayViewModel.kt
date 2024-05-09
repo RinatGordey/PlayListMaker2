@@ -44,9 +44,13 @@ class PlayerDisplayViewModel(
     }
     private fun statePlaying() {
         playerInteractor.play()
+        playingLiveData.postValue(
+            PlaybackState(true, playerInteractor.getCurrentPosition()))
+
         playerTimerJob = viewModelScope.launch {
             while (playerInteractor.getState() == PlayerState.PLAYING) {
-                playingLiveData.postValue(PlaybackState(true, playerInteractor.getCurrentPosition()))
+                playingLiveData.postValue(
+                    PlaybackState(true, playerInteractor.getCurrentPosition()))
                 delay(REFRESH_MILLIS)
             }
             if (playerInteractor.getState() == PlayerState.END) {
@@ -59,12 +63,9 @@ class PlayerDisplayViewModel(
         playerInteractor.pause()
         playerTimerJob?.cancel()
         playingLiveData.postValue(
-            PlaybackState(
-                false,
-                playerInteractor.getCurrentPosition()
-            )
-        )
+            PlaybackState(false, playerInteractor.getCurrentPosition()))
     }
+
     fun onDestroy() {
         playerInteractor.release()
     }
