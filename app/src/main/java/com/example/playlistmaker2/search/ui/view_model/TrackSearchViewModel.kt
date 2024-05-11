@@ -10,6 +10,7 @@ import com.example.playlistmaker2.search.domain.api.HistoryInteractor
 import com.example.playlistmaker2.search.domain.api.SearchInteractor
 import com.example.playlistmaker2.search.domain.model.Track
 import com.example.playlistmaker2.search.ui.models.TrackSearchState
+import com.example.playlistmaker2.util.ErrorType
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -38,6 +39,7 @@ class TrackSearchViewModel(
         latestSearchText = changedText
 
         searchJob?.cancel()
+
         searchJob = viewModelScope.launch {
             delay(SEARCH_DEBOUNCE_DELAY)
             searchRequest(changedText)
@@ -61,7 +63,7 @@ class TrackSearchViewModel(
         if (foundTrack != null)
         tracks.addAll(foundTrack)
         when {
-            errorMessage == "Internet" -> {
+            errorMessage == ErrorType.INTERNET.message -> {
                 renderState(
                     TrackSearchState.Error(
                         getApplication<Application>().getString(R.string.error_to_link)

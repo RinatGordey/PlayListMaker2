@@ -17,7 +17,7 @@ class PlayerDisplayViewModel(
     private val playerInteractor: PlayerInteractor) : ViewModel() {
 
     companion object {
-        private const val REFRESH_MILLIS = 500L
+        private const val REFRESH_MILLIS = 300L
         private const val START_TIMER = "00:00"
     }
 
@@ -46,6 +46,8 @@ class PlayerDisplayViewModel(
         playerInteractor.play()
         playingLiveData.postValue(
             PlaybackState(true, playerInteractor.getCurrentPosition()))
+
+        playerTimerJob?.cancel()
 
         playerTimerJob = viewModelScope.launch {
             while (playerInteractor.getState() == PlayerState.PLAYING) {
