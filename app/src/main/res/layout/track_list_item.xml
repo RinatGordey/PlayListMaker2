@@ -2,7 +2,8 @@
 <RelativeLayout android:id="@+id/trackLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/size60dp">
+    android:layout_height="@dimen/size60dp"
+    android:foreground="?attr/selectableItemBackground">
 
     <ImageView
         android:id="@+id/imAlbumsCover"
