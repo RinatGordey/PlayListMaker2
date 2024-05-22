@@ -3,6 +3,8 @@ package com.example.playlistmaker2.di
 import android.content.Context
 import android.content.SharedPreferences
 import android.media.MediaPlayer
+import androidx.room.Room
+import com.example.playlistmaker2.db.AppDatabase
 import com.example.playlistmaker2.player.domain.models.PlayerState
 import com.example.playlistmaker2.search.data.NetworkClient
 import com.example.playlistmaker2.search.data.network.ITunesAPI
@@ -46,4 +48,9 @@ val dataModule = module {
     factory { MediaPlayer() }
 
     single { PlayerState.DEFAULT }
+
+    single {
+        Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db")
+            .build()
+    }
 }
