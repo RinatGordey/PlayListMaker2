@@ -1,5 +1,7 @@
 package com.example.playlistmaker2.di
 
+import com.example.playlistmaker2.db.domain.db.FavoriteInteractor
+import com.example.playlistmaker2.db.domain.impl.FavoriteInteractorImpl
 import com.example.playlistmaker2.player.domain.api.PlayerInteractor
 import com.example.playlistmaker2.player.domain.impl.PlayerInteractorImpl
 import com.example.playlistmaker2.search.domain.api.HistoryInteractor
@@ -32,5 +34,9 @@ val interactorModule = module {
 
     single<SharingInteractor> {
         SharingInteractorImpl(get())
+    }
+
+    single<FavoriteInteractor> {
+        FavoriteInteractorImpl(get())
     }
 }
