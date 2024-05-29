@@ -25,7 +25,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class SearchFragment : Fragment(), TrackAdapter.TrackClickListener {
 
     private companion object {
-        const val SEARCH_EDITTEXT = "SEARCH_EDITTEXT"
+        private const val SEARCH_EDITTEXT = "SEARCH_EDITTEXT"
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 

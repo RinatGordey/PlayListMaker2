@@ -20,6 +20,7 @@ class TrackSearchViewModel(
     private val searchInteractor: SearchInteractor,
     private val historyInteractor: HistoryInteractor,
     ) : AndroidViewModel(application) {
+
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }

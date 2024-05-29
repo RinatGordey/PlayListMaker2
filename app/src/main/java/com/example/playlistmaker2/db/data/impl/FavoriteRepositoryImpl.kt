@@ -19,38 +19,14 @@ class FavoriteRepositoryImpl(
     }
 
     override suspend fun addFavorite(track: Track) {
-        val favoriteEntity = FavoriteEntity(
-            trackId = track.trackId,
-            trackName = track.trackName,
-            artistName = track.artistName,
-            trackTimeMillis = track.trackTime.toIntOrNull() ?: 0,
-            artworkUrl100 = track.artworkUrl100,
-            releaseDate = track.releaseDate,
-            primaryGenreName = track.primaryGenreName,
-            collectionName = track.collectionName,
-            country = track.country,
-            previewUrl = track.previewUrl,
-        )
-        appDatabase.trackDao().insertTracks(listOf(favoriteEntity))
+        appDatabase.trackDao().insertTracks(trackDbConvertor.map(track))
     }
 
     override suspend fun isFavorite(trackId: Int): Boolean =
         appDatabase.trackDao().isFavorite(trackId)
 
     override suspend fun deleteFavorite(track: Track) {
-        val favoriteEntity = FavoriteEntity(
-            trackId = track.trackId,
-            trackName = track.trackName,
-            artistName = track.artistName,
-            trackTimeMillis = track.trackTime.toIntOrNull() ?: 0,
-            artworkUrl100 = track.artworkUrl100,
-            releaseDate = track.releaseDate,
-            primaryGenreName = track.primaryGenreName,
-            collectionName = track.collectionName,
-            country = track.country,
-            previewUrl = track.previewUrl,
-        )
-        appDatabase.trackDao().deleteTrack(favoriteEntity)
+        appDatabase.trackDao().deleteTrack(trackDbConvertor.map(track))
     }
 
     private fun convertFromFavoriteEntity(tracks: List<FavoriteEntity>): List<Track> {

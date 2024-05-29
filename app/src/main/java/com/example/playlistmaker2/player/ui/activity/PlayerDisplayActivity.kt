@@ -14,10 +14,15 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class PlayerDisplayActivity : AppCompatActivity() {
+
+    companion object {
+        const val TRACK = "TRACK"
+    }
+
     private lateinit var binding: ActivityPlayerDisplayBinding
     private lateinit var lastTrack: TrackInfo
 
-    val viewModel: PlayerDisplayViewModel by viewModel{
+    private val viewModel: PlayerDisplayViewModel by viewModel{
         parametersOf(lastTrack)
     }
 
@@ -29,7 +34,7 @@ class PlayerDisplayActivity : AppCompatActivity() {
         arrowBack(binding)
 
         lastTrack = TrackMapper().map(
-            intent.getSerializableExtra("track") as Track)
+            intent.getSerializableExtra(TRACK) as Track)
 
         viewModel.create()
         binding.playButton.isEnabled = true
@@ -47,6 +52,18 @@ class PlayerDisplayActivity : AppCompatActivity() {
 
         binding.playButton.setOnClickListener {
             viewModel.play()
+        }
+
+        binding.likeButton.setOnClickListener {
+            viewModel.likeClick()
+        }
+
+        viewModel.getFavoriteLiveData().observe(this) { isFavorite ->
+            if (isFavorite) {
+                binding.likeButton.setImageResource(R.drawable.ic_liked)
+            } else {
+                binding.likeButton.setImageResource(R.drawable.ic_like_bt)
+            }
         }
     }
 
@@ -79,6 +96,7 @@ class PlayerDisplayActivity : AppCompatActivity() {
         super.onPause()
         viewModel.onPause()
     }
+
     override fun onDestroy() {
         super.onDestroy()
         viewModel.onDestroy()

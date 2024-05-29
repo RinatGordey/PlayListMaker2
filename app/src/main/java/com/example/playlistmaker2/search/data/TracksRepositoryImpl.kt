@@ -45,7 +45,6 @@ class TracksRepositoryImpl(
                             it.previewUrl
                         )
                     }
-                    saveTrack(results)
                     emit(Resource.Success(data))
                 }
             }
@@ -54,10 +53,5 @@ class TracksRepositoryImpl(
                 emit(Resource.Error(ErrorType.SERVER_ERROR.message))
             }
         }
-    }
-
-    private suspend fun saveTrack(tracks: List<TrackDto>) {
-        val favoriteEntities = tracks.map { track -> trackDbConvertor.map(track) }
-        appDatabase.trackDao().insertTracks(favoriteEntities)
     }
 }

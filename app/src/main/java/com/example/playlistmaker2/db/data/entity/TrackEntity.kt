@@ -7,13 +7,13 @@ import androidx.room.PrimaryKey
 data class FavoriteEntity(
     @PrimaryKey
     val trackId: Int,
-    val trackName: String,
-    val artistName: String,
-    val trackTimeMillis: Int,
-    val artworkUrl100: String,
+    val trackName: String?,
+    val artistName: String?,
+    val trackTime: String?,
+    val artworkUrl100: String?,
     val releaseDate: String?,
-    val primaryGenreName: String,
+    val primaryGenreName: String?,
     val collectionName: String?,
-    val country: String,
+    val country: String?,
     val previewUrl: String?,
 )

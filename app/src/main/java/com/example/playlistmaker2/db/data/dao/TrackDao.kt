@@ -11,7 +11,7 @@ import com.example.playlistmaker2.db.data.entity.FavoriteEntity
 interface TrackDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertTracks(tracks: List<FavoriteEntity>)
+    suspend fun insertTracks(track: FavoriteEntity)
 
     @Query("SELECT * FROM favorite_table")
     suspend fun getTracks(): List<FavoriteEntity>
