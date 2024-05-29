@@ -47,6 +47,8 @@ class FavoriteTracksFragment: Fragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        adapter = TrackAdapter(java.util.ArrayList(),this)
+
         binding.rvFavoriteList.layoutManager = LinearLayoutManager(requireContext(),
             LinearLayoutManager.VERTICAL, false)
 

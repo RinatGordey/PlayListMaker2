@@ -27,6 +27,7 @@ class SearchFragment : Fragment(), TrackAdapter.TrackClickListener {
     private companion object {
         private const val SEARCH_EDITTEXT = "SEARCH_EDITTEXT"
         private const val CLICK_DEBOUNCE_DELAY = 1000L
+        const val TRACK = "track"
     }
 
     private val viewModel by viewModel<TrackSearchViewModel>()
@@ -223,7 +224,7 @@ class SearchFragment : Fragment(), TrackAdapter.TrackClickListener {
     override fun onTrackClick(track: Track) {
         if (clickDebounce()) {
             val playerIntent = Intent(requireContext(), PlayerDisplayActivity::class.java)
-            playerIntent.putExtra("track", track)
+            playerIntent.putExtra("TRACK", track)
             startActivity(playerIntent)
             viewModel.historyAddTrack(track)
         }
