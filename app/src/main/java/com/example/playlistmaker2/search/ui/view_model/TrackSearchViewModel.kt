@@ -61,8 +61,9 @@ class TrackSearchViewModel(
 
     private fun searchResults(foundTrack: List<Track>?, errorMessage: String?) {
         val tracks = mutableListOf<Track>()
-        if (foundTrack != null)
-        tracks.addAll(foundTrack)
+        if (foundTrack != null) {
+            tracks.addAll(foundTrack)
+        }
         when {
             errorMessage == ErrorType.INTERNET.message -> {
                 renderState(

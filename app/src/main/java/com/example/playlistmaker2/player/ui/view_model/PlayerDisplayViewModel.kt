@@ -18,6 +18,7 @@ class PlayerDisplayViewModel(
     private val lastTrack: TrackInfo,
     private val playerInteractor: PlayerInteractor,
     private val favoriteInteractor: FavoriteInteractor,
+    private val trackMapper: TrackMapper,
     ) : ViewModel() {
 
     companion object {
@@ -58,6 +59,7 @@ class PlayerDisplayViewModel(
             }
         }
     }
+
     private fun statePlaying() {
         playerInteractor.play()
         playingLiveData.postValue(
@@ -91,11 +93,11 @@ class PlayerDisplayViewModel(
     fun likeClick() {
         viewModelScope.launch {
             if (favoriteInteractor.isFavorite(lastTrack.trackId)) {
-                val track = TrackMapper().map(lastTrack)
+                val track = trackMapper.map(lastTrack)
                 favoriteInteractor.deleteFavorite(track)
                 favoriteLiveData.postValue(false)
             } else {
-                val track = TrackMapper().map(lastTrack)
+                val track = trackMapper.map(lastTrack)
                 favoriteInteractor.addFavorite(track)
                 favoriteLiveData.postValue(true)
             }

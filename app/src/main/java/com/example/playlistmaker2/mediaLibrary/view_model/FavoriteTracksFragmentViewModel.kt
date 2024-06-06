@@ -14,6 +14,7 @@ class FavoriteTracksFragmentViewModel(
 ): ViewModel() {
 
     private val stateLiveData = MutableLiveData<FavoriteState>()
+
     init {
         fillData()
     }
@@ -22,15 +23,19 @@ class FavoriteTracksFragmentViewModel(
 
     fun fillData() {
         viewModelScope.launch {
-            favoriteInteractor.favoriteTracks().collect { tracks -> getState(tracks)}
+            favoriteInteractor.favoriteTracks().collect { tracks ->
+                getState(tracks)}
         }
     }
 
     private fun getState(tracks: List<Track>) {
         if (tracks.isEmpty()) {
             stateLiveData.postValue(FavoriteState.Empty)
-        } else {
+        }
+        if (tracks.isNotEmpty()) {
             stateLiveData.postValue(FavoriteState.Content(tracks))
+        } else {
+            stateLiveData.postValue(FavoriteState.Empty)
         }
     }
 }

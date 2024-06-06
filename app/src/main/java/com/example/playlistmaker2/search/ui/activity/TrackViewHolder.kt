@@ -11,6 +11,7 @@ import com.example.playlistmaker2.search.domain.model.Track
 import com.example.playlistmaker2.util.ConversionDpToPx
 import java.text.SimpleDateFormat
 import java.util.Locale
+
 class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private val trackNameView: TextView = itemView.findViewById(R.id.trackName)

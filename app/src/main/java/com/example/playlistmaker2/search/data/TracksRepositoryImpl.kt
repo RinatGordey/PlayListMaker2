@@ -42,7 +42,7 @@ class TracksRepositoryImpl(
                             it.releaseDate,
                             it.primaryGenreName,
                             it.country,
-                            it.previewUrl
+                            it.previewUrl,
                         )
                     }
                     emit(Resource.Success(data))

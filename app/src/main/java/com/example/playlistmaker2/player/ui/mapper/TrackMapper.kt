@@ -4,22 +4,19 @@ import com.example.playlistmaker2.player.ui.model.TrackInfo
 import com.example.playlistmaker2.search.domain.model.Track
 
 class TrackMapper {
+
     fun map(track: Track): TrackInfo {
         return TrackInfo(
             trackId = track.trackId,
-            trackName = track.trackName?: "",
-            artistName = track.artistName?: "",
-            trackTime = track.trackTime?: "",
+            trackName = track.trackName ?: "",
+            artistName = track.artistName ?: "",
+            trackTime = track.trackTime ?: "",
             artworkUrl100 = track.artworkUrl100?: "".replaceAfterLast('/', "512x512bb.jpg"),
-            collectionName = track.collectionName?: "",
-            releaseDate = if (track.releaseDate?.length ?: 0 >= 4) {
-                track.releaseDate?.substring(0, 4) ?: ""
-            } else {
-                track.releaseDate ?: ""
-            },
-            primaryGenreName = track.primaryGenreName?: "",
-            country = track.country?: "",
-            previewUrl = track.previewUrl?: "",
+            collectionName = track.collectionName ?: "",
+            releaseDate = handleReleaseDate(track.releaseDate),
+            primaryGenreName = track.primaryGenreName ?: "",
+            country = track.country ?: "",
+            previewUrl = track.previewUrl ?: "",
         )
     }
 
@@ -31,14 +28,18 @@ class TrackMapper {
             trackTime = track.trackTime,
             artworkUrl100 = track.artworkUrl100.replaceAfterLast('/', "100x100bb.jpg"),
             collectionName = track.collectionName?:"",
-            releaseDate = if (track.releaseDate?.length ?: 0 >= 4) {
-                track.releaseDate?.substring(0, 4)
-            } else {
-                track.releaseDate
-            },
+            releaseDate = handleReleaseDate(track.releaseDate),
             primaryGenreName = track.primaryGenreName,
             country = track.country,
             previewUrl = track.previewUrl,
         )
+    }
+
+    private fun handleReleaseDate(releaseDate: String?): String {
+        return if (releaseDate?.length ?: 0 >= 4) {
+            releaseDate?.substring(0, 4) ?: ""
+        } else {
+            releaseDate ?: ""
+        }
     }
 }

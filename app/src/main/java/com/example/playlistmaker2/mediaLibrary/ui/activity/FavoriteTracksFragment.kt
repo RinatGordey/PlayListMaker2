@@ -97,13 +97,14 @@ class FavoriteTracksFragment: Fragment(),
     }
 
     private fun showContent(tracks: List<Track>) {
+        val sortedTracks = tracks.sortedByDescending { it.addedDate }
         binding.apply {
             rvFavoriteList.isVisible = true
             ivPlaceholderFragment.isVisible = false
             tvPlaceholderMessage.isVisible = false
 
             rvFavoriteList.adapter = adapter
-            adapter?.trackList = tracks as ArrayList<Track>
+            adapter?.trackList = sortedTracks
             adapter?.notifyDataSetChanged()
         }
     }
