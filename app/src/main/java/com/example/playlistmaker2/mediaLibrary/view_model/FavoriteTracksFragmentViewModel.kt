@@ -31,11 +31,8 @@ class FavoriteTracksFragmentViewModel(
     private fun getState(tracks: List<Track>) {
         if (tracks.isEmpty()) {
             stateLiveData.postValue(FavoriteState.Empty)
-        }
-        if (tracks.isNotEmpty()) {
-            stateLiveData.postValue(FavoriteState.Content(tracks))
         } else {
-            stateLiveData.postValue(FavoriteState.Empty)
+            stateLiveData.postValue(FavoriteState.Content(tracks))
         }
     }
 }

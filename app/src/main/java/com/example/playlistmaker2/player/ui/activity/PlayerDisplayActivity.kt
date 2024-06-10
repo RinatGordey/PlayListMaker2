@@ -43,7 +43,7 @@ class PlayerDisplayActivity : AppCompatActivity() {
         if (savedInstanceState != null) {
             lastTrack = savedInstanceState.getParcelable(LAST_TRACK)!!
         } else {
-            val trackExtra = intent.getSerializableExtra(TRACK)
+            val trackExtra = intent.getParcelableExtra<Track>(TRACK)
             if (trackExtra is Track) {
                 lastTrack = TrackMapper().map(trackExtra)
             }

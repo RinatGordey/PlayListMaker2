@@ -102,7 +102,6 @@ class FavoriteTracksFragment: Fragment(),
             rvFavoriteList.isVisible = true
             ivPlaceholderFragment.isVisible = false
             tvPlaceholderMessage.isVisible = false
-
             rvFavoriteList.adapter = adapter
             adapter?.trackList = sortedTracks
             adapter?.notifyDataSetChanged()
