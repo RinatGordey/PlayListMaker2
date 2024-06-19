@@ -7,6 +7,7 @@ import com.example.playlistmaker2.search.domain.model.Track
 class HistoryInteractorImpl(
     private val historyRepository: HistoryRepository
 ):HistoryInteractor {
+
     override fun getTracks(): Array<Track> {
         return historyRepository.getTracks()
     }

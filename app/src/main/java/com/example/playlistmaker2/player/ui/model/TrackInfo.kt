@@ -1,5 +1,7 @@
 package com.example.playlistmaker2.player.ui.model
 
+import java.io.Serializable
+
 data class TrackInfo(
     val trackId: Int, // Идентификатор треков с сервера iTunes
     val trackName: String, // Название композиции
@@ -11,4 +13,4 @@ data class TrackInfo(
     val primaryGenreName: String, // Жанр трека
     val country: String, // Страна исполнителя
     val previewUrl: String, // Передаёт ссылку на отрывок трека
-)
+): Serializable

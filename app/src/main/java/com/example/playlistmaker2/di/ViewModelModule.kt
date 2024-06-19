@@ -12,19 +12,19 @@ import org.koin.dsl.module
 val viewModelModule = module{
 
     viewModel {(playerTrack: TrackInfo) ->
-        PlayerDisplayViewModel(playerTrack,get())
+        PlayerDisplayViewModel(playerTrack, get(), get(), get())
     }
 
     viewModel{
-        TrackSearchViewModel(get(),get(),get())
+        TrackSearchViewModel(get(), get(), get())
     }
 
     viewModel{
-        SettingsViewModel(get(),get(),get())
+        SettingsViewModel(get(), get(), get())
     }
 
     viewModel{
-        FavoriteTracksFragmentViewModel()
+        FavoriteTracksFragmentViewModel(get())
     }
 
     viewModel{

@@ -20,6 +20,7 @@ class TrackSearchViewModel(
     private val searchInteractor: SearchInteractor,
     private val historyInteractor: HistoryInteractor,
     ) : AndroidViewModel(application) {
+
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
@@ -60,8 +61,9 @@ class TrackSearchViewModel(
 
     private fun searchResults(foundTrack: List<Track>?, errorMessage: String?) {
         val tracks = mutableListOf<Track>()
-        if (foundTrack != null)
-        tracks.addAll(foundTrack)
+        if (foundTrack != null) {
+            tracks.addAll(foundTrack)
+        }
         when {
             errorMessage == ErrorType.INTERNET.message -> {
                 renderState(

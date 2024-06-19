@@ -22,9 +22,13 @@
 
     <fragment
         android:id="@+id/mediaLibraryFragment"
-        android:name="com.example.playlistmaker2.mediaLibrary.activity.MediaLibraryFragment"
+        android:name="com.example.playlistmaker2.mediaLibrary.ui.activity.MediaLibraryFragment"
         android:label="fragment_media_library"
-        tools:layout="@layout/fragment_media_library" />
+        tools:layout="@layout/fragment_media_library" >
+        <action
+            android:id="@+id/action_mediaLibraryFragment_to_playerDisplayActivity"
+            app:destination="@id/playerDisplayActivity" />
+    </fragment>
 
     <fragment
         android:id="@+id/settingsFragment"

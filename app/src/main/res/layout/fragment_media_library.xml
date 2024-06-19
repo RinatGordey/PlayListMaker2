@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:backgroundTint="@color/backgroundMain"
-    tools:context=".mediaLibrary.activity.MediaLibraryFragment">
+    tools:context=".mediaLibrary.ui.activity.MediaLibraryFragment">
 
     <LinearLayout
         style="@style/panel_header">

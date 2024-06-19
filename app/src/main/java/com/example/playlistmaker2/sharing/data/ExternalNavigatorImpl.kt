@@ -12,11 +12,14 @@ class ExternalNavigatorImpl(private val application: Application): ExternalNavig
     override fun shareLink() {
         val link = application.getString(R.string.android_developer)
         val intent = Intent(Intent.ACTION_SEND).apply {
-            data = Uri.parse("mailto:")
+            type = "text/plain"
             putExtra(Intent.EXTRA_TEXT, link)
         }
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        application.startActivity(intent)
+
+        val chooser = Intent.createChooser(intent, "Отправить инфо")
+        chooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+        application.startActivity(chooser)
     }
 
     override fun openEmail(emailData: EmailData) {
@@ -26,6 +29,7 @@ class ExternalNavigatorImpl(private val application: Application): ExternalNavig
             putExtra(Intent.EXTRA_SUBJECT, (emailData.message))
             putExtra(Intent.EXTRA_TEXT, (emailData.text))
         }
+
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         application.startActivity(intent)
     }
