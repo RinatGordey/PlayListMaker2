@@ -50,6 +50,6 @@
     <dimen name="size144dp">144dp</dimen>
     <dimen name="size0.5dp">0.5dp</dimen>
     <dimen name="size_minus7dp">-7dp</dimen>
-    <dimen name="size12sp">-12sp</dimen>
+    <dimen name="size12sp">12sp</dimen>
 
 </resources>

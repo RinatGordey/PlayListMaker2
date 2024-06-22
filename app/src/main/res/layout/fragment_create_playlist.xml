@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:backgroundTint="@color/backgroundMain"
     tools:context=".mediaLibrary.ui.activity.CreatePlaylistFragment">
 
     <androidx.constraintlayout.widget.Guideline
@@ -33,72 +33,67 @@
         android:contentDescription="Go back"/>
 
     <TextView
-        android:id="@+id/newPLTextView"
+        android:id="@+id/tvNewPlaylist"
+        style="@style/tv_panel_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/size20dp"
-        android:layout_marginTop="@dimen/size10dp"
-        android:layout_marginBottom="@dimen/size12dp"
-        android:fontFamily="@font/ys_display_medium"
         android:text="@string/new_playlist"
-        android:textColor="@color/icon"
-        android:textSize="@dimen/size22sp"
         app:layout_constraintStart_toEndOf="@id/btBackArrow"
         app:layout_constraintTop_toTopOf="parent" />
 
 
     <ImageView
-        android:id="@+id/coverImageButton"
+        android:id="@+id/imCover"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginHorizontal="@dimen/size8dp"
         android:layout_marginTop="@dimen/size26dp"
         android:scaleType="centerCrop"
-        android:background="@drawable/dash_shape"
+        android:background="@drawable/dash_image"
         app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintBottom_toTopOf="@+id/namePLEditText"
+        app:layout_constraintBottom_toTopOf="@+id/edNamePlaylist"
         app:layout_constraintEnd_toStartOf="@+id/rightBorder"
         app:layout_constraintStart_toStartOf="@+id/leftBorder"
-        app:layout_constraintTop_toBottomOf="@+id/newPLTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/tvNewPlaylist" />
 
     <ImageView
-        android:id="@+id/placeholderImage"
+        android:id="@+id/imPlaceholder"
         android:layout_width="@dimen/size100dp"
         android:layout_height="@dimen/size100dp"
         android:scaleType="centerCrop"
-        app:layout_constraintBottom_toBottomOf="@+id/coverImageButton"
+        app:layout_constraintBottom_toBottomOf="@+id/imCover"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toStartOf="@+id/rightBorder"
         app:layout_constraintStart_toStartOf="@+id/leftBorder"
-        app:layout_constraintTop_toTopOf="@+id/coverImageButton"
+        app:layout_constraintTop_toTopOf="@+id/imCover"
         app:srcCompat="@drawable/pl_image" />
 
     <EditText
-        android:id="@+id/namePLEditText"
+        android:id="@+id/edNamePlaylist"
         style="@style/edCreatePlaylist"
         android:layout_width="0dp"
         android:layout_height="@dimen/size56dp"
         android:layout_marginTop="@dimen/size32dp"
         android:imeOptions="actionDone"
+        android:maxLength="25"
         app:layout_constraintEnd_toEndOf="@id/rightBorder"
         app:layout_constraintStart_toStartOf="@+id/leftBorder"
-        app:layout_constraintTop_toBottomOf="@id/coverImageButton" />
+        app:layout_constraintTop_toBottomOf="@id/imCover" />
 
     <TextView
-        android:id="@+id/namePLTextView"
+        android:id="@+id/tvNamePlaylist"
         style="@style/tvCreatePlaylist"
         android:layout_width="wrap_content"
-        android:background="@color/white"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/size16dp"
-        android:layout_marginTop="-7dp"
+        android:layout_marginTop="@dimen/size_minus7dp"
         android:visibility="gone"
-        app:layout_constraintStart_toStartOf="@id/namePLEditText"
-        app:layout_constraintTop_toTopOf="@id/namePLEditText" />
+        app:layout_constraintStart_toStartOf="@id/edNamePlaylist"
+        app:layout_constraintTop_toTopOf="@id/edNamePlaylist" />
 
 
     <EditText
-        android:id="@+id/descriptionPLEditText"
+        android:id="@+id/edDescriptionPlaylist"
         style="@style/edCreatePlaylist"
         android:layout_width="0dp"
         android:layout_height="@dimen/size56dp"
@@ -106,27 +101,26 @@
         android:hint="@string/playlist_description"
         app:layout_constraintEnd_toEndOf="@id/rightBorder"
         app:layout_constraintStart_toStartOf="@+id/leftBorder"
-        app:layout_constraintTop_toBottomOf="@id/namePLEditText" />
+        app:layout_constraintTop_toBottomOf="@id/edNamePlaylist" />
 
     <TextView
-        android:id="@+id/descriptionPLTextView"
+        android:id="@+id/tvDescriptionPlaylist"
         style="@style/tvCreatePlaylist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:layout_marginStart="@dimen/size16dp"
         android:layout_marginTop="@dimen/size_minus7dp"
         android:text="@string/playlist_description"
         android:visibility="gone"
-        app:layout_constraintStart_toStartOf="@id/descriptionPLEditText"
-        app:layout_constraintTop_toTopOf="@id/descriptionPLEditText" />
+        app:layout_constraintStart_toStartOf="@id/edDescriptionPlaylist"
+        app:layout_constraintTop_toTopOf="@id/edDescriptionPlaylist" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/createPlaylistButton"
+        android:id="@+id/btCreatePlaylist"
         android:layout_width="0dp"
         android:layout_height="56dp"
         android:layout_marginBottom="@dimen/size32dp"
-        android:background="@drawable/create_pl_selector"
+        android:background="@drawable/create_playlist_selector"
         android:text="@string/playlist_create"
         android:textAllCaps="false"
         android:textColor="@color/white"

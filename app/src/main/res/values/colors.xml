@@ -25,5 +25,7 @@
     <color name="bottom_nav_background">#FFFFFF</color>
     <color name="ic_liked">#F56B6C</color>
     <color name="around_like">#1A1B22</color>
+    <color name="dialog">#7FFFD4</color>
+    <color name="ed_playlist">#FFFFFF</color>
 
 </resources>

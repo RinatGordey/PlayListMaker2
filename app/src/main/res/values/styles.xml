@@ -255,7 +255,7 @@
         <item name="android:lineSpacingExtra">@dimen/size0dp</item>
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
-        <item name="android:background">@drawable/pl_edit_text</item>
+        <item name="android:background">@drawable/ed_playlist</item>
         <item name="android:hint">@string/playlist_name</item>
         <item name="android:inputType">text</item>
         <item name="textAllCaps">false</item>
@@ -264,8 +264,9 @@
 
     <style name="tvCreatePlaylist">
         <item name="android:textColor">@color/main_blue</item>
-        <item name="android:textSize">@dimen/size13sp</item>
+        <item name="android:textSize">@dimen/size12sp</item>
         <item name="fontFamily">@font/ys_display_regular</item>
+        <item name="android:background">@color/ed_playlist</item>
         <item name="fontWeight">@dimen/size400</item>
         <item name="android:text">@string/playlist_name</item>
         <item name="android:horizontalGap">3dp</item>
