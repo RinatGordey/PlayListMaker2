@@ -246,4 +246,36 @@
         <item name="android:background">@color/bottom_nav_background</item>
     </style>
 
+    <style name="edCreatePlaylist">
+        <item name="android:textColor">@color/icon</item>
+        <item name="android:textColorHint">@color/icon</item>
+        <item name="android:textSize">@dimen/size16sp</item>
+        <item name="fontFamily">@font/ys_display_regular</item>
+        <item name="fontWeight">@dimen/size400</item>
+        <item name="android:lineSpacingExtra">@dimen/size0dp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:background">@drawable/pl_edit_text</item>
+        <item name="android:hint">@string/playlist_name</item>
+        <item name="android:inputType">text</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:imeOptions">actionDone</item>
+    </style>
+
+    <style name="tvCreatePlaylist">
+        <item name="android:textColor">@color/main_blue</item>
+        <item name="android:textSize">@dimen/size13sp</item>
+        <item name="fontFamily">@font/ys_display_regular</item>
+        <item name="fontWeight">@dimen/size400</item>
+        <item name="android:text">@string/playlist_name</item>
+        <item name="android:horizontalGap">3dp</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:imeOptions">actionDone</item>
+        <item name="android:paddingHorizontal">4dp</item>
+    </style>
+
+    <style name="DialogTheme" parent="MaterialAlertDialog.Material3.Title.Text" >
+        <item name="android:background">@color/switch_on</item>
+    </style>
+
 </resources>
