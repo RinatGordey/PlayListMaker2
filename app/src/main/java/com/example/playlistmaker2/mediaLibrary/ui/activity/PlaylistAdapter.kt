@@ -4,10 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker2.databinding.PlaylistItemBinding
-import com.example.playlistmaker2.mediaLibrary.models.Playlists
+import com.example.playlistmaker2.mediaLibrary.models.PlaylistToRv
 
 class PlaylistAdapter(
-    private val playlists: List<Playlists>,
+    private val playlists: List<PlaylistToRv>,
 ): RecyclerView.Adapter<PlaylistsViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistsViewHolder {

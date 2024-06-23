@@ -42,5 +42,6 @@
     <string name="cancel">Отмена</string>
     <string name="complete">Завершить</string>
     <string name="playlist_toast">Плейлист</string>
+    <string name="Nothing">Ничего</string>
 
 </resources>

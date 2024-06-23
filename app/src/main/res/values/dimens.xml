@@ -51,5 +51,7 @@
     <dimen name="size0.5dp">0.5dp</dimen>
     <dimen name="size_minus7dp">-7dp</dimen>
     <dimen name="size12sp">12sp</dimen>
+    <dimen name="size196dp">196dp</dimen>
+    <dimen name="size160dp">160dp</dimen>
 
 </resources>

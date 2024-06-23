@@ -14,10 +14,17 @@
         android:text="@string/new_playlist"
         android:visibility="visible"/>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvPlaylist"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
+
     <ImageView
         android:id="@+id/ivPlaceholderFragment"
         style="@style/ivPlaceholderNothingFound"
         android:layout_marginTop="@dimen/size48dp"
+        android:contentDescription="@string/Nothing"
         android:visibility="visible"/>
 
     <TextView

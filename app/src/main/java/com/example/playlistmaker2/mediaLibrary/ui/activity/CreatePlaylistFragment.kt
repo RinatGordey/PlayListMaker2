@@ -1,10 +1,6 @@
 package com.example.playlistmaker2.mediaLibrary.ui.activity
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -19,18 +15,13 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker2.R
 import com.example.playlistmaker2.databinding.FragmentCreatePlaylistBinding
-import com.example.playlistmaker2.mediaLibrary.models.Playlist
 import com.example.playlistmaker2.mediaLibrary.view_model.CreatePlaylistFragmentViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.io.File
-import java.io.FileOutputStream
 
 class CreatePlaylistFragment : Fragment() {
 
     companion object {
-        const val MY_ALBUM = "myAlbum"
-        const val COVER = "cover"
         const val PLAYLIST = "Плейлист"
         const val CREATED = "создан"
     }
@@ -60,7 +51,7 @@ class CreatePlaylistFragment : Fragment() {
                 if (uri != null) {
                     uriDb = uri.toString()
                     binding.btCoverImage.setImageURI(uri)
-                    saveImageToPrivateStorage(uri)
+                    viewModel.saveImageToStorage(uri, requireContext())
                     binding.imPlaceholder.isVisible = false
                     addedImage = true
                 } else {}
@@ -90,7 +81,6 @@ class CreatePlaylistFragment : Fragment() {
 
         textWatcherName.let { binding.edNamePlaylist.addTextChangedListener(it) }
 
-
         textWatcherDescription = object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -114,18 +104,23 @@ class CreatePlaylistFragment : Fragment() {
         textWatcherDescription.let { binding.edDescriptionPlaylist.addTextChangedListener(it) }
 
         binding.btCreatePlaylist.setOnClickListener {
-            viewModel.createPlaylist(
-                Playlist(
-                    playlistId = null,
-                    playlistName = binding.edNamePlaylist.text.toString(),
-                    playlistDescription = binding.edDescriptionPlaylist.text.toString(),
-                    uri =uriDb,
-                )
-            )
+            if (binding.edNamePlaylist.text.isNotEmpty()) {
+                viewModel.run {
+                    createPlaylist(
+                        binding.edNamePlaylist.text.toString(),
+                        binding.edDescriptionPlaylist.text.toString(),
+                    )
 
-            Toast.makeText(requireContext(), PLAYLIST + " " + binding.edNamePlaylist.text.toString()
-                    + " " + CREATED, Toast.LENGTH_SHORT).show()
-            findNavController().navigateUp()
+                    Toast.makeText(
+                        requireContext(), PLAYLIST + " " + binding.edNamePlaylist.text.toString()
+                                + " " + CREATED, Toast.LENGTH_SHORT
+                    ).show()
+                    findNavController().navigateUp()
+                }
+            } else {
+                Toast.makeText(requireContext(), "Поле Название* не заполнено", Toast.LENGTH_SHORT)
+                    .show()
+            }
         }
 
         binding.btCoverImage.setOnClickListener {
@@ -160,20 +155,6 @@ class CreatePlaylistFragment : Fragment() {
         } else {
             findNavController().navigateUp()
         }
-    }
-
-    private fun saveImageToPrivateStorage(uri: Uri) {
-        val filePath =
-            File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), MY_ALBUM)
-        if (!filePath.exists()) {
-            filePath.mkdirs()
-        }
-        val file = File(filePath, COVER)
-        val inputStream = requireActivity().contentResolver.openInputStream(uri)
-        val outputStream = FileOutputStream(file)
-        BitmapFactory
-            .decodeStream(inputStream)
-            .compress(Bitmap.CompressFormat.JPEG, 30, outputStream)
     }
 
     override fun onDestroyView() {
