@@ -10,17 +10,19 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker2.R
 import com.example.playlistmaker2.databinding.FragmentCreatePlaylistBinding
+import com.example.playlistmaker2.mediaLibrary.models.Playlist
+import com.example.playlistmaker2.mediaLibrary.view_model.CreatePlaylistFragmentViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import java.io.FileOutputStream
 
@@ -29,13 +31,17 @@ class CreatePlaylistFragment : Fragment() {
     companion object {
         const val MY_ALBUM = "myAlbum"
         const val COVER = "cover"
+        const val PLAYLIST = "Плейлист"
+        const val CREATED = "создан"
     }
 
     private var _binding: FragmentCreatePlaylistBinding? = null
     private val binding get() = _binding!!
-    private lateinit var textWatcherName: TextWatcher
-    private lateinit var textWatcherDescription: TextWatcher
-    var addedImage = false
+    private var textWatcherName: TextWatcher? = null
+    private var textWatcherDescription: TextWatcher? = null
+    private var addedImage = false
+    private val viewModel by viewModel<CreatePlaylistFragmentViewModel>()
+    private var uriDb: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,12 +58,8 @@ class CreatePlaylistFragment : Fragment() {
         val pickMedia = registerForActivityResult(
             ActivityResultContracts.PickVisualMedia()) { uri ->
                 if (uri != null) {
-                    Glide.with(requireActivity())
-                        .load(uri)
-                        .centerCrop()
-                        .transform(RoundedCorners(30))
-                        .into(binding.imCover)
-
+                    uriDb = uri.toString()
+                    binding.btCoverImage.setImageURI(uri)
                     saveImageToPrivateStorage(uri)
                     binding.imPlaceholder.isVisible = false
                     addedImage = true
@@ -111,7 +113,22 @@ class CreatePlaylistFragment : Fragment() {
 
         textWatcherDescription.let { binding.edDescriptionPlaylist.addTextChangedListener(it) }
 
-        binding.imCover.setOnClickListener {
+        binding.btCreatePlaylist.setOnClickListener {
+            viewModel.createPlaylist(
+                Playlist(
+                    playlistId = null,
+                    playlistName = binding.edNamePlaylist.text.toString(),
+                    playlistDescription = binding.edDescriptionPlaylist.text.toString(),
+                    uri =uriDb,
+                )
+            )
+
+            Toast.makeText(requireContext(), PLAYLIST + " " + binding.edNamePlaylist.text.toString()
+                    + " " + CREATED, Toast.LENGTH_SHORT).show()
+            findNavController().navigateUp()
+        }
+
+        binding.btCoverImage.setOnClickListener {
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
 

@@ -7,6 +7,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.playlistmaker2.R
 import com.example.playlistmaker2.databinding.ActivityMainBinding
+import com.example.playlistmaker2.db.AppDatabase
 
 class MainActivity: AppCompatActivity(){
 

@@ -60,9 +60,9 @@ class FavoriteTracksFragment: Fragment(),
 
     override fun onTrackClick(track: Track) {
         if (clickDebounce()) {
-            val Intent = Intent(requireContext(), PlayerDisplayActivity::class.java)
-            Intent.putExtra(TRACK, track)
-            startActivity(Intent)
+            val intent = Intent(requireContext(), PlayerDisplayActivity::class.java)
+            intent.putExtra(TRACK, track)
+            startActivity(intent)
         }
     }
 

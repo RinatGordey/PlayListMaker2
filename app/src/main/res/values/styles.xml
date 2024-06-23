@@ -260,6 +260,7 @@
         <item name="android:inputType">text</item>
         <item name="textAllCaps">false</item>
         <item name="android:imeOptions">actionDone</item>
+        <item name="android:textCursorDrawable">@drawable/cursor</item>
     </style>
 
     <style name="tvCreatePlaylist">
@@ -277,6 +278,19 @@
 
     <style name="DialogTheme" parent="MaterialAlertDialog.Material3.Title.Text" >
         <item name="android:background">@color/switch_on</item>
+    </style>
+
+    <style name="tvItemPlaylist">
+        <item name="android:textColor">@color/icon</item>
+        <item name="android:textSize">@dimen/size12sp</item>
+        <item name="fontFamily">@font/ys_display_regular</item>
+        <item name="android:background">@color/ed_playlist</item>
+        <item name="fontWeight">@dimen/size400</item>
+        <item name="android:text">@string/playlist_name</item>
+        <item name="android:horizontalGap">3dp</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:imeOptions">actionDone</item>
+        <item name="android:paddingHorizontal">4dp</item>
     </style>
 
 </resources>
