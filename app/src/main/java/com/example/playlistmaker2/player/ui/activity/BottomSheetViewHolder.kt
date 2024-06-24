@@ -1,14 +1,14 @@
-package com.example.playlistmaker2.mediaLibrary.ui.activity
+package com.example.playlistmaker2.player.ui.activity
 
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker2.R
-import com.example.playlistmaker2.databinding.PlaylistItemBinding
+import com.example.playlistmaker2.databinding.BottomSheetItemBinding
 import com.example.playlistmaker2.mediaLibrary.models.PlaylistToRv
 
-class PlaylistsViewHolder(
-    private var binding: PlaylistItemBinding,
-) : RecyclerView.ViewHolder(binding.root) {
+class BottomSheetViewHolder (
+    private var binding: BottomSheetItemBinding,
+    ) : RecyclerView.ViewHolder(binding.root) {
 
     private var trackCount = 0
     private var caseTrack = ""
@@ -21,7 +21,7 @@ class PlaylistsViewHolder(
 
     fun bind(playlists: PlaylistToRv) {
         binding.apply {
-            tvNamePlaylist.text = playlists.playlistName
+            playlistName.text = playlists.playlistName
             while (playlists.tracksCount > 20) {
                 trackCount -= 20
             }
@@ -37,9 +37,9 @@ class PlaylistsViewHolder(
             binding.countTrack.text = "$text $caseTrack"
 
             if (playlists.uri != null) {
-                playlistImage.setImageURI(playlists.uri.toUri())
+                trackImage.setImageURI(playlists.uri.toUri())
             } else {
-                playlistImage.setImageResource(R.drawable.ic_stub)
+                trackImage.setImageResource(R.drawable.ic_stub)
             }
         }
     }

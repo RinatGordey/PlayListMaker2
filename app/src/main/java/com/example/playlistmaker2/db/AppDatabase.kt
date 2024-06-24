@@ -23,11 +23,13 @@ abstract class AppDatabase: RoomDatabase() {
     abstract fun playlistDao(): PlaylistDao
 
     companion object {
-        fun newDatabase(context: Context) = Room.inMemoryDatabaseBuilder(
+        fun newDatabase(context: Context) = Room.databaseBuilder(
             context,
-            AppDatabase::class.java
+            AppDatabase::class.java,
+            "app_database"
         )
             .addMigrations(Migration.MIGRATION_1_2)
+            .fallbackToDestructiveMigration()
             .build()
     }
 }

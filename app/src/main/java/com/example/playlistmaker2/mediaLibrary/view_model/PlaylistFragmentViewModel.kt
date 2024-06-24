@@ -30,7 +30,7 @@ class PlaylistFragmentViewModel(
 
     fun observeState(): LiveData<PlaylistState> = stateLiveData
 
-    fun getData() {
+    private fun getData() {
         viewModelScope.launch {
             playlistInteractor.getPlaylist().collect { playlists -> getState(playlists) }
         }

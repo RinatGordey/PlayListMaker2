@@ -53,5 +53,6 @@
     <dimen name="size12sp">12sp</dimen>
     <dimen name="size196dp">196dp</dimen>
     <dimen name="size160dp">160dp</dimen>
+    <dimen name="size506dp">506dp</dimen>
 
 </resources>
