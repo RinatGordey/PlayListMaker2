@@ -33,16 +33,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:contentDescription="Go back"/>
 
-            <TextView
-                android:layout_width="@dimen/size0dp"
-                android:layout_height="match_parent"
-                style="@style/tv_panel_header"
-                app:layout_constraintStart_toEndOf="@+id/btBackArrow"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/leftBorder"
@@ -72,7 +63,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
-
         <ImageView
             android:id="@+id/trackPicture"
             android:layout_width="@dimen/size0dp"
@@ -84,8 +74,6 @@
             app:layout_constraintEnd_toStartOf="@+id/rightBorder"
             app:layout_constraintStart_toStartOf="@+id/leftBorder"
             app:srcCompat="@drawable/ic_stub"/>
-
-
 
         <TextView
             android:id="@+id/country"
@@ -259,6 +247,12 @@
             app:layout_constraintBottom_toTopOf="@id/duration"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/backgroundOverlay"
+        android:visibility="gone"/>
 
     <LinearLayout
         android:id="@+id/bottom_sheet"

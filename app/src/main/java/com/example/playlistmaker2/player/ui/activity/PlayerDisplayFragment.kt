@@ -6,43 +6,49 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlistmaker2.R
 import com.example.playlistmaker2.databinding.FragmentPlayerDisplayBinding
+import com.example.playlistmaker2.mediaLibrary.models.Playlist
 import com.example.playlistmaker2.mediaLibrary.models.PlaylistState
-import com.example.playlistmaker2.mediaLibrary.models.PlaylistToRv
 import com.example.playlistmaker2.player.ui.mapper.TrackMapper
 import com.example.playlistmaker2.player.ui.model.TrackInfo
 import com.example.playlistmaker2.player.ui.view_model.PlayerDisplayViewModel
 import com.example.playlistmaker2.search.domain.model.Track
 import com.example.playlistmaker2.util.loadTrackPicture
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class PlayerDisplayFragment : Fragment() {
+class PlayerDisplayFragment : Fragment(), BottomSheetAdapter.PlaylistClickListener {
 
     companion object {
-    const val TRACK = "TRACK"
-    const val LAST_TRACK = "LAST_TRACK"
-    const val CURRENT_POSITION = "CURRENT_POSITION"
-    const val IS_PLAYING = "IS_PLAYING"
-
+        const val TRACK = "TRACK"
+        const val LAST_TRACK = "LAST_TRACK"
+        const val CURRENT_POSITION = "CURRENT_POSITION"
+        const val IS_PLAYING = "IS_PLAYING"
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
         fun createArgs(track: Track): Bundle =
             bundleOf(TRACK to track)
-}
+    }
 
     private var _binding: FragmentPlayerDisplayBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var lastTrack: TrackInfo
     private lateinit var mediaPlayer: MediaPlayer
-    private val adapter = BottomSheetAdapter()
+    private lateinit var adapter: BottomSheetAdapter
+    private lateinit var trackForPlaylist: Track
+    private var isClickAllowed = true
 
     private val viewModel: PlayerDisplayViewModel by viewModel {
         parametersOf(lastTrack)
@@ -60,6 +66,8 @@ class PlayerDisplayFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        adapter = BottomSheetAdapter(this, requireContext())
+        binding.rvBottomSheet.adapter = adapter
         binding.rvBottomSheet.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
@@ -68,6 +76,21 @@ class PlayerDisplayFragment : Fragment() {
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
         mediaPlayer = MediaPlayer()
+
+        trackForPlaylist = Track(
+            0,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            false,
+            0L,
+        )
 
         if (savedInstanceState != null) {
             lastTrack = savedInstanceState.getParcelable(LAST_TRACK)!!
@@ -114,6 +137,27 @@ class PlayerDisplayFragment : Fragment() {
             findNavController().navigate(R.id.action_playerDisplayFragment_to_createPlaylistFragment)
         }
 
+        bottomSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
+
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+
+                when (newState) {
+                    BottomSheetBehavior.STATE_HIDDEN -> {
+                        binding.overlay.isVisible = false
+                    }
+                    else -> {
+                        binding.overlay.isVisible = true
+                    }
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                binding.overlay.alpha = slideOffset
+            }
+
+        })
+
         viewModel.getPlayingLiveData().observe(viewLifecycleOwner) { playbackState ->
             if (playbackState.playes) {
                 binding.playButton.setImageResource(R.drawable.ic_bt_pause)
@@ -130,6 +174,26 @@ class PlayerDisplayFragment : Fragment() {
             } else {
                 binding.likeButton.setImageResource(R.drawable.ic_like_bt)
                 binding.likeButton.setColorFilter(Color.WHITE)
+            }
+        }
+
+        viewModel.getBottomSheetLiveData().observe(viewLifecycleOwner) { state ->
+            render(state)
+        }
+
+        viewModel.getAddToPlaylistLiveData().observe(viewLifecycleOwner) { action ->
+            when (action.first){
+                true->{ Toast.makeText(
+                    requireContext(), "Трек уже добавлен в плейлист ${action.second}",
+                    Toast.LENGTH_LONG
+                ).show()
+                }
+                false->{ Toast.makeText(
+                    requireContext(),"Добавлено в плейлист ${action.second}",
+                    Toast.LENGTH_LONG
+                ).show()
+                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+                }
             }
         }
     }
@@ -182,14 +246,32 @@ class PlayerDisplayFragment : Fragment() {
         }
     }
 
-    private fun showContent(playlists: List<PlaylistToRv>) {
+    private fun showContent(playlists: List<Playlist>) {
         binding.rvBottomSheet.isVisible = true
         binding.rvBottomSheet.adapter = adapter
-        adapter.playlists = playlists as ArrayList<PlaylistToRv>
+        adapter.playlists = playlists as ArrayList<Playlist>
         adapter.notifyDataSetChanged()
     }
 
     private fun showEmpty() {
         binding.rvBottomSheet.isVisible = false
+    }
+
+    private fun clickDebounce(): Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            viewLifecycleOwner.lifecycleScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY)
+                isClickAllowed = true
+            }
+        }
+        return current
+    }
+
+    override fun onPlaylistClick(playlist: Playlist) {
+        if (clickDebounce()) {
+            viewModel.addToPlaylist(playlist,trackForPlaylist)
+        }
     }
 }

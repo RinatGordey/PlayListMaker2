@@ -277,7 +277,7 @@
     </style>
 
     <style name="DialogTheme" parent="MaterialAlertDialog.Material3.Title.Text" >
-        <item name="android:background">@color/switch_on</item>
+        <item name="android:background">@color/main_blue</item>
     </style>
 
     <style name="tvItemPlaylist">

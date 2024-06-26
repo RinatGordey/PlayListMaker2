@@ -1,6 +1,5 @@
 package com.example.playlistmaker2.mediaLibrary.ui.activity
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,11 +7,13 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.playlistmaker2.R
 import com.example.playlistmaker2.databinding.FavoriteTracksFragmentBinding
 import com.example.playlistmaker2.mediaLibrary.models.FavoriteState
 import com.example.playlistmaker2.mediaLibrary.view_model.FavoriteTracksFragmentViewModel
-import com.example.playlistmaker2.player.ui.activity.PlayerDisplayActivity
+import com.example.playlistmaker2.player.ui.activity.PlayerDisplayFragment
 import com.example.playlistmaker2.search.domain.model.Track
 import com.example.playlistmaker2.search.ui.activity.TrackAdapter
 import kotlinx.coroutines.delay
@@ -28,7 +29,6 @@ class FavoriteTracksFragment: Fragment(),
 
     companion object {
         fun newInstance() = FavoriteTracksFragment()
-        private const val TRACK = "TRACK"
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 
@@ -60,9 +60,9 @@ class FavoriteTracksFragment: Fragment(),
 
     override fun onTrackClick(track: Track) {
         if (clickDebounce()) {
-            val intent = Intent(requireContext(), PlayerDisplayActivity::class.java)
-            intent.putExtra(TRACK, track)
-            startActivity(intent)
+            isClickAllowed = true
+            findNavController().navigate(R.id.action_mediaLibraryFragment_to_playerDisplayFragment,
+                PlayerDisplayFragment.createArgs(track))
         }
     }
 

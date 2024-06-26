@@ -5,6 +5,6 @@ sealed interface PlaylistState {
     data object NoPlaylists : PlaylistState
 
     data class PlaylistsContent(
-        val playlists: List<PlaylistToRv>,
+        val playlists: List<Playlist>,
     ): PlaylistState
 }

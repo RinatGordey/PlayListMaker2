@@ -41,7 +41,6 @@
         app:layout_constraintStart_toEndOf="@id/btBackArrow"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <androidx.cardview.widget.CardView
         android:id="@+id/imConteiner"
         android:layout_width="0dp"
@@ -74,7 +73,7 @@
             app:layout_constraintEnd_toStartOf="@+id/rightBorder"
             app:layout_constraintStart_toStartOf="@+id/leftBorder"
             app:layout_constraintTop_toTopOf="@+id/imCover"
-            app:srcCompat="@drawable/pl_image" />
+            app:srcCompat="@drawable/playlist_image" />
 
     </androidx.cardview.widget.CardView>
 
@@ -100,7 +99,6 @@
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="@id/edNamePlaylist"
         app:layout_constraintTop_toTopOf="@id/edNamePlaylist" />
-
 
     <EditText
         android:id="@+id/edDescriptionPlaylist"

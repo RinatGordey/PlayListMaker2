@@ -51,10 +51,11 @@ class CreatePlaylistFragment : Fragment() {
                 if (uri != null) {
                     uriDb = uri.toString()
                     binding.btCoverImage.setImageURI(uri)
-                    viewModel.saveImageToStorage(uri, requireContext())
+                    viewModel.saveImageToPrivateStorage(uri, requireContext())
                     binding.imPlaceholder.isVisible = false
                     addedImage = true
-                } else {}
+
+                }
             }
 
         textWatcherName = object : TextWatcher {
@@ -139,21 +140,25 @@ class CreatePlaylistFragment : Fragment() {
     }
 
     private fun showDialog() {
-        if (binding.edNamePlaylist.text.toString().isNotEmpty()
-            or binding.edDescriptionPlaylist.text.toString().isNotEmpty()
-            or addedImage
-        ) {
-            MaterialAlertDialogBuilder(requireContext(), R.style.DialogTheme)
-                .setTitle(R.string.finish_creating_a_playlist)
-                .setMessage(R.string.all_unsaved_data_will_be_lost)
-                .setNeutralButton(R.string.cancel) { _, _ ->
-                }
-                .setNegativeButton(R.string.complete) { _, _ ->
-                    findNavController().navigateUp()
-                }
-                .show()
+        if (_binding != null) {
+            val binding = _binding!!
+            if (binding.edNamePlaylist.text.toString().isNotEmpty()
+                or binding.edDescriptionPlaylist.text.toString().isNotEmpty()
+                or addedImage
+            ) {
+                MaterialAlertDialogBuilder(requireContext(), R.style.DialogTheme)
+                    .setTitle(R.string.finish_creating_a_playlist)
+                    .setMessage(R.string.all_unsaved_data_will_be_lost)
+                    .setNeutralButton(R.string.cancel) { _, _ ->
+                    }
+                    .setNegativeButton(R.string.complete) { _, _ ->
+                        findNavController().popBackStack()
+                    }
+                    .show()
+            } else {
+                findNavController().popBackStack()
+            }
         } else {
-            findNavController().navigateUp()
         }
     }
 

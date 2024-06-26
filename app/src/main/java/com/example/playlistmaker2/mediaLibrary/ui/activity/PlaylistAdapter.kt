@@ -1,14 +1,24 @@
 package com.example.playlistmaker2.mediaLibrary.ui.activity
 
+import android.content.Context
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker2.databinding.PlaylistItemBinding
-import com.example.playlistmaker2.mediaLibrary.models.PlaylistToRv
+import com.example.playlistmaker2.mediaLibrary.models.Playlist
 
 class PlaylistAdapter(
-    private val playlists: List<PlaylistToRv>,
+    val context: Context,
 ): RecyclerView.Adapter<PlaylistsViewHolder>() {
+
+    lateinit var playlists: ArrayList<Playlist>
+    private var playlistCoverUri: Uri? = null
+
+    fun setPlaylistCover(uri: Uri) {
+        playlistCoverUri = uri
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistsViewHolder {
         val layoutInspector = LayoutInflater.from(parent.context)
@@ -20,6 +30,6 @@ class PlaylistAdapter(
     }
 
     override fun onBindViewHolder(holder: PlaylistsViewHolder, position: Int) {
-        holder.bind(playlists[position])
+        holder.bind(playlists[position], context)
     }
 }

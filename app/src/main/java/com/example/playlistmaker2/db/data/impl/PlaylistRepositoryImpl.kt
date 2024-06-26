@@ -5,6 +5,7 @@ import com.example.playlistmaker2.db.data.converters.PlaylistDbConvertor
 import com.example.playlistmaker2.db.data.entity.PlaylistEntity
 import com.example.playlistmaker2.db.domain.db.PlaylistRepository
 import com.example.playlistmaker2.mediaLibrary.models.Playlist
+import com.example.playlistmaker2.search.domain.model.Track
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -22,7 +23,11 @@ class PlaylistRepositoryImpl(
         emit(convertFromPlaylistEntity(playlists))
     }
 
-    private fun convertFromPlaylistEntity(playlistEntities: List<PlaylistEntity>): List<Playlist> {
-        return playlistEntities.map { playlistEntity -> playlistDbConvertor.map(playlistEntity) }
+    private fun convertFromPlaylistEntity(playlists: List<PlaylistEntity>): List<Playlist> {
+        return playlists.map { playlists -> playlistDbConvertor.map(playlists) }
+    }
+
+    override suspend fun addTrackToPlaylist(track: Track) {
+        appDatabase.playlistTrackDao().insertTrack(playlistDbConvertor.mapTrack(track))
     }
 }
