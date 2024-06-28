@@ -17,7 +17,12 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvPlaylist"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size16dp"
+        android:layout_marginBottom="@dimen/size16dp"
+        android:clipToPadding="false"
+        android:layout_marginStart="@dimen/size16dp"
+        android:layout_marginEnd="@dimen/size16dp"
         android:visibility="gone"/>
 
     <ImageView

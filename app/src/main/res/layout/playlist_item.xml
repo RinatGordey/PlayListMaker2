@@ -1,47 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/size16dp"
-    android:layout_marginHorizontal="@dimen/size4dp"
-    android:background="@color/ed_playlist"
-    android:orientation="vertical"
-    >
+    xmlns:tools="http://schemas.android.com/tools"
+    card_view:cardElevation="0dp"
+    android:layout_marginBottom="@dimen/size16dp"
+    card_view:cardBackgroundColor="@color/ed_playlist">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/playlist_container"
-        android:layout_width="@dimen/size160dp"
-        android:layout_height="@dimen/size160dp"
-        app:cardElevation="0dp"
-        android:clipToOutline="true">
-
-    <ImageView
-        android:id="@+id/playlistImage"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:srcCompat="@drawable/ic_stub"
-        android:scaleType="centerCrop"
-        app:layout_constraintDimensionRatio="h,1:1"
-        android:background="@drawable/for_item_playlist"/>
-
-    </androidx.cardview.widget.CardView>
-
-    <TextView
-        android:id="@+id/tvNamePlaylist"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/tvItemPlaylist"
-        tools:text="Summer Party"
-        android:layout_marginTop="@dimen/size4dp"/>
+        android:orientation="vertical"
+        android:layout_marginStart="@dimen/size8dp"
+        android:layout_marginEnd="@dimen/size8dp" >
 
-    <TextView
-        android:id="@+id/countTrack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/tvItemPlaylist"
-        tools:text="157 треков" />
+        <ImageView
+            android:id="@+id/playlistImage"
+            android:layout_width="@dimen/size160dp"
+            android:layout_height="@dimen/size160dp"
+            android:src="@drawable/ic_stub2"
+            android:scaleType="centerCrop"
+            android:background="@drawable/for_item_playlist"
+            android:outlineProvider="background"
+            android:clipToOutline="true"/>
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/tvNamePlaylist"
+            android:layout_width="@dimen/size160dp"
+            android:layout_height="wrap_content"
+            style="@style/tvItemPlaylist"
+            tools:text="Summer Party"
+            android:layout_marginTop="@dimen/size4dp"/>
+
+        <TextView
+            android:id="@+id/countTrack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/tvItemPlaylist"
+            tools:text="157 треков" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

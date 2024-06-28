@@ -16,7 +16,6 @@ class PlaylistFragmentViewModel(
 ) : ViewModel() {
 
     private val stateLiveData = MutableLiveData<PlaylistState>()
-    private var _imageUri: String? = null
 
     init {
         getData()
@@ -26,7 +25,8 @@ class PlaylistFragmentViewModel(
 
     fun getData() {
         viewModelScope.launch {
-            playlistInteractor.getPlaylist().collect { playlists -> getState(playlists) }
+            playlistInteractor.getPlaylist().collect {
+                playlists -> getState(playlists) }
         }
     }
 

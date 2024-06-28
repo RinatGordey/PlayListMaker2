@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.playlistmaker2.db.data.converters.PlaylistDbConvertor
 import com.example.playlistmaker2.db.domain.db.FavoriteInteractor
 import com.example.playlistmaker2.db.domain.db.PlaylistInteractor
 import com.example.playlistmaker2.mediaLibrary.models.Playlist
@@ -23,7 +22,6 @@ class PlayerDisplayViewModel(
     private val lastTrack: TrackInfo,
     private val playerInteractor: PlayerInteractor,
     private val favoriteInteractor: FavoriteInteractor,
-    private val playlistDbConvertor: PlaylistDbConvertor,
     private val playlistInteractor: PlaylistInteractor,
     get: Any,
     ) : ViewModel() {
@@ -134,36 +132,32 @@ class PlayerDisplayViewModel(
         }
     }
 
-    fun addToPlaylist(playlist: Playlist, track: Track) {
-        if (playlist.tracksId != "") {
-            val idList = playlistDbConvertor.mapToList(playlist.tracksId) as MutableList
-            if (idList.contains(track.trackId)) {
-                addToPlaylistLiveData.postValue(Pair(true, playlist.playlistName))
-            } else {
-                update(idList, track, playlist)
-            }
-        } else {
-            val idList: MutableList<Int> = ArrayList()
-            update(idList, track, playlist)
-        }
-    }
+    fun addToPlaylist(playlist: Playlist, tracks: List<Track>) {
+        val trackIds = playlist.tracksId.toMutableList()
+        val addedTracks = mutableListOf<Track>()
 
-    private fun update(idList: MutableList<Int>, track: Track, playlist: Playlist) {
-        idList.add(track.trackId)
-        val newTracksID = playlistDbConvertor.mapToJson(idList)
-        val count = playlist.tracksCount + 1
-        val newPL = Playlist(
+        tracks.forEach { track ->
+            if (!playlist.playlistId?.let { trackIds.contains(it.toInt()) }!!) {
+                trackIds.add(playlist.playlistId.toInt())
+                addedTracks.add(track)
+            }
+        }
+
+        val newTracksCount = playlist.tracksCount + addedTracks.size
+        val newPlaylist = Playlist(
             playlist.playlistId,
             playlist.playlistName,
             playlist.playlistDescription,
             playlist.uri,
-            newTracksID,
-            count,
+            trackIds,
+            newTracksCount
         )
+
         viewModelScope.launch {
-            playlistInteractor.addToPlaylist(newPL)
-            playlistInteractor.addTrackToPlaylist(track)
+            playlistInteractor.addToPlaylist(newPlaylist)
+            addedTracks.forEach { addedTrack -> playlistInteractor.addTrackToPlaylist(addedTrack) }
         }
+
         addToPlaylistLiveData.postValue(Pair(false, playlist.playlistName))
     }
 }

@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -67,13 +68,14 @@ class PlayerDisplayFragment : Fragment(), BottomSheetAdapter.PlaylistClickListen
         super.onViewCreated(view, savedInstanceState)
 
         adapter = BottomSheetAdapter(this, requireContext())
-        binding.rvBottomSheet.adapter = adapter
+
         binding.rvBottomSheet.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
         val bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheet)
 
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        adapter.notifyDataSetChanged()
 
         mediaPlayer = MediaPlayer()
 
@@ -132,6 +134,12 @@ class PlayerDisplayFragment : Fragment(), BottomSheetAdapter.PlaylistClickListen
         viewModel.getBottomSheetLiveData().observe(viewLifecycleOwner) { state ->
             render(state)
         }
+
+        requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                findNavController().popBackStack()
+            }
+        })
 
         binding.btNewPlaylist.setOnClickListener {
             findNavController().navigate(R.id.action_playerDisplayFragment_to_createPlaylistFragment)
@@ -271,7 +279,8 @@ class PlayerDisplayFragment : Fragment(), BottomSheetAdapter.PlaylistClickListen
 
     override fun onPlaylistClick(playlist: Playlist) {
         if (clickDebounce()) {
-            viewModel.addToPlaylist(playlist,trackForPlaylist)
+            val trackList = listOf(trackForPlaylist)
+            viewModel.addToPlaylist(playlist, trackList)
         }
     }
 }

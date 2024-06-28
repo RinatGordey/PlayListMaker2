@@ -45,7 +45,7 @@ class PlaylistFragment: Fragment() {
 
         val rv = binding.rvPlaylist
         rv.layoutManager = GridLayoutManager(requireActivity(), 2)
-        rv.adapter = PlaylistAdapter(requireContext())
+        rv.adapter = adapter
 
         viewModel.observeState().observe(viewLifecycleOwner) { state ->
             render(state)
@@ -65,7 +65,6 @@ class PlaylistFragment: Fragment() {
             ivPlaceholderFragment.isVisible = false
             tvPlaceholderMessage.isVisible = false
             rvPlaylist.isVisible = true
-            rvPlaylist.adapter = adapter
             adapter.playlists = playlist as ArrayList<Playlist>
             adapter.notifyDataSetChanged()
         }

@@ -4,10 +4,11 @@ import com.example.playlistmaker2.db.data.entity.PlaylistEntity
 import com.example.playlistmaker2.db.data.entity.PlaylistTrackEntity
 import com.example.playlistmaker2.mediaLibrary.models.Playlist
 import com.example.playlistmaker2.search.domain.model.Track
-import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.ToNumberPolicy
 import com.google.gson.reflect.TypeToken
 
-class PlaylistDbConvertor() {
+class PlaylistDbConvertor {
 
     fun map(playlist: Playlist): PlaylistEntity {
         return PlaylistEntity(
@@ -15,7 +16,7 @@ class PlaylistDbConvertor() {
             playlist.playlistName,
             playlist.playlistDescription,
             playlist.uri,
-            playlist.tracksId,
+            convertListToJson(playlist.tracksId),
             playlist.tracksCount,
         )
     }
@@ -26,19 +27,24 @@ class PlaylistDbConvertor() {
             playlist.playlistName,
             playlist.playlistDescription,
             playlist.uri,
-            playlist.tracksId,
+            convertJsonToList(playlist.tracksId),
             playlist.tracksCount,
         )
     }
 
-    fun mapToJson(idList: MutableList<Int>): String {
-        val json: String = Gson().toJson(idList)
-        return json
+    private fun convertListToJson(trackIdList: List<Int>): String {
+        val gsonBuilder = GsonBuilder().setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE)
+        val gson = gsonBuilder.create()
+        return gson.toJson(trackIdList, object : TypeToken<List<Int>?>() {}.type)
     }
 
-    fun mapToList(idList: String): List<Int> {
-        val type = object : TypeToken<List<Int>>() {}.type
-        return Gson().fromJson(idList, type)
+    private fun convertJsonToList(trackIdList: String?): List<Int> {
+        if (trackIdList.isNullOrEmpty()) {
+            return emptyList()
+        }
+        val gsonBuilder = GsonBuilder().setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE)
+        val gson = gsonBuilder.create()
+        return gson.fromJson(trackIdList, List::class.java) as List<Int>
     }
 
     fun mapTrack(track: Track): PlaylistTrackEntity {

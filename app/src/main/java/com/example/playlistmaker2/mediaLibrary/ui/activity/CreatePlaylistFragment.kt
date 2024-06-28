@@ -1,8 +1,11 @@
 package com.example.playlistmaker2.mediaLibrary.ui.activity
 
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,8 +19,10 @@ import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker2.R
 import com.example.playlistmaker2.databinding.FragmentCreatePlaylistBinding
 import com.example.playlistmaker2.mediaLibrary.view_model.CreatePlaylistFragmentViewModel
+import com.example.playlistmaker2.mediaLibrary.view_model.CreatePlaylistFragmentViewModel.Companion.MY_IMAGE_PLAYLIST
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.io.File
 
 class CreatePlaylistFragment : Fragment() {
 
@@ -54,9 +59,10 @@ class CreatePlaylistFragment : Fragment() {
                     viewModel.saveImageToPrivateStorage(uri, requireContext())
                     binding.imPlaceholder.isVisible = false
                     addedImage = true
-
-                }
-            }
+                }  else {
+            Log.d("PhotoPicker", "No media selected")
+        }
+    }
 
         textWatcherName = object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -137,6 +143,15 @@ class CreatePlaylistFragment : Fragment() {
                 showDialog()
             }
         })
+
+        val filePath = File(requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), MY_IMAGE_PLAYLIST)
+        if (viewModel.nameImage != null) {
+            val file = File(filePath, viewModel.nameImage!!)
+            if (file.exists()) {
+                binding.btCoverImage.setImageURI(Uri.fromFile(file))
+                binding.imPlaceholder.isVisible = false
+            }
+        }
     }
 
     private fun showDialog() {
@@ -158,7 +173,6 @@ class CreatePlaylistFragment : Fragment() {
             } else {
                 findNavController().popBackStack()
             }
-        } else {
         }
     }
 

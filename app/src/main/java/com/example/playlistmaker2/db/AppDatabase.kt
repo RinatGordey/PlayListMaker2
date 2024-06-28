@@ -5,9 +5,6 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.playlistmaker2.db.data.Migration1
-import com.example.playlistmaker2.db.data.Migration2
-import com.example.playlistmaker2.db.data.Migration3
 import com.example.playlistmaker2.db.data.converters.DateConverter
 import com.example.playlistmaker2.db.data.dao.PlaylistDao
 import com.example.playlistmaker2.db.data.dao.PlaylistTrackDao

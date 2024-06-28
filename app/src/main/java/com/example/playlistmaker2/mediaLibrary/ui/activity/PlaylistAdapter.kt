@@ -1,7 +1,6 @@
 package com.example.playlistmaker2.mediaLibrary.ui.activity
 
 import android.content.Context
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -13,12 +12,6 @@ class PlaylistAdapter(
 ): RecyclerView.Adapter<PlaylistsViewHolder>() {
 
     lateinit var playlists: ArrayList<Playlist>
-    private var playlistCoverUri: Uri? = null
-
-    fun setPlaylistCover(uri: Uri) {
-        playlistCoverUri = uri
-        notifyDataSetChanged()
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistsViewHolder {
         val layoutInspector = LayoutInflater.from(parent.context)
