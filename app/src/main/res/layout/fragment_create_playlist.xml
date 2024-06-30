@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:fillViewport="true"
+xmlns:android="http://schemas.android.com/apk/res/android">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/ed_playlist">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/leftBorder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/size16dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/rightBorder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/size16dp" />
+
+    <ImageButton
+        android:id="@+id/btBackArrow"
+        android:layout_width="@dimen/size48dp"
+        android:layout_height="@dimen/size48dp"
+        android:clickable="true"
+        style="@style/ic_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:backgroundTint="@color/ed_playlist"
+        android:contentDescription="Go back"/>
+
+    <TextView
+        android:id="@+id/tvNewPlaylist"
+        style="@style/tv_panel_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/new_playlist"
+        app:layout_constraintStart_toEndOf="@id/btBackArrow"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/imContainer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="@dimen/size8dp"
+        android:layout_marginTop="@dimen/size26dp"
+        android:background="@drawable/dash_image"
+        app:cardCornerRadius="@dimen/size8dp"
+        app:cardElevation="@dimen/size0dp"
+        app:cardBackgroundColor="@color/ed_playlist"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toStartOf="@+id/rightBorder"
+        app:layout_constraintStart_toStartOf="@+id/leftBorder"
+        app:layout_constraintTop_toBottomOf="@+id/tvNewPlaylist" >
+
+        <ImageView
+            android:id="@+id/btCoverImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/dash_image"
+            android:scaleType="centerCrop" />
+
+        <ImageView
+            android:id="@+id/imPlaceholder"
+            android:layout_width="@dimen/size100dp"
+            android:layout_height="@dimen/size100dp"
+            android:layout_gravity="center"
+            app:layout_constraintBottom_toBottomOf="@+id/imCover"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toStartOf="@+id/rightBorder"
+            app:layout_constraintStart_toStartOf="@+id/leftBorder"
+            app:layout_constraintTop_toTopOf="@+id/imCover"
+            app:srcCompat="@drawable/playlist_image" />
+
+    </androidx.cardview.widget.CardView>
+
+    <EditText
+        android:id="@+id/edNamePlaylist"
+        style="@style/edCreatePlaylist"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/size56dp"
+        android:layout_marginTop="@dimen/size32dp"
+        android:imeOptions="actionDone"
+        android:maxLength="25"
+        app:layout_constraintEnd_toEndOf="@id/rightBorder"
+        app:layout_constraintStart_toStartOf="@+id/leftBorder"
+        app:layout_constraintTop_toBottomOf="@id/imContainer" />
+
+    <TextView
+        android:id="@+id/tvNamePlaylist"
+        style="@style/tvCreatePlaylist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/size16dp"
+        android:layout_marginTop="@dimen/size_minus7dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@id/edNamePlaylist"
+        app:layout_constraintTop_toTopOf="@id/edNamePlaylist" />
+
+    <EditText
+        android:id="@+id/edDescriptionPlaylist"
+        style="@style/edCreatePlaylist"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/size56dp"
+        android:layout_marginTop="@dimen/size16dp"
+        android:hint="@string/playlist_description"
+        app:layout_constraintEnd_toEndOf="@id/rightBorder"
+        app:layout_constraintStart_toStartOf="@+id/leftBorder"
+        app:layout_constraintTop_toBottomOf="@id/edNamePlaylist" />
+
+    <TextView
+        android:id="@+id/tvDescriptionPlaylist"
+        style="@style/tvCreatePlaylist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/size16dp"
+        android:layout_marginTop="@dimen/size_minus7dp"
+        android:text="@string/playlist_description"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@id/edDescriptionPlaylist"
+        app:layout_constraintTop_toTopOf="@id/edDescriptionPlaylist" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btCreatePlaylist"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginBottom="@dimen/size32dp"
+        android:background="@drawable/create_playlist_selector"
+        android:text="@string/playlist_create"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/rightBorder"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/leftBorder"
+        app:layout_constraintTop_toBottomOf="@id/edDescriptionPlaylist"
+        app:layout_constraintVertical_bias="1.0" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

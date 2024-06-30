@@ -5,11 +5,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker2.db.domain.db.FavoriteInteractor
+import com.example.playlistmaker2.db.domain.db.PlaylistInteractor
+import com.example.playlistmaker2.mediaLibrary.models.Playlist
+import com.example.playlistmaker2.mediaLibrary.models.PlaylistState
 import com.example.playlistmaker2.player.domain.api.PlayerInteractor
 import com.example.playlistmaker2.player.domain.models.PlayerState
 import com.example.playlistmaker2.player.ui.mapper.TrackMapper
 import com.example.playlistmaker2.player.ui.model.PlaybackState
 import com.example.playlistmaker2.player.ui.model.TrackInfo
+import com.example.playlistmaker2.search.domain.model.Track
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -18,7 +22,8 @@ class PlayerDisplayViewModel(
     private val lastTrack: TrackInfo,
     private val playerInteractor: PlayerInteractor,
     private val favoriteInteractor: FavoriteInteractor,
-    private val trackMapper: TrackMapper,
+    private val playlistInteractor: PlaylistInteractor,
+    get: Any,
     ) : ViewModel() {
 
     companion object {
@@ -26,11 +31,20 @@ class PlayerDisplayViewModel(
         private const val START_TIMER = "00:00"
     }
 
+    private val trackMapper = TrackMapper()
+
     private val playingLiveData = MutableLiveData(PlaybackState(false, START_TIMER))
     fun getPlayingLiveData(): LiveData<PlaybackState> = playingLiveData
 
     private val favoriteLiveData = MutableLiveData(false)
     fun getFavoriteLiveData(): LiveData<Boolean> = favoriteLiveData
+
+    private val bottomSheetLiveData = MutableLiveData<PlaylistState>()
+    fun getBottomSheetLiveData():LiveData<PlaylistState> = bottomSheetLiveData
+
+    private val addToPlaylistLiveData = MutableLiveData<Pair<Boolean, String>>()
+    fun getAddToPlaylistLiveData(): LiveData<Pair<Boolean, String>> = addToPlaylistLiveData
+
     init {
         getFavor(lastTrack.trackId)
     }
@@ -63,8 +77,8 @@ class PlayerDisplayViewModel(
     private fun statePlaying() {
         playerInteractor.play()
         playingLiveData.postValue(
-            PlaybackState(true, playerInteractor.getCurrentPosition()))
-
+            PlaybackState(true, playerInteractor.getCurrentPosition())
+        )
         playerTimerJob?.cancel()
 
         playerTimerJob = viewModelScope.launch {
@@ -102,5 +116,48 @@ class PlayerDisplayViewModel(
                 favoriteLiveData.postValue(true)
             }
         }
+    }
+
+    fun getPlaylists() {
+        viewModelScope.launch {
+            playlistInteractor.getPlaylist().collect { playlists -> getState(playlists) }
+        }
+    }
+
+    private fun getState(playlists: List<Playlist>) {
+        if (playlists.isEmpty()) {
+            bottomSheetLiveData.postValue(PlaylistState.NoPlaylists)
+        } else {
+            bottomSheetLiveData.postValue(PlaylistState.PlaylistsContent(playlists))
+        }
+    }
+
+    fun addToPlaylist(playlist: Playlist, tracks: List<Track>) {
+        val trackIds = playlist.tracksId.toMutableList()
+        val addedTracks = mutableListOf<Track>()
+
+        tracks.forEach { track ->
+            if (!playlist.playlistId?.let { trackIds.contains(it.toInt()) }!!) {
+                trackIds.add(playlist.playlistId.toInt())
+                addedTracks.add(track)
+            }
+        }
+
+        val newTracksCount = playlist.tracksCount + addedTracks.size
+        val newPlaylist = Playlist(
+            playlist.playlistId,
+            playlist.playlistName,
+            playlist.playlistDescription,
+            playlist.uri,
+            trackIds,
+            newTracksCount
+        )
+
+        viewModelScope.launch {
+            playlistInteractor.addToPlaylist(newPlaylist)
+            addedTracks.forEach { addedTrack -> playlistInteractor.addTrackToPlaylist(addedTrack) }
+        }
+
+        addToPlaylistLiveData.postValue(Pair(false, playlist.playlistName))
     }
 }

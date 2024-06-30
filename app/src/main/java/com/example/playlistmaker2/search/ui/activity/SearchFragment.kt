@@ -13,9 +13,11 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.playlistmaker2.R
 import com.example.playlistmaker2.databinding.FragmentSearchBinding
-import com.example.playlistmaker2.player.ui.activity.PlayerDisplayActivity
+import com.example.playlistmaker2.player.ui.activity.PlayerDisplayFragment
 import com.example.playlistmaker2.search.domain.model.Track
 import com.example.playlistmaker2.search.ui.models.TrackSearchState
 import com.example.playlistmaker2.search.ui.view_model.TrackSearchViewModel
@@ -28,7 +30,6 @@ class SearchFragment : Fragment(), TrackAdapter.TrackClickListener {
         private const val SEARCH_EDITTEXT = "SEARCH_EDITTEXT"
         private const val CLICK_DEBOUNCE_DELAY = 1000L
         private const val DELAY_ADD_TRACK_TO_HISTORY = 300L
-        private const val TRACK = "track"
     private const val TRACK_LIST = "TRACK_LIST"
     }
 
@@ -264,9 +265,9 @@ class SearchFragment : Fragment(), TrackAdapter.TrackClickListener {
 
     override fun onTrackClick(track: Track) {
         if (clickDebounce()) {
-            val playerIntent = Intent(requireContext(), PlayerDisplayActivity::class.java)
-            playerIntent.putExtra("TRACK", track)
-            startActivity(playerIntent)
+            isClickAllowed = true
+            findNavController().navigate(R.id.action_searchFragment_to_playerDisplayFragment,
+                PlayerDisplayFragment.createArgs(track))
         lifecycleScope.launch {
             delay(DELAY_ADD_TRACK_TO_HISTORY)
             viewModel.historyAddTrack(track)
