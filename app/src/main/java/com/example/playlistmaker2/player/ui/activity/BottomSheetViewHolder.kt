@@ -10,6 +10,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker2.R
 import com.example.playlistmaker2.databinding.BottomSheetItemBinding
 import com.example.playlistmaker2.mediaLibrary.models.Playlist
+import com.example.playlistmaker2.mediaLibrary.view_model.CreatePlaylistFragmentViewModel.Companion.MY_IMAGE_PLAYLIST
 import java.io.File
 
 class BottomSheetViewHolder (
@@ -47,7 +48,7 @@ class BottomSheetViewHolder (
 
             if (playlists.uri != null) {
                 val filePath =
-                    File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), PLAYLIST)
+                    File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), MY_IMAGE_PLAYLIST)
                 file = File(filePath, playlists.uri)
                 uri = file!!.toUri()
 
