@@ -26,21 +26,21 @@ class BottomSheetViewHolder (
         const val TRACK = "трек"
         const val TRACK_A = "трека"
         const val TRACK_OV = "треков"
-        const val PLAYLIST = "playlist"
     }
 
     fun bind(playlists: Playlist, context: Context) {
         binding.apply {
             playlistName.text = playlists.playlistName
-            while (playlists.tracksCount > 20) {
-                trackCount -= 20
+            trackCount = playlists.tracksCount % 10
+            caseTrack = when (trackCount) {
+                1 -> TRACK
+                in 2..4 -> TRACK_A
+                else -> TRACK_OV
             }
-            caseTrack = if (trackCount == 1) {
-                TRACK
-            } else if (trackCount in 1..4) {
-                TRACK_A
-            } else {
-                TRACK_OV
+            caseTrack = when {
+                trackCount == 1 -> TRACK
+                trackCount in 2..4 -> TRACK_A
+                else -> TRACK_OV
             }
 
             val text = playlists.tracksCount.toString()
@@ -58,20 +58,20 @@ class BottomSheetViewHolder (
 
             Glide.with(itemView)
                 .load(uri)
-                .placeholder(R.drawable.ic_stub)
+                .placeholder(R.drawable.ic_stub2)
                 .centerCrop()
                 .transform(RoundedCorners(4))
                 .into(binding.trackImage)
         }
     }
 
-    fun setOnPlaylistClickListener(listener: onPlaylistClickListener) {
+    fun setOnPlaylistClickListener(listener: OnPlaylistClickListener) {
         itemView.setOnClickListener {
             listener.action()
         }
     }
 
-    interface onPlaylistClickListener {
+    interface OnPlaylistClickListener {
         fun action()
     }
     }

@@ -15,6 +15,8 @@ import com.example.playlistmaker2.player.ui.model.PlaybackState
 import com.example.playlistmaker2.player.ui.model.TrackInfo
 import com.example.playlistmaker2.search.domain.model.Track
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -40,7 +42,7 @@ class PlayerDisplayViewModel(
     fun getFavoriteLiveData(): LiveData<Boolean> = favoriteLiveData
 
     private val bottomSheetLiveData = MutableLiveData<PlaylistState>()
-    fun getBottomSheetLiveData():LiveData<PlaylistState> = bottomSheetLiveData
+    fun getBottomSheetLiveData(): LiveData<PlaylistState> = bottomSheetLiveData
 
     private val addToPlaylistLiveData = MutableLiveData<Pair<Boolean, String>>()
     fun getAddToPlaylistLiveData(): LiveData<Pair<Boolean, String>> = addToPlaylistLiveData
@@ -66,8 +68,10 @@ class PlayerDisplayViewModel(
             PlayerState.PLAYING -> {
                 playerInteractor.pause()
                 playingLiveData.postValue(
-                    PlaybackState(false, playerInteractor.getCurrentPosition()))
+                    PlaybackState(false, playerInteractor.getCurrentPosition())
+                )
             }
+
             PlayerState.PREPARED, PlayerState.PAUSED, PlayerState.DEFAULT, PlayerState.END -> {
                 statePlaying()
             }
@@ -84,7 +88,8 @@ class PlayerDisplayViewModel(
         playerTimerJob = viewModelScope.launch {
             while (playerInteractor.getState() == PlayerState.PLAYING) {
                 playingLiveData.postValue(
-                    PlaybackState(true, playerInteractor.getCurrentPosition()))
+                    PlaybackState(true, playerInteractor.getCurrentPosition())
+                )
                 delay(REFRESH_MILLIS)
             }
             if (playerInteractor.getState() == PlayerState.END) {
@@ -97,7 +102,8 @@ class PlayerDisplayViewModel(
         playerInteractor.pause()
         playerTimerJob?.cancel()
         playingLiveData.postValue(
-            PlaybackState(false, playerInteractor.getCurrentPosition()))
+            PlaybackState(false, playerInteractor.getCurrentPosition())
+        )
     }
 
     fun onDestroy() {
@@ -155,9 +161,16 @@ class PlayerDisplayViewModel(
 
         viewModelScope.launch {
             playlistInteractor.addToPlaylist(newPlaylist)
-            addedTracks.forEach { addedTrack -> playlistInteractor.addTrackToPlaylist(addedTrack) }
-        }
 
-        addToPlaylistLiveData.postValue(Pair(false, playlist.playlistName))
+            val addTrackJobs = addedTracks.map { addedTrack ->
+                async { playlistInteractor.addTrackToPlaylist(addedTrack) }
+            }
+
+            addTrackJobs.awaitAll()
+
+            addToPlaylistLiveData.postValue(Pair(false, playlist.playlistName))
+
+            addToPlaylistLiveData.postValue(Pair(false, playlist.playlistName))
+        }
     }
 }

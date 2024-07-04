@@ -27,7 +27,7 @@ class BottomSheetAdapter(
     override fun onBindViewHolder(holder: BottomSheetViewHolder, position: Int) {
         val item = playlists[position]
         holder.bind(item, context)
-        holder.setOnPlaylistClickListener(object : BottomSheetViewHolder.onPlaylistClickListener {
+        holder.setOnPlaylistClickListener(object : BottomSheetViewHolder.OnPlaylistClickListener {
             override fun action() {
                 playlistClickListener.onPlaylistClick(item)
             }

@@ -68,6 +68,7 @@ class PlayerDisplayFragment : Fragment(), BottomSheetAdapter.PlaylistClickListen
         super.onViewCreated(view, savedInstanceState)
 
         adapter = BottomSheetAdapter(this, requireContext())
+        binding.rvBottomSheet.adapter = adapter
 
         binding.rvBottomSheet.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
