@@ -4,10 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.playlistmaker2.db.data.converters.PlaylistDbConvertor
 import com.example.playlistmaker2.db.domain.db.FavoriteInteractor
 import com.example.playlistmaker2.db.domain.db.PlaylistInteractor
-import com.example.playlistmaker2.mediaLibrary.models.Playlist
-import com.example.playlistmaker2.mediaLibrary.models.PlaylistState
+import com.example.playlistmaker2.mediaLibrary.domain.models.Playlist
+import com.example.playlistmaker2.mediaLibrary.domain.models.PlaylistState
 import com.example.playlistmaker2.player.domain.api.PlayerInteractor
 import com.example.playlistmaker2.player.domain.models.PlayerState
 import com.example.playlistmaker2.player.ui.mapper.TrackMapper
@@ -15,8 +16,6 @@ import com.example.playlistmaker2.player.ui.model.PlaybackState
 import com.example.playlistmaker2.player.ui.model.TrackInfo
 import com.example.playlistmaker2.search.domain.model.Track
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -25,15 +24,13 @@ class PlayerDisplayViewModel(
     private val playerInteractor: PlayerInteractor,
     private val favoriteInteractor: FavoriteInteractor,
     private val playlistInteractor: PlaylistInteractor,
-    get: Any,
+    private val playlistDbConvertor: PlaylistDbConvertor,
     ) : ViewModel() {
 
     companion object {
         private const val REFRESH_MILLIS = 300L
         private const val START_TIMER = "00:00"
     }
-
-    private val trackMapper = TrackMapper()
 
     private val playingLiveData = MutableLiveData(PlaybackState(false, START_TIMER))
     fun getPlayingLiveData(): LiveData<PlaybackState> = playingLiveData
@@ -113,11 +110,11 @@ class PlayerDisplayViewModel(
     fun likeClick() {
         viewModelScope.launch {
             if (favoriteInteractor.isFavorite(lastTrack.trackId)) {
-                val track = trackMapper.map(lastTrack)
+                val track = TrackMapper().map(lastTrack)
                 favoriteInteractor.deleteFavorite(track)
                 favoriteLiveData.postValue(false)
             } else {
-                val track = trackMapper.map(lastTrack)
+                val track = TrackMapper().map(lastTrack)
                 favoriteInteractor.addFavorite(track)
                 favoriteLiveData.postValue(true)
             }
@@ -138,39 +135,37 @@ class PlayerDisplayViewModel(
         }
     }
 
-    fun addToPlaylist(playlist: Playlist, tracks: List<Track>) {
-        val trackIds = playlist.tracksId.toMutableList()
-        val addedTracks = mutableListOf<Track>()
-
-        tracks.forEach { track ->
-            if (!playlist.playlistId?.let { trackIds.contains(it.toInt()) }!!) {
-                trackIds.add(playlist.playlistId.toInt())
-                addedTracks.add(track)
+    fun addToPlaylist(playlist: Playlist, track: Track) {
+        if (playlist.tracksId != "") {
+            val idList = playlistDbConvertor.mapToList(playlist.tracksId) as MutableList
+            if (idList.contains(track.trackId)) {
+                addToPlaylistLiveData.postValue(Pair(true, playlist.playlistName))
+            } else {
+                update(idList, track, playlist)
             }
-        }
 
-        val newTracksCount = playlist.tracksCount + addedTracks.size
-        val newPlaylist = Playlist(
+        } else {
+            val idList: MutableList<Int> = ArrayList()
+            update(idList, track, playlist)
+        }
+    }
+
+    private fun update(idList: MutableList<Int>, track: Track, playlist: Playlist) {
+        idList.add(track.trackId)
+        val newTracksID = playlistDbConvertor.mapToJson(idList)
+        val count = playlist.tracksCount + 1
+        val newPL = Playlist(
             playlist.playlistId,
             playlist.playlistName,
             playlist.playlistDescription,
             playlist.uri,
-            trackIds,
-            newTracksCount
+            newTracksID,
+            count
         )
-
         viewModelScope.launch {
-            playlistInteractor.addToPlaylist(newPlaylist)
-
-            val addTrackJobs = addedTracks.map { addedTrack ->
-                async { playlistInteractor.addTrackToPlaylist(addedTrack) }
-            }
-
-            addTrackJobs.awaitAll()
-
-            addToPlaylistLiveData.postValue(Pair(false, playlist.playlistName))
-
-            addToPlaylistLiveData.postValue(Pair(false, playlist.playlistName))
+            playlistInteractor.addToPlaylist(newPL)
+            playlistInteractor.addTrackToPlaylist(track)
         }
+        addToPlaylistLiveData.postValue(Pair(false, playlist.playlistName))
     }
 }

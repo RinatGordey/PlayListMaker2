@@ -1,4 +1,4 @@
-package com.example.playlistmaker2.mediaLibrary.models
+package com.example.playlistmaker2.mediaLibrary.domain.models
 
 sealed interface PlaylistState {
 

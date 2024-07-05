@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker2.databinding.BottomSheetItemBinding
-import com.example.playlistmaker2.mediaLibrary.models.Playlist
+import com.example.playlistmaker2.mediaLibrary.domain.models.Playlist
 
 class BottomSheetAdapter(
     val playlistClickListener: PlaylistClickListener,

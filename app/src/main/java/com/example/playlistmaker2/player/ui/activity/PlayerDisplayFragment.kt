@@ -1,7 +1,6 @@
 package com.example.playlistmaker2.player.ui.activity
 
 import android.graphics.Color
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,8 +16,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlistmaker2.R
 import com.example.playlistmaker2.databinding.FragmentPlayerDisplayBinding
-import com.example.playlistmaker2.mediaLibrary.models.Playlist
-import com.example.playlistmaker2.mediaLibrary.models.PlaylistState
+import com.example.playlistmaker2.mediaLibrary.domain.models.Playlist
+import com.example.playlistmaker2.mediaLibrary.domain.models.PlaylistState
 import com.example.playlistmaker2.player.ui.mapper.TrackMapper
 import com.example.playlistmaker2.player.ui.model.TrackInfo
 import com.example.playlistmaker2.player.ui.view_model.PlayerDisplayViewModel
@@ -34,9 +33,6 @@ class PlayerDisplayFragment : Fragment(), BottomSheetAdapter.PlaylistClickListen
 
     companion object {
         const val TRACK = "TRACK"
-        const val LAST_TRACK = "LAST_TRACK"
-        const val CURRENT_POSITION = "CURRENT_POSITION"
-        const val IS_PLAYING = "IS_PLAYING"
         private const val CLICK_DEBOUNCE_DELAY = 1000L
         fun createArgs(track: Track): Bundle =
             bundleOf(TRACK to track)
@@ -46,7 +42,6 @@ class PlayerDisplayFragment : Fragment(), BottomSheetAdapter.PlaylistClickListen
     private val binding get() = _binding!!
 
     private lateinit var lastTrack: TrackInfo
-    private lateinit var mediaPlayer: MediaPlayer
     private lateinit var adapter: BottomSheetAdapter
     private lateinit var trackForPlaylist: Track
     private var isClickAllowed = true
@@ -78,38 +73,8 @@ class PlayerDisplayFragment : Fragment(), BottomSheetAdapter.PlaylistClickListen
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         adapter.notifyDataSetChanged()
 
-        mediaPlayer = MediaPlayer()
-
-        trackForPlaylist = Track(
-            0,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            false,
-            0L,
-        )
-
-        if (savedInstanceState != null) {
-            lastTrack = savedInstanceState.getParcelable(LAST_TRACK)!!
-            val isPlaying = savedInstanceState.getBoolean(IS_PLAYING)
-            val currentPosition = savedInstanceState.getInt(CURRENT_POSITION)
-
-            if (isPlaying) {
-                mediaPlayer.start()
-                mediaPlayer.seekTo(currentPosition)
-            }
-        } else {
-            val trackExtra = arguments?.getParcelable<Track>(TRACK)
-            if (trackExtra is Track) {
-                lastTrack = TrackMapper().map(trackExtra)
-            }
-        }
+        trackForPlaylist = requireArguments().getSerializable(TRACK) as Track
+        lastTrack = TrackMapper().map(trackForPlaylist)
 
         arrowBack(binding)
 
@@ -145,27 +110,6 @@ class PlayerDisplayFragment : Fragment(), BottomSheetAdapter.PlaylistClickListen
         binding.btNewPlaylist.setOnClickListener {
             findNavController().navigate(R.id.action_playerDisplayFragment_to_createPlaylistFragment)
         }
-
-        bottomSheetBehavior.addBottomSheetCallback(object :
-            BottomSheetBehavior.BottomSheetCallback() {
-
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-
-                when (newState) {
-                    BottomSheetBehavior.STATE_HIDDEN -> {
-                        binding.overlay.isVisible = false
-                    }
-                    else -> {
-                        binding.overlay.isVisible = true
-                    }
-                }
-            }
-
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                binding.overlay.alpha = slideOffset
-            }
-
-        })
 
         viewModel.getPlayingLiveData().observe(viewLifecycleOwner) { playbackState ->
             if (playbackState.playes) {
@@ -242,12 +186,6 @@ class PlayerDisplayFragment : Fragment(), BottomSheetAdapter.PlaylistClickListen
         viewModel.onDestroy()
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putBoolean(IS_PLAYING, mediaPlayer.isPlaying())
-        outState.putInt(CURRENT_POSITION, mediaPlayer.currentPosition)
-    }
-
     private fun render(state: PlaylistState) {
         when (state) {
             is PlaylistState.PlaylistsContent -> showContent(state.playlists)
@@ -280,8 +218,7 @@ class PlayerDisplayFragment : Fragment(), BottomSheetAdapter.PlaylistClickListen
 
     override fun onPlaylistClick(playlist: Playlist) {
         if (clickDebounce()) {
-            val trackList = listOf(trackForPlaylist)
-            viewModel.addToPlaylist(playlist, trackList)
+            viewModel.addToPlaylist(playlist, trackForPlaylist)
         }
     }
 }

@@ -1,7 +1,6 @@
 package com.example.playlistmaker2.search.ui.activity
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
 import android.text.Editable
@@ -48,26 +47,14 @@ class SearchFragment : Fragment(), TrackAdapter.TrackClickListener {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
-
-        val savedTrackList = savedInstanceState?.getParcelableArrayList<Track>(TRACK_LIST)
-        if (savedTrackList != null) {
-            adapter.trackList = savedTrackList
-            adapter.notifyDataSetChanged()
-        }
-
-        if (savedInstanceState != null) {
-            searchEditTextValue = savedInstanceState.getString(SEARCH_EDITTEXT, "")
-            binding.edSearch.setText(searchEditTextValue)
-            if (searchEditTextValue.isEmpty()) {
-                binding.historySearch.isVisible = false
-            }
-        }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         binding.progressBar.isVisible = false
+
         viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }

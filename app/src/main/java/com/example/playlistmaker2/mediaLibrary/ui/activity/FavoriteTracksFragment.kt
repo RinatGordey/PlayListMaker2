@@ -11,7 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlistmaker2.R
 import com.example.playlistmaker2.databinding.FavoriteTracksFragmentBinding
-import com.example.playlistmaker2.mediaLibrary.models.FavoriteState
+import com.example.playlistmaker2.mediaLibrary.domain.models.FavoriteState
 import com.example.playlistmaker2.mediaLibrary.view_model.FavoriteTracksFragmentViewModel
 import com.example.playlistmaker2.player.ui.activity.PlayerDisplayFragment
 import com.example.playlistmaker2.search.domain.model.Track
@@ -97,13 +97,12 @@ class FavoriteTracksFragment: Fragment(),
     }
 
     private fun showContent(tracks: List<Track>) {
-        val sortedTracks = tracks.sortedByDescending { it.addedDate }
         binding.apply {
             rvFavoriteList.isVisible = true
             ivPlaceholderFragment.isVisible = false
             tvPlaceholderMessage.isVisible = false
             rvFavoriteList.adapter = adapter
-            adapter?.trackList = sortedTracks
+            adapter?.trackList = tracks as ArrayList<Track>
             adapter?.notifyDataSetChanged()
         }
     }

@@ -10,8 +10,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.playlistmaker2.R
 import com.example.playlistmaker2.databinding.FragmentPlaylistBinding
-import com.example.playlistmaker2.mediaLibrary.models.Playlist
-import com.example.playlistmaker2.mediaLibrary.models.PlaylistState
+import com.example.playlistmaker2.mediaLibrary.domain.models.Playlist
+import com.example.playlistmaker2.mediaLibrary.domain.models.PlaylistState
 import com.example.playlistmaker2.mediaLibrary.view_model.PlaylistFragmentViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -43,9 +43,8 @@ class PlaylistFragment: Fragment() {
             findNavController().navigate(R.id.action_mediaLibraryFragment_to_createPlaylistFragment)
         }
 
-        val rv = binding.rvPlaylist
-        rv.layoutManager = GridLayoutManager(requireActivity(), 2)
-        rv.adapter = adapter
+        binding.rvPlaylist.layoutManager = GridLayoutManager(requireActivity(), 2)
+        binding.rvPlaylist.adapter = adapter
 
         viewModel.observeState().observe(viewLifecycleOwner) { state ->
             render(state)

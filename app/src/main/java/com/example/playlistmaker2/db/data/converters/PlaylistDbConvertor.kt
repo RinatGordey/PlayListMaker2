@@ -2,49 +2,42 @@ package com.example.playlistmaker2.db.data.converters
 
 import com.example.playlistmaker2.db.data.entity.PlaylistEntity
 import com.example.playlistmaker2.db.data.entity.PlaylistTrackEntity
-import com.example.playlistmaker2.mediaLibrary.models.Playlist
+import com.example.playlistmaker2.mediaLibrary.domain.models.Playlist
 import com.example.playlistmaker2.search.domain.model.Track
-import com.google.gson.GsonBuilder
-import com.google.gson.ToNumberPolicy
+import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 class PlaylistDbConvertor {
-
     fun map(playlist: Playlist): PlaylistEntity {
         return PlaylistEntity(
             playlist.playlistId,
             playlist.playlistName,
             playlist.playlistDescription,
             playlist.uri,
-            convertListToJson(playlist.tracksId),
+            playlist.tracksId,
             playlist.tracksCount,
         )
     }
 
-    fun map(playlist: PlaylistEntity): Playlist{
+    fun map(playlist: PlaylistEntity): Playlist {
         return Playlist(
             playlist.playlistId,
             playlist.playlistName,
             playlist.playlistDescription,
             playlist.uri,
-            convertJsonToList(playlist.tracksId),
+            playlist.tracksId,
             playlist.tracksCount,
         )
     }
 
-    private fun convertListToJson(trackIdList: List<Int>): String {
-        val gsonBuilder = GsonBuilder().setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE)
-        val gson = gsonBuilder.create()
-        return gson.toJson(trackIdList, object : TypeToken<List<Int>?>() {}.type)
+    fun mapToJson(idList: MutableList<Int>): String {
+        val json: String = Gson().toJson(idList)
+        return json
     }
 
-    private fun convertJsonToList(trackIdList: String?): List<Int> {
-        if (trackIdList.isNullOrEmpty()) {
-            return emptyList()
-        }
-        val gsonBuilder = GsonBuilder().setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE)
-        val gson = gsonBuilder.create()
-        return gson.fromJson(trackIdList, List::class.java) as List<Int>
+    fun mapToList(idList: String): List<Int> {
+        val type = object : TypeToken<List<Int>>() {}.type
+        return Gson().fromJson(idList, type)
     }
 
     fun mapTrack(track: Track): PlaylistTrackEntity {

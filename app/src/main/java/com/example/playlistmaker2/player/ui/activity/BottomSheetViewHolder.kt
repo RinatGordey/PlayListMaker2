@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker2.R
 import com.example.playlistmaker2.databinding.BottomSheetItemBinding
-import com.example.playlistmaker2.mediaLibrary.models.Playlist
+import com.example.playlistmaker2.mediaLibrary.domain.models.Playlist
 import com.example.playlistmaker2.mediaLibrary.view_model.CreatePlaylistFragmentViewModel.Companion.MY_IMAGE_PLAYLIST
 import java.io.File
 
@@ -37,9 +37,9 @@ class BottomSheetViewHolder (
                 in 2..4 -> TRACK_A
                 else -> TRACK_OV
             }
-            caseTrack = when {
-                trackCount == 1 -> TRACK
-                trackCount in 2..4 -> TRACK_A
+            caseTrack = when (trackCount) {
+                1 -> TRACK
+                in 2..4 -> TRACK_A
                 else -> TRACK_OV
             }
 
@@ -74,4 +74,4 @@ class BottomSheetViewHolder (
     interface OnPlaylistClickListener {
         fun action()
     }
-    }
+}

@@ -6,8 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker2.db.domain.db.PlaylistInteractor
-import com.example.playlistmaker2.mediaLibrary.models.Playlist
-import com.example.playlistmaker2.mediaLibrary.models.PlaylistState
+import com.example.playlistmaker2.mediaLibrary.domain.models.Playlist
+import com.example.playlistmaker2.mediaLibrary.domain.models.PlaylistState
 import kotlinx.coroutines.launch
 
 class PlaylistFragmentViewModel(

@@ -73,7 +73,7 @@
             app:layout_constraintTop_toBottomOf="@id/PanelHeader"
             app:layout_constraintEnd_toStartOf="@+id/rightBorder"
             app:layout_constraintStart_toStartOf="@+id/leftBorder"
-            app:srcCompat="@drawable/ic_stub2"/>
+            app:srcCompat="@drawable/ic_stub"/>
 
         <TextView
             android:id="@+id/country"

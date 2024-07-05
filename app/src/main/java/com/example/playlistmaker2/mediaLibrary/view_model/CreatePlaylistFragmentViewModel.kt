@@ -8,7 +8,7 @@ import android.os.Environment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker2.db.domain.db.PlaylistInteractor
-import com.example.playlistmaker2.mediaLibrary.models.Playlist
+import com.example.playlistmaker2.mediaLibrary.domain.models.Playlist
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
@@ -25,7 +25,7 @@ class CreatePlaylistFragmentViewModel(
     var nameImage: String? = null
 
     fun createPlaylist(name: String, description: String) {
-        val playlist = Playlist(null, name, description, nameImage, tracksId = emptyList(), tracksCount = 0)
+        val playlist = Playlist(null, name, description, nameImage, "", 0)
         viewModelScope.launch {
             playlistInteractor.addToPlaylist(playlist)
         }

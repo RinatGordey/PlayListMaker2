@@ -38,6 +38,7 @@ class CreatePlaylistFragment : Fragment() {
     private var addedImage = false
     private val viewModel by viewModel<CreatePlaylistFragmentViewModel>()
     private var uriDb: String? = null
+    private lateinit var callback: OnBackPressedCallback
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -144,14 +145,13 @@ class CreatePlaylistFragment : Fragment() {
             }
         })
 
-        val filePath = File(requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), MY_IMAGE_PLAYLIST)
-        if (viewModel.nameImage != null) {
-            val file = File(filePath, viewModel.nameImage!!)
-            if (file.exists()) {
-                binding.btCoverImage.setImageURI(Uri.fromFile(file))
-                binding.imPlaceholder.isVisible = false
+        callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                showDialog()
             }
         }
+
+        requireActivity().onBackPressedDispatcher.addCallback(callback)
     }
 
     private fun showDialog() {
@@ -179,5 +179,6 @@ class CreatePlaylistFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        callback.remove()
     }
 }

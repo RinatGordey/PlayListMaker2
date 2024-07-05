@@ -5,9 +5,7 @@ import com.example.playlistmaker2.search.domain.model.Track
 
 class TrackDbConvertor {
 
-    private val dateConverter = DateConverter()
-
-    fun map(track: Track, deadline: Long): FavoriteEntity {
+    fun map(track: Track): FavoriteEntity {
         return FavoriteEntity(
             track.trackId,
             track.trackName,
@@ -19,7 +17,6 @@ class TrackDbConvertor {
             track.collectionName,
             track.country,
             track.previewUrl,
-            dateConverter.fromTimestamp(deadline)
         )
     }
 
