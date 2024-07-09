@@ -1,5 +1,6 @@
 package com.example.playlistmaker2.di
 
+import com.example.playlistmaker2.mediaLibrary.view_model.CreatePlaylistFragmentViewModel
 import com.example.playlistmaker2.mediaLibrary.view_model.FavoriteTracksFragmentViewModel
 import com.example.playlistmaker2.mediaLibrary.view_model.PlaylistFragmentViewModel
 import com.example.playlistmaker2.player.ui.model.TrackInfo
@@ -12,7 +13,7 @@ import org.koin.dsl.module
 val viewModelModule = module{
 
     viewModel {(playerTrack: TrackInfo) ->
-        PlayerDisplayViewModel(playerTrack, get(), get(), get())
+        PlayerDisplayViewModel(playerTrack, get(), get(), get(), get())
     }
 
     viewModel{
@@ -27,7 +28,11 @@ val viewModelModule = module{
         FavoriteTracksFragmentViewModel(get())
     }
 
+    viewModel<PlaylistFragmentViewModel> {
+        PlaylistFragmentViewModel(get(), get())
+    }
+
     viewModel{
-        PlaylistFragmentViewModel()
+        CreatePlaylistFragmentViewModel(get())
     }
 }

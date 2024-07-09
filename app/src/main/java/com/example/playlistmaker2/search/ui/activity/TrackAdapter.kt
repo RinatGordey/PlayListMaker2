@@ -7,7 +7,9 @@ import com.example.playlistmaker2.R
 import com.example.playlistmaker2.search.domain.model.Track
 
 class TrackAdapter(
-    var trackList: List<Track>, private var itemClickListener: TrackClickListener) : RecyclerView.Adapter<TrackViewHolder>() {
+    var trackList: List<Track>,
+    private var itemClickListener: TrackClickListener,
+) : RecyclerView.Adapter<TrackViewHolder>() {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,

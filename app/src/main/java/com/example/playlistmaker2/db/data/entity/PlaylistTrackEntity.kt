@@ -1,10 +1,11 @@
-package com.example.playlistmaker2.search.domain.model
+package com.example.playlistmaker2.db.data.entity
 
-import androidx.versionedparcelable.VersionedParcelize
-import java.io.Serializable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-@VersionedParcelize
-data class Track(
+@Entity(tableName = "playlist_track_table")
+data class PlaylistTrackEntity(
+    @PrimaryKey
     val trackId: Int,
     val trackName: String?,
     val artistName: String?,
@@ -15,5 +16,4 @@ data class Track(
     val primaryGenreName: String?,
     val country: String?,
     val previewUrl: String?,
-    var isFavorite: Boolean = false,
-): Serializable
+)
