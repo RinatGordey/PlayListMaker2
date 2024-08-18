@@ -8,7 +8,7 @@ import com.example.playlistmaker2.R
 fun ImageView.loadTrackPicture(artworkUrl: String) {
     Glide.with(this)
         .load(artworkUrl.replaceAfterLast('/', "512x512bb.jpg"))
-        .placeholder(R.drawable.ic_stub)
+        .placeholder(R.drawable.ic_stub2)
         .transform(RoundedCorners(ConversionDpToPx.dpToPx(8F, this.context)))
         .into(this)
 }

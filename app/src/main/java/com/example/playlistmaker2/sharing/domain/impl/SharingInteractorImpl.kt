@@ -8,7 +8,8 @@ class SharingInteractorImpl(
 ) : SharingInteractor {
 
     override fun shareApp() {
-        externalNavigator.shareLink()
+        val message = "Check out this amazing app!"
+        externalNavigator.shareLink(message)
     }
 
     override fun openTerms() {

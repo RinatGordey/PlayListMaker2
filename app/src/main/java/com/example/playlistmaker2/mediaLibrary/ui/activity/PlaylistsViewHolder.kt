@@ -38,9 +38,11 @@ class PlaylistsViewHolder(
                 1 -> {
                     TRACK
                 }
+
                 in 1..4 -> {
                     TRACK_A
                 }
+
                 else -> {
                     TRACK_OV
                 }
@@ -49,7 +51,8 @@ class PlaylistsViewHolder(
             val text = playlists.tracksCount.toString()
             countTrack.text = "$text $caseTrack"
 
-            val filePath = File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), MY_IMAGE_PLAYLIST)
+            val filePath =
+                File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), MY_IMAGE_PLAYLIST)
             if (playlists.uri != null) {
                 val file = File(filePath, playlists.uri)
                 uri = if (file.exists()) Uri.fromFile(file) else null
@@ -65,4 +68,14 @@ class PlaylistsViewHolder(
                 .into(playlistImage)
         }
     }
+
+    fun setOnCPLListener(listener: onCPLClickListener) {
+        itemView.setOnClickListener {
+            listener.action()
+        }
+    }
+}
+
+interface onCPLClickListener {
+    fun action()
 }

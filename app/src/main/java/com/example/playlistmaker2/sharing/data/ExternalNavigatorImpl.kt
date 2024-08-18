@@ -9,7 +9,7 @@ import com.example.playlistmaker2.sharing.domain.model.EmailData
 
 class ExternalNavigatorImpl(private val application: Application): ExternalNavigator {
 
-    override fun shareLink() {
+    override fun shareLink(message: String) {
         val link = application.getString(R.string.android_developer)
         val intent = Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"

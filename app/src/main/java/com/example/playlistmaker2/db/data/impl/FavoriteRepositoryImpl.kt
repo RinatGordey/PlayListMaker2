@@ -2,7 +2,7 @@ package com.example.playlistmaker2.db.data.impl
 
 import com.example.playlistmaker2.db.AppDatabase
 import com.example.playlistmaker2.db.data.converters.TrackDbConvertor
-import com.example.playlistmaker2.db.data.entity.FavoriteEntity
+import com.example.playlistmaker2.db.data.entity.TrackEntity
 import com.example.playlistmaker2.db.domain.db.FavoriteRepository
 import com.example.playlistmaker2.search.domain.model.Track
 import kotlinx.coroutines.flow.Flow
@@ -29,7 +29,7 @@ class FavoriteRepositoryImpl(
         appDatabase.trackDao().deleteTrack(trackDbConvertor.map(track))
     }
 
-    private fun convertFromFavoriteEntity(tracks: List<FavoriteEntity>): List<Track> {
+    private fun convertFromFavoriteEntity(tracks: List<TrackEntity>): List<Track> {
         return tracks.map { track -> trackDbConvertor.map(track) }
     }
 }

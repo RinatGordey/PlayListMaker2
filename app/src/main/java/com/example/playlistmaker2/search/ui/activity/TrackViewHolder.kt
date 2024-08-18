@@ -34,4 +34,14 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             .transform(RoundedCorners(ConversionDpToPx.dpToPx(8F, itemView.context)))
             .into(artworkUrl100View)
     }
+
+    fun setOnLongListener(listener: onLongClickListener) {
+        itemView.setOnLongClickListener {
+            listener.action()
+        }
+    }
+
+    interface onLongClickListener {
+        fun action() : Boolean
+    }
 }

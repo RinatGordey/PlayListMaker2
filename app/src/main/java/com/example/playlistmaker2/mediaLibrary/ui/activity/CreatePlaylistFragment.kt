@@ -1,8 +1,6 @@
 package com.example.playlistmaker2.mediaLibrary.ui.activity
 
-import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -19,26 +17,24 @@ import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker2.R
 import com.example.playlistmaker2.databinding.FragmentCreatePlaylistBinding
 import com.example.playlistmaker2.mediaLibrary.view_model.CreatePlaylistFragmentViewModel
-import com.example.playlistmaker2.mediaLibrary.view_model.CreatePlaylistFragmentViewModel.Companion.MY_IMAGE_PLAYLIST
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.io.File
 
-class CreatePlaylistFragment : Fragment() {
+open class CreatePlaylistFragment : Fragment() {
 
     companion object {
         const val PLAYLIST = "Плейлист"
         const val CREATED = "создан"
     }
 
-    private var _binding: FragmentCreatePlaylistBinding? = null
-    private val binding get() = _binding!!
+    var _binding: FragmentCreatePlaylistBinding? = null
+    val binding get() = _binding!!
     private var textWatcherName: TextWatcher? = null
     private var textWatcherDescription: TextWatcher? = null
-    private var addedImage = false
-    private val viewModel by viewModel<CreatePlaylistFragmentViewModel>()
+    var addedImage = false
+    open val viewModel by viewModel<CreatePlaylistFragmentViewModel>()
     private var uriDb: String? = null
-    private lateinit var callback: OnBackPressedCallback
+    private var callback: OnBackPressedCallback? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,9 +56,7 @@ class CreatePlaylistFragment : Fragment() {
                     viewModel.saveImageToPrivateStorage(uri, requireContext())
                     binding.imPlaceholder.isVisible = false
                     addedImage = true
-                }  else {
-            Log.d("PhotoPicker", "No media selected")
-        }
+                }
     }
 
         textWatcherName = object : TextWatcher {
@@ -139,19 +133,13 @@ class CreatePlaylistFragment : Fragment() {
             showDialog()
         }
 
-        requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                showDialog()
-            }
-        })
-
         callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 showDialog()
             }
         }
 
-        requireActivity().onBackPressedDispatcher.addCallback(callback)
+        requireActivity().onBackPressedDispatcher.addCallback(callback as OnBackPressedCallback)
     }
 
     private fun showDialog() {
@@ -179,6 +167,6 @@ class CreatePlaylistFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        callback.remove()
+        callback?.remove()
     }
 }

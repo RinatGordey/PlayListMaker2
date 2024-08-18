@@ -9,6 +9,7 @@ import com.example.playlistmaker2.mediaLibrary.domain.models.Playlist
 
 class PlaylistAdapter(
     val context: Context,
+    val plClickListener: PLClickListener,
 ): RecyclerView.Adapter<PlaylistsViewHolder>() {
 
     lateinit var playlists: ArrayList<Playlist>
@@ -23,6 +24,17 @@ class PlaylistAdapter(
     }
 
     override fun onBindViewHolder(holder: PlaylistsViewHolder, position: Int) {
+        val item = playlists[position]
         holder.bind(playlists[position], context)
+
+        holder.setOnCPLListener(object : onCPLClickListener {
+            override fun action() {
+                plClickListener.onPLClick(item)
+            }
+        })
+    }
+
+    fun interface PLClickListener {
+        fun onPLClick(playlist: Playlist)
     }
 }

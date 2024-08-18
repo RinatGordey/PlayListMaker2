@@ -258,7 +258,7 @@
         android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/ed_playlist"
+        android:background="@drawable/bottom_sheet_shape"
         android:orientation="vertical"
         android:paddingHorizontal="@dimen/size14dp"
         app:behavior_hideable="true"

@@ -6,7 +6,7 @@ data class Playlist (
     val playlistId:Long?,
     val playlistName: String,
     val playlistDescription: String?,
-    val uri: String?,
+    var uri: String?,
     val tracksId: String = "",
     var tracksCount: Int = 0
 ): Serializable

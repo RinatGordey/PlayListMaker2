@@ -44,5 +44,48 @@
     <string name="playlist_toast">Плейлист</string>
     <string name="Nothing">Ничего</string>
     <string name="add_to_playlist">Добавить в плейлист</string>
+    <string name="delete_track">Удалить трек</string>
+    <string name="are_you_sure_you_want_to_remove_the_track">Вы уверены, что хотите удалить трек из плейлиста?</string>
+    <string name="delete">Удалить</string>
+    <string name="no_tracks">В этом плейлисте нет списка треков,\nкоторым можно поделиться</string>
+    <string name="Do_you_want_to_delete_a_track">Хотите удалить трек?</string>
+    <string name="YES">ДА</string>
+    <string name="NO">НЕТ</string>
+    <string name="Share">Поделиться</string>
+    <string name="Edit_information">Редактировать информацию</string>
+    <string name="Delete_playlist">Удалить плейлист</string>
+    <string name="Do_you_want_to_delete_a_playlist">Хотите удалить плейлист "%1$s"?</string>
+    <string name="save">Сохранить</string>
+    <string name="edit">Редактировать</string>
+    <string name="unknown_duration">неизвестная продолжительность</string>
+
+    <plurals name="plurals_1" translatable="false">
+        <item quantity="zero">%d = zero</item>
+        <item quantity="one">%d = one</item>
+        <item quantity="two">%d = two</item>
+        <item quantity="few">%d = few</item>
+        <item quantity="many">%d = many</item>
+        <item quantity="other">%d = other</item>
+    </plurals>
+
+    <plurals name="plurals_2" translatable="false">
+        <item quantity="zero">нет треков</item>
+        <item quantity="one">%d трек</item>
+        <item quantity="two">%d трека</item>
+        <item quantity="few">%d трека</item>
+        <item quantity="many">%d треков</item>
+        <item quantity="other">%d треков</item>
+    </plurals>
+
+    <plurals name="plurals_3" translatable="false">
+        <item quantity="zero">нет минут</item>
+        <item quantity="one">%d минута</item>
+        <item quantity="two">%d минуты</item>
+        <item quantity="few">%d минуты</item>
+        <item quantity="many">%d минут</item>
+        <item quantity="other">%d минут</item>
+    </plurals>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
