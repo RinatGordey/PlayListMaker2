@@ -56,13 +56,11 @@ class CurrentPlaylistViewModel(
                 val newDuration = (units[0].toInt() * 60) + units[1].toInt()
                 totalTime += newDuration
             }
-            totalTime *= 1000 // предположим, что trackTime в миллисекундах
+            totalTime *= 1000
 
-            // Преобразуем общее время в минуты и секунды
             val minutes = (totalTime / 60000) % 60
             val seconds = (totalTime / 1000) % 60
 
-            // Форматируем строку
             val formattedTime = String.format("%02d:%02d", minutes, seconds)
 
             currentPLTracksLiveData.postValue(
@@ -90,12 +88,14 @@ class CurrentPlaylistViewModel(
     fun share(playlist: Playlist, tracks: List<Track>) {
         val count = playlist.tracksCount
         val trackPlural = context.resources.getQuantityString(R.plurals.plurals_2, count, count)
-        var message = "${playlist.playlistName}\n${playlist.playlistDescription}\n$trackPlural\n"
-        var i = 1
-        for (item in tracks) {
-            message += "$i. ${item.artistName} - ${item.trackName} [${item.trackTime}]\n"
-            i++
+        val message = StringBuilder()
+        message.append("${playlist.playlistName}\n")
+            .append("${playlist.playlistDescription}\n")
+            .append("$trackPlural\n")
+
+        tracks.forEachIndexed { index, track ->
+            message.append("${index + 1}. ${track.artistName} - ${track.trackName} [${track.trackTime}]\n")
         }
-        externalNavigator.shareLink(message)
+        externalNavigator.shareLink(message.toString())
     }
 }

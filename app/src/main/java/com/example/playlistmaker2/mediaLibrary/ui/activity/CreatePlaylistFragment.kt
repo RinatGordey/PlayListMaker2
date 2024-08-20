@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -21,11 +22,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 open class CreatePlaylistFragment : Fragment() {
-
-    companion object {
-        const val PLAYLIST = "Плейлист"
-        const val CREATED = "создан"
-    }
 
     var _binding: FragmentCreatePlaylistBinding? = null
     val binding get() = _binding!!
@@ -120,7 +116,7 @@ open class CreatePlaylistFragment : Fragment() {
                     findNavController().navigateUp()
                 }
             } else {
-                Toast.makeText(requireContext(), "Поле Название* не заполнено", Toast.LENGTH_SHORT)
+                Toast.makeText(requireContext(), R.string.Field_name_is_not_filled_in, Toast.LENGTH_SHORT)
                     .show()
             }
         }
@@ -149,7 +145,7 @@ open class CreatePlaylistFragment : Fragment() {
                 or binding.edDescriptionPlaylist.text.toString().isNotEmpty()
                 or addedImage
             ) {
-                MaterialAlertDialogBuilder(requireContext(), R.style.DialogTheme)
+                val dialog = MaterialAlertDialogBuilder(requireContext(), R.style.customDialog)
                     .setTitle(R.string.finish_creating_a_playlist)
                     .setMessage(R.string.all_unsaved_data_will_be_lost)
                     .setNeutralButton(R.string.cancel) { _, _ ->
@@ -157,7 +153,13 @@ open class CreatePlaylistFragment : Fragment() {
                     .setNegativeButton(R.string.complete) { _, _ ->
                         findNavController().popBackStack()
                     }
-                    .show()
+                    .create()
+                dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
+                dialog.setOnShowListener {
+                    dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(resources.getColor(R.color.main_blue))
+                    dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(resources.getColor(R.color.main_blue))
+                }
+                dialog.show()
             } else {
                 findNavController().popBackStack()
             }
@@ -168,5 +170,10 @@ open class CreatePlaylistFragment : Fragment() {
         super.onDestroyView()
         _binding = null
         callback?.remove()
+    }
+
+    companion object {
+        const val PLAYLIST = "Плейлист"
+        const val CREATED = "создан"
     }
 }

@@ -10,10 +10,10 @@ import com.example.playlistmaker2.sharing.domain.model.EmailData
 class ExternalNavigatorImpl(private val application: Application): ExternalNavigator {
 
     override fun shareLink(message: String) {
-        val link = application.getString(R.string.android_developer)
+        //val link = application.getString(R.string.android_developer)
         val intent = Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"
-            putExtra(Intent.EXTRA_TEXT, link)
+            putExtra(Intent.EXTRA_TEXT, message)
         }
 
         val chooser = Intent.createChooser(intent, "Отправить инфо")

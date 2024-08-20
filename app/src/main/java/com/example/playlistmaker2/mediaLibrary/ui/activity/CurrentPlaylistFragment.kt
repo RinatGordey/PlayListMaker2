@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AlertDialog
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -35,12 +36,6 @@ import java.io.File
 
 class CurrentPlaylistFragment : Fragment(), TrackAdapter.TrackClickListener,
     TrackAdapter.LongClickListener {
-
-    companion object {
-        const val PLAYLIST = "PLAYLIST"
-        private const val CLICK_DEBOUNCE_DELAY = 1000L
-        const val TOAST_NO_TRACKS = "В этом плейлисте нет треков"
-    }
 
     private var pl: Playlist? = null
     private var adapter: TrackAdapter? = null
@@ -131,7 +126,7 @@ class CurrentPlaylistFragment : Fragment(), TrackAdapter.TrackClickListener,
 
         binding.deletePlaylist.setOnClickListener {
             bottomSheetMenu.state = BottomSheetBehavior.STATE_HIDDEN
-            MaterialAlertDialogBuilder(requireContext(), R.style.DialogTheme)
+            val dialog = MaterialAlertDialogBuilder(requireContext(), R.style.customDialog)
                 .setTitle(getString(R.string.Do_you_want_to_delete_a_playlist, pl?.playlistName))
                 .setNeutralButton(getString(R.string.NO)) { _, _ ->
                 }
@@ -139,7 +134,13 @@ class CurrentPlaylistFragment : Fragment(), TrackAdapter.TrackClickListener,
                     pl?.let { it1 -> viewModel.deletePlaylist(it1) }
                     findNavController().navigateUp()
                 }
-                .show()
+                .create()
+            dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
+            dialog.setOnShowListener {
+                dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(resources.getColor(R.color.main_blue))
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(resources.getColor(R.color.main_blue))
+            }
+            dialog.show()
         }
 
         bottomSheetMenu.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
@@ -214,7 +215,7 @@ class CurrentPlaylistFragment : Fragment(), TrackAdapter.TrackClickListener,
 
             is TrackListState.NoContent -> {
                 pl = state.playlist
-                Toast.makeText(requireContext(), TOAST_NO_TRACKS, Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), TOAST_NO_TRACKS, Toast.LENGTH_SHORT).show()
                 showEmpty(state.playlist, state.totalTime)
             }
         }
@@ -231,18 +232,10 @@ class CurrentPlaylistFragment : Fragment(), TrackAdapter.TrackClickListener,
                 .centerCrop()
                 .transform(RoundedCorners(8))
                 .into(binding.coverImageView)
-        } else {
-
         }
 
         binding.tvPlaylistName.text = playlist.playlistName
         binding.tvDescription.text = playlist.playlistDescription
-
-        if (tracks.isNullOrEmpty()) {
-            binding.tvPlaylistDuration.text = getString(R.string.no_tracks)
-            binding.tvTrackCount.text = ""
-            return
-        }
 
         var minutePlural: String
         if (time.isEmpty()) {
@@ -250,21 +243,32 @@ class CurrentPlaylistFragment : Fragment(), TrackAdapter.TrackClickListener,
         } else {
             try {
                 val parts = time.split(":")
-                val minutes = Integer.parseInt(parts[0])
-                val seconds = Integer.parseInt(parts[1])
 
-                val totalMinutes = minutes + seconds / 60
-                minutePlural = this.resources.getQuantityString(R.plurals.plurals_3, totalMinutes, totalMinutes)
+                if (parts.size < 2) {
+                    minutePlural = getString(R.string.unknown_duration)
+                } else {
+                    val minutes = Integer.parseInt(parts[0])
+                    val seconds = Integer.parseInt(parts[1])
+
+                    val totalMinutes = minutes + seconds / 60
+                    minutePlural = this.resources.getQuantityString(R.plurals.plurals_3, totalMinutes, totalMinutes)
+                }
             } catch (e: NumberFormatException) {
                 minutePlural = getString(R.string.unknown_duration)
             }
         }
 
-        binding.tvPlaylistDuration.text = minutePlural
+       binding.tvPlaylistDuration.text = minutePlural
 
         val count = playlist.tracksCount
         val trackPlural = this.resources.getQuantityString(R.plurals.plurals_2, count, count)
-        binding.tvTrackCount.text = trackPlural
+        if (count > 0) {
+            binding.tvTrackCount.text = trackPlural
+        } else {
+            binding.ic.isVisible = false
+            binding.tvPlaylistDuration.text = getString(R.string.no_tracks)
+            binding.tvTrackCount.text = ""
+        }
     }
 
     private fun showContent(tracks: List<Track>, playlist: Playlist, time: String) {
@@ -302,25 +306,49 @@ class CurrentPlaylistFragment : Fragment(), TrackAdapter.TrackClickListener,
         return current
     }
 
+    private var isDialogOpen = false
+
     override fun onLongClick(track: Track) {
         showDialog(track)
-        requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                showDialog(track)
-            }
-        })
     }
 
     private fun showDialog(track: Track) {
-        MaterialAlertDialogBuilder(requireContext(), R.style.DialogTheme)
+        val dialog = MaterialAlertDialogBuilder(requireContext(), R.style.customDialog)
             .setTitle(R.string.delete_track)
             .setMessage(R.string.are_you_sure_you_want_to_remove_the_track)
             .setNeutralButton(R.string.cancel) { _, _ ->
+                isDialogOpen = false
             }
             .setPositiveButton(R.string.delete) { _, _ ->
                 viewModel.deleteTrack(pl?.playlistId!!, track.trackId)
+                isDialogOpen = false
             }
-            .show()
+            .create()
+
+        dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
+
+        dialog.setOnShowListener {
+            isDialogOpen = true
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(resources.getColor(R.color.main_blue))
+            dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(resources.getColor(R.color.main_blue))
+        }
+
+        dialog.setOnDismissListener {
+            isDialogOpen = false
+        }
+
+        dialog.show()
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (isDialogOpen) {
+                    dialog.dismiss()
+                } else {
+                    isEnabled = false
+                    requireActivity().onBackPressed()
+                }
+            }
+        })
     }
 
     private fun getImage(playlist: Playlist): Uri? {
@@ -348,5 +376,11 @@ class CurrentPlaylistFragment : Fragment(), TrackAdapter.TrackClickListener,
         super.onDestroyView()
         callback?.remove()
         _binding = null
+    }
+
+    companion object {
+        const val PLAYLIST = "PLAYLIST"
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
+        const val TOAST_NO_TRACKS = "В этом плейлисте нет треков"
     }
 }

@@ -35,9 +35,11 @@ class PlaylistDbConvertor {
         return json
     }
 
-    fun mapToList(idList: String): List<Int> {
-        val type = object : TypeToken<List<Int>>() {}.type
-        return Gson().fromJson(idList, type)
+    fun mapToList(idList: String?): List<Int> {
+        return idList?.let {
+            val type = object : TypeToken<List<Int>>() {}.type
+            Gson().fromJson<List<Int>>(it, type)
+        } ?: emptyList()
     }
 
     fun mapTrack(track: Track): PlaylistTrackEntity {

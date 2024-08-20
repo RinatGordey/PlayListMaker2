@@ -320,4 +320,10 @@
         <item name="backgroundTint">@color/white</item>
     </style>
 
+    <style name="customDialog" parent="Theme.MaterialComponents.Light.Dialog.Alert">
+        <item name="backgroundColor">@color/white</item>
+        <item name="android:textColorPrimary">@color/icon</item>
+        <item name="colorAccent">@color/main_blue</item>
+    </style>
+
 </resources>

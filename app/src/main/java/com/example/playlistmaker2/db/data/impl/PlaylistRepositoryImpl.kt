@@ -90,7 +90,6 @@ class PlaylistRepositoryImpl(
         return currentPLTracks
     }
 
-
     private suspend fun checkingPlaylists(id: Int): Boolean {
         var isInPlaylist = false
         val plList = appDatabase.playlistDao().getPlaylist()
@@ -121,6 +120,7 @@ class PlaylistRepositoryImpl(
                 }
             }
         }
+
         else {
             appDatabase.playlistDao().deletePlaylist(playlistDbConvertor.map(playlist))
         }
