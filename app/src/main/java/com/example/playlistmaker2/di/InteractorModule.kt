@@ -35,7 +35,7 @@ val interactorModule = module {
     }
 
     single<SharingInteractor> {
-        SharingInteractorImpl(get())
+        SharingInteractorImpl(get(), get())
     }
 
     single<FavoriteInteractor> {

@@ -21,7 +21,8 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavoriteTracksFragment: Fragment(),
-    TrackAdapter.TrackClickListener {
+    TrackAdapter.TrackClickListener,
+    TrackAdapter.LongClickListener {
 
     private val viewModel by viewModel<FavoriteTracksFragmentViewModel>()
     private var adapter: TrackAdapter? = null
@@ -47,7 +48,7 @@ class FavoriteTracksFragment: Fragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = TrackAdapter(java.util.ArrayList(),this)
+        adapter = TrackAdapter(java.util.ArrayList(),this, this)
 
         binding.rvFavoriteList.layoutManager = LinearLayoutManager(requireContext(),
             LinearLayoutManager.VERTICAL, false)
@@ -114,4 +115,6 @@ class FavoriteTracksFragment: Fragment(),
             tvPlaceholderMessage.isVisible = true
         }
     }
+
+    override fun onLongClick(track: Track) {}
 }

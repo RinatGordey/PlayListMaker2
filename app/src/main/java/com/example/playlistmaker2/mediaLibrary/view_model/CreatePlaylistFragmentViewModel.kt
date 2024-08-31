@@ -14,8 +14,8 @@ import java.io.File
 import java.io.FileOutputStream
 import kotlin.random.Random
 
-class CreatePlaylistFragmentViewModel(
-    private val playlistInteractor: PlaylistInteractor,
+open class CreatePlaylistFragmentViewModel(
+    val playlistInteractor: PlaylistInteractor,
 ) : ViewModel() {
 
     companion object {

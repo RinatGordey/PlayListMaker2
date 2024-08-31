@@ -23,5 +23,6 @@
     <color name="around_like">#D2D3D8</color>
     <color name="dialog">#7FFFD4</color>
     <color name="ed_playlist">#121215</color>
+    <color name="text_for_theme">#ffffff</color>
 
 </resources>

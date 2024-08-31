@@ -1,6 +1,8 @@
 package com.example.playlistmaker2.di
 
 import com.example.playlistmaker2.mediaLibrary.view_model.CreatePlaylistFragmentViewModel
+import com.example.playlistmaker2.mediaLibrary.view_model.CurrentPlaylistViewModel
+import com.example.playlistmaker2.mediaLibrary.view_model.EditPlaylistViewModel
 import com.example.playlistmaker2.mediaLibrary.view_model.FavoriteTracksFragmentViewModel
 import com.example.playlistmaker2.mediaLibrary.view_model.PlaylistFragmentViewModel
 import com.example.playlistmaker2.player.ui.model.TrackInfo
@@ -34,5 +36,13 @@ val viewModelModule = module{
 
     viewModel{
         CreatePlaylistFragmentViewModel(get())
+    }
+
+    viewModel{
+        CurrentPlaylistViewModel(get(),get(),get(), get(), get())
+    }
+
+    viewModel{
+        EditPlaylistViewModel(get())
     }
 }

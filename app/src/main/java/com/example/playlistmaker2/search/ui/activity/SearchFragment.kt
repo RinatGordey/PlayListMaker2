@@ -24,7 +24,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SearchFragment : Fragment(), TrackAdapter.TrackClickListener {
+class SearchFragment : Fragment(),
+    TrackAdapter.TrackClickListener,
+    TrackAdapter.LongClickListener {
+
     private companion object {
         private const val SEARCH_EDITTEXT = "SEARCH_EDITTEXT"
         private const val CLICK_DEBOUNCE_DELAY = 1000L
@@ -37,7 +40,7 @@ class SearchFragment : Fragment(), TrackAdapter.TrackClickListener {
     private val binding get() = _binding!!
     private var isClickAllowed = true
     private var searchEditTextValue: String = ""
-    private val adapter = TrackAdapter(arrayListOf(), this)
+    private val adapter = TrackAdapter(arrayListOf(), this, this)
     private var textWatcher: TextWatcher? = null
     private var searchResults: MutableList<Track> = ArrayList()
 
@@ -267,4 +270,6 @@ class SearchFragment : Fragment(), TrackAdapter.TrackClickListener {
             requireContext().getSystemService(Activity.INPUT_METHOD_SERVICE) as? InputMethodManager
         inputMethodManager?.hideSoftInputFromWindow(view?.windowToken, 0)
     }
+
+    override fun onLongClick(track: Track) {}
 }
